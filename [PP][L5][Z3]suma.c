@@ -19,7 +19,7 @@ int main()
         }
         printf("\n");
     }
-    printf("\n\nSuma wynosi %f",suma(tab));
+    printf("\n\nSuma wynosi %.2f",suma(tab));
     return 0;
 }
 float suma(float tab[N][N])
