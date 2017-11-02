@@ -25,7 +25,7 @@ int main()
 float suma(float tab[N][N])
 {
     int i,j;
-    float p=0.0;
+    float p;
     float *suma;
     suma = &p;
     printf("\n\n\n");
