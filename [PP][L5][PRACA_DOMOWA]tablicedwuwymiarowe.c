@@ -4,25 +4,25 @@
 
 #define W 3
 #define K 4
-void uzupelnij(int *tab[][K]);
-void wyswietl(int *tab[][K]);
-int minimum(int *tab[][K]);
-void wspolrzedniemin(int *tab[W][K],int min);
-int ileelementowpotrzeba(int *tab[W][K],int suma);
+void uzupelnij(int tab[][K]);
+void wyswietl(int tab[][K]);
+int minimum(int tab[][K]);
+void wspolrzedniemin(int tab[W][K],int min);
+int ile_elementow_potrzeba(int tab[W][K],int suma);
 
 int main()
 {
 int tab[W][K];
-uzupelnij(&tab);
-wyswietl(&tab);
-int min = minimum(&tab);
+uzupelnij(tab);
+wyswietl(tab);
+int min = minimum(tab);
 printf("Najmniejszy element w tablicy wynosi %d\n", min);
-wspolrzedniemin(&tab,min);
+wspolrzedniemin(tab,min);
 int suma = 20;
-printf("Potrzeba %d elemenetow by przekroczyc %d",ileelementowpotrzeba(&tab,suma),suma);
+printf("Potrzeba %d elemenetow by przekroczyc %d",ile_elementow_potrzeba(tab,suma),suma);
 return 0;
 }
-void uzupelnij(int *tab[][K])
+void uzupelnij(int tab[][K])
 {
     srand((unsigned)time(NULL));
     int i,j;
@@ -34,7 +34,7 @@ void uzupelnij(int *tab[][K])
         }
     }
 }
-void wyswietl(int *tab[][K])
+void wyswietl(int tab[][K])
 {
     int i,j;
     for(i=0;i<W;i++)
@@ -46,7 +46,7 @@ void wyswietl(int *tab[][K])
         printf("\n");
     }
 }
-int minimum(int *tab[][K])
+int minimum(int tab[][K])
 {
     int i,j;
     int min=tab[0][0];
@@ -60,7 +60,7 @@ int minimum(int *tab[][K])
     }
     return min;
 }
-void wspolrzedniemin(int *tab[][K],int min)
+void wspolrzedniemin(int tab[][K],int min)
 {
 
     int i,j;
@@ -73,7 +73,7 @@ void wspolrzedniemin(int *tab[][K],int min)
         }
     }
 }
-int ileelementowpotrzeba(int *tab[][K],int suma)
+int ile_elementow_potrzeba(int tab[][K],int suma)
 {
     int i,j;
     int s=0, licznik = 0;
@@ -83,7 +83,7 @@ int ileelementowpotrzeba(int *tab[][K],int suma)
         {
             licznik++;
             s+=tab[i][j];
-            printf("\ntablica = %d suma = %d",tab[i][j],s);
+            printf("element %d tablicy = %d suma laczna= %d\n", j, tab[i][j], s);
             if(s>suma)
                 return licznik;
         }
