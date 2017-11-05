@@ -2,13 +2,16 @@
 #include<time.h>
 #include<stdlib.h>
 
-#define W 3
-#define K 4
+#define W 7
+#define K 5
 void uzupelnij(int tab[][K]);
 void wyswietl(int tab[][K]);
 int minimum(int tab[][K]);
 void wspolrzedniemin(int tab[W][K],int min);
 int ile_elementow_potrzeba(int tab[W][K],int suma);
+void transpozycja(int tab[][K]);
+int suma_elementow(int tab[][K],int wiersz);
+int suma_elementow_xx_yy(int tab[][K],int x, int y);
 
 int main()
 {
@@ -16,10 +19,13 @@ int tab[W][K];
 uzupelnij(tab);
 wyswietl(tab);
 int min = minimum(tab);
-printf("Najmniejszy element w tablicy wynosi %d\n", min);
+printf("\nNajmniejszy element w tablicy wynosi %d\n", min);
 wspolrzedniemin(tab,min);
 int suma = 20;
-printf("Potrzeba %d elemenetow by przekroczyc %d",ile_elementow_potrzeba(tab,suma),suma);
+printf("\nPotrzeba %d elemenetow by przekroczyc %d\n",ile_elementow_potrzeba(tab,suma),suma);
+transpozycja(tab);
+printf("Suma elementow wynosi %d \n",suma_elementow(tab,2));//przyjmowane sa wartosci od 1 do W
+printf("\nSuma elementow w prostokacie wynosi %d \n",suma_elementow_xx_yy(tab,2,2));//przyjmowane sa wartosci od 1 do W
 return 0;
 }
 void uzupelnij(int tab[][K])
@@ -83,11 +89,63 @@ int ile_elementow_potrzeba(int tab[][K],int suma)
         {
             licznik++;
             s+=tab[i][j];
-            printf("element %d tablicy = %d suma laczna= %d\n", j, tab[i][j], s);
+            //printf("element %d tablicy = %d suma laczna= %d\n", j, tab[i][j], s);
             if(s>suma)
                 return licznik;
         }
     }
     printf("Nie udalo sie uzebrac odpowiedniej ilosci przekraczajacej sumy");
     return 1;
+}
+void transpozycja(int tab[][K])
+{
+    int i,j;
+    if(W!=K)
+        {
+            printf("Transpozycja niemozliwa\n");
+            return 2;
+        }
+    int tab2[W][K];
+    for(i=0;i<W;i++)
+    {
+        for(j=0;j<K;j++)
+        {
+           tab2[j][i]=tab[i][j];
+        }
+    }
+wyswietl(tab2);
+}
+int suma_elementow(int tab[][K],int wiersz)
+{
+    int i,j;
+    int suma=0;
+    if(W!=K)
+        {
+            printf("Tablica musi byc kwadratowa\n");
+            return 3;
+        }
+    for(i=0;i<wiersz;i++)
+    {
+        for(j=0;j<=i;j++)
+        {
+           suma+=tab[i][j];
+           //printf("\nsuma=%d",suma);
+        }
+    }
+    for(i=wiersz-1;i<W;i++)
+    {
+        for(j=i;j<K;j++)
+        {
+           suma+=tab[i][j];
+           //printf("\nsuma=%d",suma);
+        }
+    }
+    suma-=tab[wiersz-1][wiersz-1];
+return suma;
+}
+int suma_elementow_xx_yy(int tab[][K],int x, int y)
+{
+    if(W%y!=0||K%x!=0)
+        printf("Nie da podzielic sie tablicy\n");
+        return 4;
 }
