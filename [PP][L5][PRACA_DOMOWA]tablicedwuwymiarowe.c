@@ -2,8 +2,8 @@
 #include<time.h>
 #include<stdlib.h>
 
-#define W 7
-#define K 5
+#define W 4
+#define K 4
 void uzupelnij(int tab[][K]);
 void wyswietl(int tab[][K]);
 int minimum(int tab[][K]);
@@ -11,7 +11,7 @@ void wspolrzedniemin(int tab[W][K],int min);
 int ile_elementow_potrzeba(int tab[W][K],int suma);
 void transpozycja(int tab[][K]);
 int suma_elementow(int tab[][K],int wiersz);
-int suma_elementow_xx_yy(int tab[][K],int x, int y);
+int suma_elementow_xx_yy(int tab[][K],int x, int y, int xx, int yy);
 
 int main()
 {
@@ -25,7 +25,7 @@ int suma = 20;
 printf("\nPotrzeba %d elemenetow by przekroczyc %d\n",ile_elementow_potrzeba(tab,suma),suma);
 transpozycja(tab);
 printf("Suma elementow wynosi %d \n",suma_elementow(tab,2));//przyjmowane sa wartosci od 1 do W
-printf("\nSuma elementow w prostokacie wynosi %d \n",suma_elementow_xx_yy(tab,2,2));//przyjmowane sa wartosci od 1 do W
+printf("\nSuma elementow w prostokacie wynosi %d \n",suma_elementow_xx_yy(tab,2,2,1,0));//przyjmowane sa wartosci od 1 do W
 return 0;
 }
 void uzupelnij(int tab[][K])
@@ -143,9 +143,24 @@ int suma_elementow(int tab[][K],int wiersz)
     suma-=tab[wiersz-1][wiersz-1];
 return suma;
 }
-int suma_elementow_xx_yy(int tab[][K],int x, int y)
+int suma_elementow_xx_yy(int tab[][K],int x, int y,int xx, int yy)
 {
     if(W%y!=0||K%x!=0)
-        printf("Nie da podzielic sie tablicy\n");
-        return 4;
+        {
+            printf("Nie da podzielic sie tablicy\n");
+            return 4;
+        }
+    int suma=0;
+    int i,j;
+    int wiersz=W/y;
+    int kolumna=K/x;
+    for(i=xx*wiersz;i<(xx+1)*wiersz;i++)
+    {
+        for(j=yy*kolumna;j<(yy+1)*kolumna;j++)
+        {
+           suma+=tab[i][j];
+           printf("\nsuma = %d",suma);
+        }
+    }
+    return suma;
 }
