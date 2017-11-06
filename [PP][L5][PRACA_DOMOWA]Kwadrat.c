@@ -32,7 +32,7 @@ void wyswietl(int tab[][K])
 
 void wspolrzedne(int tab[][K], int k)
 {
-    printf("x");
+    printf("xy");
 }
 
 int main()
