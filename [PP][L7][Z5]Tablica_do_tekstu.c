@@ -31,7 +31,7 @@ void Wypisz_tablice(int tab[][K])
 
 int main()
 {
-    FILE*zapis=fopen("[PP][L7]tablica_dwuwymiarowa.txt", "w");
+    FILE*zapis=fopen("[PP][L7][Z5]tablica_dwuwymiarowa.txt", "w");
     srand((unsigned)time(NULL));
     int tab[W][K], i, j;
     Uzupelnij_tablice(tab);
