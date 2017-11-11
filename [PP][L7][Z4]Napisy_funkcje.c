@@ -27,12 +27,33 @@ char* Napis_duzymi(const char* napis)
 
 char* Zmiana_wielkosci(const char* napis)
 {
-    return "Nie skonczone";
+    int dl=strlen(napis), i;
+    char napis2[100];
+    for (i=0;i<dl;i++)
+    {
+        if(napis[i]>='A' && napis[i]<='Z')
+        {
+            napis2[i]=napis[i]+32;
+        }
+        else
+        {
+            napis2[i]=napis[i]-32;
+        }
+    }
+    napis2[i]='\0';
+    return napis2;
 }
 
 char* Napis_wspak(const char* napis)
 {
-    return "Nie skonczone";
+    int dl=strlen(napis), i;
+    char napis2[100];
+    for(i=0;i<dl;i++)
+    {
+        napis2[i]=napis[dl-i-1];
+    }
+    napis2[i]='\0';
+    return napis2;
 }
 
 char* Ten_sam_napis(const char* napis)
