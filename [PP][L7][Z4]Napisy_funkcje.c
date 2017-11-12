@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <string.h>
-
+char napis2[100];
 char* Napis_malymi(const char* napis)
 {
-    char napis2[100];
     int dl=strlen(napis), i;
     for(i=0;i<dl;i++)
     {
-        napis2[i]=napis[i]+32;
+        if(napis[i]>='A' && napis[i]<='Z')
+            napis2[i]=napis[i]+32;
+        else
+            napis2[i]=napis[i];
     }
     napis2[i]='\0';
     return napis2;
@@ -15,11 +17,13 @@ char* Napis_malymi(const char* napis)
 
 char* Napis_duzymi(const char* napis)
 {
-    char napis2[100];
     int dl=strlen(napis), i;
     for(i=0;i<dl;i++)
     {
-        napis2[i]=napis[i]-32;
+        if(napis[i]>='a' && napis[i]<='z')
+            napis2[i]=napis[i]-32;
+        else
+            napis2[i]=napis[i];
     }
     napis2[i]='\0';
     return napis2;
@@ -28,7 +32,6 @@ char* Napis_duzymi(const char* napis)
 char* Zmiana_wielkosci(const char* napis)
 {
     int dl=strlen(napis), i;
-    char napis2[100];
     for (i=0;i<dl;i++)
     {
         if(napis[i]>='A' && napis[i]<='Z')
@@ -37,7 +40,14 @@ char* Zmiana_wielkosci(const char* napis)
         }
         else
         {
-            napis2[i]=napis[i]-32;
+            if(napis[i]>='a' && napis[i]<='z')
+            {
+                napis2[i]=napis[i]-32;
+            }
+            else
+            {
+                napis2[i]=napis[i];
+            }
         }
     }
     napis2[i]='\0';
@@ -47,7 +57,6 @@ char* Zmiana_wielkosci(const char* napis)
 char* Napis_wspak(const char* napis)
 {
     int dl=strlen(napis), i;
-    char napis2[100];
     for(i=0;i<dl;i++)
     {
         napis2[i]=napis[dl-i-1];
@@ -59,7 +68,6 @@ char* Napis_wspak(const char* napis)
 char* Ten_sam_napis(const char* napis)
 {
     int dl=strlen(napis), i;
-    char napis2[100];
     for(i=0;i<dl;i++)
     {
         napis2[i]=napis[i];
@@ -70,7 +78,7 @@ char* Ten_sam_napis(const char* napis)
 
 int main()
 {
-    char napis[100]="ABCE";
+    char napis[100]="eMoO_MartYnkA";
     printf("Nasz napis to: %s\n", napis);
     char *napis2=Napis_malymi(napis);
     printf("Napis malymi: %s\n", napis2);
