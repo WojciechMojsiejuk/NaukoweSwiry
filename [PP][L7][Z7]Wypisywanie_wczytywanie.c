@@ -12,6 +12,7 @@ int main()
     {
         dl[i]=0;
     }
+    i=0;
     FILE*dane=fopen(nazwa, "r");
     if(!dane)
     {
