@@ -31,6 +31,29 @@ int main()
         printf("%d ", dl[i]);
         i++;
     }
+    int k, j, pom2;
+    char pom[100];
+    for(j=0;j<i-1;j++)
+    {
+        for(k=0;k<i-1;k++)
+        {
+            if(dl[k]>dl[k+1])
+            {
+                pom2=dl[k];
+                dl[k]=dl[k+1];
+                dl[k+1]=pom2;
+                strcpy(pom, napis[k]);
+                strcpy(napis[k], napis[k+1]);
+                strcpy(napis[k+1], pom);
+            }
+        }
+    }
+    printf("\n");
+    for(j=0;j<i;j++)
+    {
+        printf("%d ", dl[j]);
+        fprintf(zapis, "\n%s", napis[j]);
+    }
     close(dane);
     close(zapis);
     return 0;
