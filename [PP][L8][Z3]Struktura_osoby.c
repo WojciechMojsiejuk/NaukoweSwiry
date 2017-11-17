@@ -15,7 +15,9 @@ typedef struct osoby
 
 int OdczytPliku(const char* name, Osoba* tab)
 {
-    FILE*wskaznik=fopen(name, "r");
+   FILE*wskaznik=fopen(name, "r");
+    if(!wskaznik)
+        return 0;
     char Imie[X][MAX], Nazwisko[X][MAX];
     int Rok[X];
     while(fscanf(wskaznik, "%s %s %d", Imie[i], Nazwisko[i], &Rok[i])!=EOF)
@@ -25,7 +27,7 @@ int OdczytPliku(const char* name, Osoba* tab)
         tab[i].Rok=Rok[i];
         i++;
     }
-    return wskaznik;
+    return 1;
 }
 
 void Wypisz_osoby(Osoba* tab)
