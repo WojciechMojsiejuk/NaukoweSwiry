@@ -1,0 +1,53 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+using namespace std;
+ typedef struct
+ {
+     string napis;
+     int dl;
+ } NAPISY;
+ string zamien( NAPISY n)
+ {string p,p2,wynik;
+     for(int i=0;i<n.dl;i++)
+ {
+
+ if(n.napis[i]>='A'&& n.napis[i]<='Z')
+ {
+
+
+    n.napis[i]+=32;
+ }else
+     if(n.napis[i]>='a'&& n.napis[i]<='z')
+        n.napis[i]-=32;
+
+ }
+ sort(n.napis.begin(),n.napis.end());
+
+    for(int i=0;i<n.dl;i++)
+      {
+          if(n.napis[i]>='A'&& n.napis[i]<='Z')
+    {
+         p[i]=n.napis[i];
+    }else {
+    p2[i]=n.napis[i];
+    }
+      }
+ wynik=p2+p;
+cout<< p2 <<" " <<p;
+    return n.napis;
+
+ }
+
+
+ int main()
+{
+    int d;
+    NAPISY n1,n2;
+    getline(cin,n1.napis);
+cout<< n1.napis<<endl;
+n1.dl=n1.napis.size();
+cout<<zamien(n1);
+
+}
