@@ -14,7 +14,7 @@ void zlicz(NAP *z)
         {
             M++;
         }else
-        if((*z).napis[i]>='a'&&(*z).napis[i]<='a')
+        if((*z).napis[i]>='a'&&(*z).napis[i]<='z')
         {
             m++;
         }
