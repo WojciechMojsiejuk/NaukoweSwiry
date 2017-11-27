@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1510009924 source:c:\users\zmroc_000\desktop\101\project1\main.c
+	<stdio.h>
+	"parametr.h"
+
+1509054141 c:\users\zmroc_000\desktop\101\project1\parametr.c
+	<stdio.h>
+	"parametr.h"
+
+1509052408 c:\users\zmroc_000\desktop\101\project1\parametr.h
+
+1509053010 source:c:\users\zmroc_000\desktop\101\project1\parametr.c
+	<stdio.h>
+	"parametr.h"
+
+1510009924 source:c:\users\zmroc_000\desktop\101\[pp][l7]podzial_na_kilka_plikow_zrodlowych\main.c
+	<stdio.h>
+	"parametr.h"
+
+1509052408 c:\users\zmroc_000\desktop\101\[pp][l7]podzial_na_kilka_plikow_zrodlowych\parametr.h
+
+1509053010 source:c:\users\zmroc_000\desktop\101\[pp][l7]podzial_na_kilka_plikow_zrodlowych\parametr.c
+	<stdio.h>
+	"parametr.h"
+

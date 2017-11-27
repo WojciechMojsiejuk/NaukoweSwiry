@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1509057413 source:c:\users\zmroc_000\desktop\101\projectclass\main.cpp
+	<cstdio>
+	"parametr.h"
+
+1509057443 c:\users\zmroc_000\desktop\101\projectclass\parametr.h
+
+1509057395 source:c:\users\zmroc_000\desktop\101\projectclass\parametr.cpp
+	<cstdio>
+	"parametr.h"
+
