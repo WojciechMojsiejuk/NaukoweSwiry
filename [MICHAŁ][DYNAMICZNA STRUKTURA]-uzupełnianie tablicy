@@ -9,7 +9,7 @@ punkt *wyp(punkt *w,int n)
 {
       for(int i=0;i<n;i++)
     {
-        cin>>w[i].x>>w[i].y;
+        cin>>w[i].x>>w[i].y; //nie rozumiem czemu tutaj nie ma gwiazdek  bo przeciez odwoluje sie do wartosci a nie adresu
     }
     return w;
 
