@@ -1,0 +1,54 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<fstream>
+#define N 8
+using namespace std;
+struct punkt
+{
+    float x,y;
+
+};
+struct odp
+{
+    float a,b;
+};
+
+odp znajdz( punkt p[],int rozm)
+{ odp o;
+    float odl=sqrt((p[0].x*p[0].x)+(p[0].y*p[0].y));
+
+    for(int i=0;i<N;i++)
+    {
+        if(sqrt((p[i].x*p[i].x)+(p[i].y*p[i].y))<=odl)
+        {
+            odl=sqrt((p[i].x*p[i].x)+(p[i].y*p[i].y));
+            o.a = p[i].x;
+            o.b = p[i].y;
+        }
+
+    }return o;
+}
+
+int main()
+{
+    fstream plik;
+    fstream wyjscie;
+    wyjscie.open("wynik.txt",ios::binary);
+    plik.open("dane.txt",ios::in);
+    if(plik.good())
+    {
+        cout<<"GODDAMMIT HE DID IT"<<endl;
+    }
+   struct punkt p[N];
+    for(int i=0;i<N;i++)
+    {
+        plik>>p[i].x>>p[i].y;
+    }
+odp h;
+  h = znajdz(p,N);
+wyjscie<<h.a<<" "<<h.b;
+plik.close();
+wyjscie.close();
+}
