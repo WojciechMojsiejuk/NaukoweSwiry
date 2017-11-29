@@ -1,0 +1,43 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#define N 2
+using namespace std;
+struct punkt
+{
+    float x,y;
+
+};
+struct odp
+{
+    float a,b;
+};
+
+odp znajdz( punkt p[],int rozm)
+{ odp o;
+    float odl=sqrt((p[0].x*p[0].x)+(p[0].y*p[0].y));
+
+    for(int i=0;i<N;i++)
+    {
+        if(sqrt((p[i].x*p[i].x)+(p[i].y*p[i].y))<=odl)
+        {
+            odl=sqrt((p[i].x*p[i].x)+(p[i].y*p[i].y));
+            o.a = p[i].x;
+            o.b = p[i].y;
+        }
+
+    }return o;
+}
+
+int main()
+{
+   struct punkt p[N];
+    for(int i=0;i<N;i++)
+    {
+        cin>>p[i].x>>p[i].y;
+    }
+odp h;
+  h = znajdz(p,N);
+cout<<h.a<<h.b;
+}
