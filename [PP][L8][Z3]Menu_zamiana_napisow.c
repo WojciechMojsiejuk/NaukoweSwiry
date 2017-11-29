@@ -49,11 +49,11 @@ void Lustrzane_odbicie(char napis[])
 {
     char pom;
     int dl=strlen(napis), i=0, k;
-    for (k=dl-1;k<dl/2;--k, ++i)
+    for (i=0;i<dl/2;++i)
     {
         pom=napis[i];
-        napis[i]=napis[k];
-        napis[k]=pom;
+        napis[i]=napis[dl-1-i];
+        napis[dl-1-i]=pom;
     }
     printf("%s\n", napis);
 }
@@ -61,8 +61,8 @@ void Lustrzane_odbicie(char napis[])
 void wypisz_menu()
 {
     printf("0) Wyjscie z programu\n"
-    "1) Zamiana wszystkich znakow w napisie na du¿e litery\n"
-    "2) Zamiana wszystkich znakow w napisie na ma³e litery\n"
+    "1) Zamiana wszystkich znakow w napisie na duze litery\n"
+    "2) Zamiana wszystkich znakow w napisie na male litery\n"
     "3) Zamiana malych liter napisu na duze, a duzych na male\n"
     "4) Lustrzane odbicie napisu\n"
     "5) Pozostawienie napisu bez zmian\n"
