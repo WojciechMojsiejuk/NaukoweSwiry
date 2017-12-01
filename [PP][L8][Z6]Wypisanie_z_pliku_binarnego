@@ -69,6 +69,7 @@ void WypisaniePlikuBinarnego(const char *nazwa)
         return;
     for(;fread(wyp, sizeof(Osoba), 1, plik)!=0;)
         printf("%s\t%s\t%d\n", wyp[0].imie, wyp[0].nazwisko, wyp[0].rok);
+    fclose(plik);
 }
 
 int main(void)
