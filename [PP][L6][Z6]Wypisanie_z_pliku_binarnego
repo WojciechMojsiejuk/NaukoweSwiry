@@ -1,0 +1,89 @@
+#include <stdio.h>
+#define N 10
+#define MAX 20
+
+typedef struct
+{
+    char imie[MAX];
+    char nazwisko[MAX];
+    int rok;
+}Osoba;
+
+int OdczytPliku(const char *nazwa, Osoba *tab)
+{
+    FILE *plik;
+    plik=fopen(nazwa, "r");
+    if(plik==NULL)
+        return 0;
+    int i;
+    for(i=0;i<N;i++)
+    {
+        if(fscanf(plik, "%s", tab[i].imie)==EOF)
+            break;
+        fscanf(plik, "%s", tab[i].nazwisko);
+        fscanf(plik, "%d", &tab[i].rok);
+    }
+    fclose(plik);
+    return i;
+}
+
+int MinRok(Osoba *tab, int licznik)
+{
+    int minimum=tab[0].rok;
+    int i;
+    for(i=1;i<licznik;i++)
+    {
+        if(tab[i].rok<minimum)
+            minimum=tab[i].rok;
+    }
+    return minimum;
+}
+
+void TworzPlikWynikowy(const char *nazwa, Osoba *tab, int licznik, int min_rok)
+{
+    FILE *plik=fopen(nazwa, "w");
+    if(plik==NULL)
+        return;
+    int i;
+    for(i=0;i<licznik;i++)
+        if(tab[i].rok==min_rok)
+            fprintf(plik, "%s %s %d\n", tab[i].imie, tab[i].nazwisko, tab[i].rok);
+    fclose(plik);
+}
+
+void TworzPlikBinarny(const char *nazwa, Osoba *tab, int licznik)
+{
+    FILE *file=fopen(nazwa, "w");
+    if(file==NULL)
+        return;
+    int size=sizeof(Osoba);
+    fwrite(tab, size, licznik, file);
+    fclose(file);
+}
+
+void WypisaniePlikuBinarnego(const char *nazwa)
+{
+    Osoba wyp[1];
+    FILE *plik=fopen(nazwa, "rb");
+    if(plik==NULL)
+        return;
+    for(;fread(wyp, sizeof(Osoba), 1, plik)!=0;)
+        printf("%s\t%s\t%d\n", wyp[0].imie, wyp[0].nazwisko, wyp[0].rok);
+}
+
+int main(void)
+{
+    int licznik, min_rok;
+    Osoba tab[N];
+    /* przepisanie zawartosci pliku do tablicy */
+    licznik = OdczytPliku("in.txt", tab);
+    if (licznik==0)
+        return 1;
+    /* znalezienie minimalnego roku */
+    min_rok = MinRok(tab, licznik);
+    /* zapis do pliku wynikowego informacji o najmlodszych osobach */
+    TworzPlikWynikowy("out.txt", tab, licznik, min_rok);
+    TworzPlikBinarny("out.dat", tab,licznik);
+    WypisaniePlikuBinarnego("out.dat");
+    return 0;
+}
