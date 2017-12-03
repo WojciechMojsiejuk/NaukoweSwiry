@@ -1,0 +1,106 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<fstream>
+#include <windows.h>
+using namespace std;
+struct przedmioty
+{
+    string stan;
+    float kwota;
+    string status;
+    float kara;
+    string data;
+    przedmioty *nastepny;
+    przedmioty();
+};
+
+przedmioty::przedmioty()
+{
+    nastepny=0;
+}
+/***************************************************************/
+
+struct wlasciel
+{
+    string imie;
+    string nazwisko;
+};
+/***************************************************************/
+void Wyswietl_Menu()
+{
+   HANDLE hOut = GetStdHandle( STD_OUTPUT_HANDLE );
+  SetConsoleTextAttribute( hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY );
+    cout<<"      ***WITAJ W LOMBARDZIE***    "<<endl;
+    cout<<" WYBIERZ OPCJE: "<<endl<<endl;
+    cout<<"  1.Dodaj przedmiot."<<endl;
+    cout<<"  2.Edytuj przedmiot."<<endl;
+    cout<<"  3.Usun przedmiot."<<endl;
+    cout<<"  4.Wyswietl przedmiot"<<endl; //3 kryteria do dodania
+    cout<<"  5.Dodaj klienta"<<endl;
+    cout<<"  6.Usun klienta"<<endl;
+    cout<<"  7.Edytuj dane o kliencie"<<endl;
+    cout<<"  8.Wyswietl dane o klijencie"<<endl; // na podstawie nazwiska (calosci lub poczatku)
+    cout<<"  9.Zakoncz program"<<endl<<endl;
+}
+int main()
+{
+//*******************************************************
+  int wybor;
+    do
+    {
+        system("cls");
+        Wyswietl_Menu();
+        cout<<"   Podaj cyfre od 1 do 9: ";
+        cin>>wybor;
+          system("cls");
+    switch (wybor)
+    {
+
+        case 1:
+            cout<<"Dodaje przedmiot"<<endl;
+            system("pause");
+            break;
+        case 2:
+            cout<<"Edytuje przedmiot"<<endl;
+            system("pause");
+            break;
+        case 3:
+            cout<<"Usuwam przedmiot"<<endl;
+            system("pause");
+            break;
+        case 4:
+            cout<<"Wyswitlam przedmiot"<<endl;
+            system("pause");
+            break;
+        case 5:
+            cout<<"Dodaje klienta"<<endl;
+            system("pause");
+            break;
+        case 6:
+            cout<<"usuwam klienta"<<endl;
+            system("pause");
+            break;
+        case 7:
+            cout<<"edytuje dane o kliencie"<<endl;
+            system("pause");
+            break;
+        case 8:
+            cout<<"Wyswietlam dane o klijencie"<<endl;
+            system("pause");
+            break;
+        case 9:
+            cout<<"GOODBYE..."<<endl;
+            Sleep(2000);
+            break;
+        default:
+            cout<<" NIE MA TAKIEJ OPCJI !"<<endl;
+            cout<<"  POWROT DO MENU...";
+            Sleep(3000);
+            break;
+
+    }
+        }while(int(wybor)!=9);
+
+    return 0;
+}
