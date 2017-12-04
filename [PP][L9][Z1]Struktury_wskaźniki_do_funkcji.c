@@ -1,83 +1,57 @@
 #include <stdio.h>
-#include <string.h>
-#define N 10
-#define MAX 20
-#define X 100
+#define MAX 20 //maksymalna dlugosc pola (imie, nazwisko)
+#define N 3 //liczba rekordow w pliku
 
-typedef struct osoby
+typedef struct
 {
-    char Imie[MAX];
-    char Nazwisko[MAX];
-    int Rok;
-} Osoba;
+    char imie[MAX];
+    char nazwisko[MAX];
+    int rok;
+}Osoba;
 
-int OdczytPliku(const char* name, Osoba* tab)
+int OdczytPliku(const char *nazwa, Osoba *tab)
 {
-    int i=0;
-   FILE*wskaznik=fopen(name, "r");
-    if(!wskaznik)
-    {
-        perror(name);
+    FILE *plik;
+    plik=fopen(nazwa, "r");
+    if(plik==NULL)
         return 0;
-    }
-    char Imie[X][MAX], Nazwisko[X][MAX];
-    int Rok[X];
-    while(fscanf(wskaznik, "%s %s %d", Imie[i], Nazwisko[i], &Rok[i])!=EOF)
+    int i;
+    for(i=0;i<N;i++)
     {
-        strcpy(tab[i].Imie, Imie[i]);
-        strcpy(tab[i].Nazwisko, Nazwisko[i]);
-        tab[i].Rok=Rok[i];
-        i++;
+        if(fscanf(plik, "%s", tab[i].imie)==EOF)
+            break;
+        fscanf(plik, "%s", tab[i].nazwisko);
+        fscanf(plik, "%d", &tab[i].rok);
     }
+    fclose(plik);
     return i;
 }
 
-void Wypisz_osobe(Osoba* tab, int index)
+void f1(const Osoba *os)
 {
-    printf("%s %s %d", tab[index].Imie, tab[index].Nazwisko, tab[index].Rok);
+        printf("%s\t%s\t%d\n", os->imie, os->nazwisko, os->rok);
 }
 
-void Choice1(void (*Wypisz_osobe), Osoba* tab, int licznik)
+void f2(const Osoba *os)
 {
-    Wypisz_osobe(tab, licznik);
+        printf("%s\n%s\n%d\n", os->imie, os->nazwisko, os->rok);
 }
 
-void Choice2()
+void WypiszTablice(Osoba *tab, void(*F)(const Osoba*))
 {
-
+    int i;
+    for(i=0;i<N;i++)
+        F(&tab[i]);
 }
 
-void Wypisz_osoby(Osoba* tab, int licznik)
+int main()
 {
-    int k;
-    printf("Wszystkie osoby:\n\n");
-    for(k=0;k<licznik;k++)
-        printf("%s %s %d\n", tab[k].Imie, tab[k].Nazwisko, tab[k].Rok);
-}
-
-int main(void)
-{
-    int licznik, choice;
     Osoba tab[N];
-    void (*wskaznik)(Osoba*, int);
-
+    int licznik;
     licznik = OdczytPliku("in.txt", tab);
     if (licznik==0)
         return 1;
-
-    printf("1-dane w jednej linii\n"
-           "2-dane w wielu liniach\n");
-    scanf("%d", &choice);
-
-    if(choice==1)
-    {
-        Choice1(wskaznik, tab, licznik);
-    }
-    else
-    {
-        Wypisz_osoby(tab, licznik);
-    }
-
-    Wypisz_osoby(tab, licznik);
+    WypiszTablice(tab, f1);
+    WypiszTablice(tab, f2);
     return 0;
 }
