@@ -52,17 +52,26 @@ int main()
     fclose(zapis);
 
     FILE *suma = fopen("autorzy_lacznie.txt","w");
-    //Tylko jeden autor??
+    //Przypisanie jednego autora bez czasu
     strcpy(tab2[0].autor,tab[0].autor);
+
+    //indeksy przypisanych autorow do drugiej struktury
     int j=0;
-    for(i=0;i<licznik;i++)
+
+    for (i=0;i<licznik;i++)
     {
-        if(strcmp(tab[i].autor,tab2[j].autor)==0)
-            tab2[j].czas+=tab[i].czas;
-        else
-            j++;
+        if ( strcmp(tab[i].autor, tab2[j].autor) !=0)
+        {
+            ++j;
             strcpy(tab2[j].autor,tab[i].autor);
+            tab2[j].czas+=tab[i].czas;
+        }
+        else
+        {
+            tab2[j].czas+=tab[i].czas;
+        }
     }
+
     for(i=0;i<=j;i++)
     {
         fprintf(suma, "%s %f\n",tab2[i].autor, tab2[i].czas);
