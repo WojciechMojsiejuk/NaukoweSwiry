@@ -43,15 +43,16 @@ int main()
         licznik++;
     }
     fclose(plik);
-    
+
     qsort(tab, licznik, sizeof(audycja), comparea);
     int i;
     FILE *zapis = fopen("autorzy.txt","w");
     for(i=0;i<licznik;i++)
         fprintf(zapis, "%s %s %f %c \n",tab[i].autor, tab[i].tytul, tab[i].czas, tab[i].rodzaj);
     fclose(zapis);
-    
+
     FILE *suma = fopen("autorzy_lacznie.txt","w");
+    //Tylko jeden autor??
     strcpy(tab2[0].autor,tab[0].autor);
     int j=0;
     for(i=0;i<licznik;i++)
@@ -66,8 +67,8 @@ int main()
     {
         fprintf(suma, "%s %f\n",tab2[i].autor, tab2[i].czas);
     }
-    
+
     fclose(zapis);
-    
+
     return 0;
 }
