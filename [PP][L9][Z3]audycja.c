@@ -43,21 +43,21 @@ int main()
         licznik++;
     }
     fclose(plik);
-
+    
     qsort(tab, licznik, sizeof(audycja), comparea);
     int i;
     FILE *zapis = fopen("autorzy.txt","w");
     for(i=0;i<licznik;i++)
         fprintf(zapis, "%s %s %f %c \n",tab[i].autor, tab[i].tytul, tab[i].czas, tab[i].rodzaj);
     fclose(zapis);
-
+    
     FILE *suma = fopen("autorzy_lacznie.txt","w");
     //Przypisanie jednego autora bez czasu
     strcpy(tab2[0].autor,tab[0].autor);
-
+    
     //indeksy przypisanych autorow do drugiej struktury
     int j=0;
-
+    
     for (i=0;i<licznik;i++)
     {
         if ( strcmp(tab[i].autor, tab2[j].autor) !=0)
@@ -71,13 +71,33 @@ int main()
             tab2[j].czas+=tab[i].czas;
         }
     }
-
+    
+    //podpunkt c
+    
+    FILE *zapisbin = fopen("autorzy_lacznie.dat","wb");
     for(i=0;i<=j;i++)
     {
         fprintf(suma, "%s %f\n",tab2[i].autor, tab2[i].czas);
+        fwrite(&tab2[i], sizeof(audycja_lacznie), 1, zapisbin);
     }
-
+    
     fclose(zapis);
-
+    fclose(zapisbin);
+    
+    //sprawdzenie utworzonego pliku binarnego
+    
+    FILE *plik2=fopen("autorzy_lacznie.dat", "rb");
+    licznik=0;
+    if(plik==NULL)
+        return 1;
+    while(fread(&tab2[licznik], sizeof(audycja_lacznie), 1, plik2))
+    {
+        licznik++;
+    }
+    for(i=0;i<licznik;i++)
+        fprintf(stdout, "%s %f \n",tab2[i].autor, tab2[i].czas);
+    fclose(plik2);
+    
+    
     return 0;
 }
