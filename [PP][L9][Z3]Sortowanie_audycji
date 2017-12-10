@@ -1,3 +1,6 @@
+/* Te zadanie jest w pełni zrobione w pliku [PP][L9][Z3]audycja.c Zostawiam ten program na wszelki wypadek. */
+
+
 #include <stdio.h>
 #include <string.h>
 #define N 50
