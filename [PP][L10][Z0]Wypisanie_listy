@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+struct element
+{
+ float liczba;
+ struct element *nast;
+};
+typedef struct element ELEMENT;
+typedef ELEMENT *ADRES;
+
+int main()
+{
+    ADRES pierwszy;
+    ...
+    ADRES pom=pierwszy;
+
+    while(pom)
+    {
+        printf("%f ", pom->liczba);
+        pom=pom->nast;
+    }
+    return 0;
+}
