@@ -1,0 +1,61 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#define W 10
+#define K 15
+
+typedef char* Dane;
+
+typedef struct lista_lin
+{
+    Dane d[20];
+    struct lista_lin *nast;
+}Element;
+
+typedef Element *Lista;
+/*
+Lista napis_na_liste(char s[])
+{
+    Lista pocz;
+    if(*s)
+    {
+        pocz = (Lista)malloc(sizeof(Element));
+        pocz -> d = *s;
+        pocz -> nast = napis_na_liste(s+1);
+        return pocz;
+    }
+    return NULL;
+}
+*/
+Lista napis_lista(char s[])
+{
+    Lista pocz;
+    pocz = (Lista)malloc(sizeof(Element));
+    strcpy((char*)pocz->d, s);
+    pocz -> nast = NULL;
+    return pocz;
+}
+
+int main()
+{
+    char tab[W][K]={"zero", "jeden", "dwa", "trzy", "cztery", "piec", "szecs", "siedem", "osiem", "dziewiec"};
+    Lista pocz;
+    Lista pom;
+    int i;
+    pocz=napis_lista(tab[0]);
+    pom=pocz;
+    for(i=1;i<W;i++)
+    {
+        pom->nast=napis_lista(tab[i]);
+        pom=pom->nast;
+    }
+
+    //wypisanie listy
+    
+    while(pocz)
+    {
+        printf("%s ", pocz->d);
+        pocz=pocz->nast;
+    }
+    return 0;
+}
