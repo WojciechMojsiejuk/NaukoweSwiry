@@ -1,0 +1,73 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+struct lista
+{
+    char imie[20];
+    int wiek;
+    lista *next;
+};
+void dodaj(lista **head)
+
+{int wiek;
+    cout<< "CO CHCYSZ DODAC??: "<<endl;
+cin>>wiek;
+
+    lista *nowa=new lista;
+
+    nowa->wiek=wiek;
+    if(*head == NULL)
+    {
+        *head = nowa;
+    }
+    else
+    {
+        lista *temp;
+        temp = *head;
+        while(temp->next!=NULL)
+        {
+
+            temp=temp->next;
+        } temp->next=nowa;
+
+    }
+}
+void wyswietl( lista **head)
+{lista *nowa=*head;
+while(nowa)
+{
+    cout<<nowa->wiek<<endl;
+    nowa=nowa->next;
+}
+cout<<endl;
+}
+struct lista* reverse(struct lista** head)
+{
+	lista *parent = *head;
+lista *me = parent->next;
+	lista *child = me->next;
+
+	/* make parent as tail */
+	parent->next = NULL;
+	while(child) {
+		me->next = parent;
+		parent = me;
+		me = child;
+		child = child->next;
+	}
+	me->next = parent;
+	*head = me;
+	return *head;
+}
+int main()
+{
+    lista *head = NULL;
+    dodaj(&head);
+    dodaj(&head);
+    dodaj(&head);
+    wyswietl(&head);
+cout << "The list is reversed\n"<<endl;
+	reverse(&head);
+	wyswietl (&head);
+
+}
