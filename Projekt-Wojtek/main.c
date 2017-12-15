@@ -17,7 +17,6 @@ void Input_Values_to_databases(ADRESS_TO_PL_DB, ADRESS_TO_ENG_DB);
 void Print_Polish_Database(ADRESS_TO_PL_DB polish_db);
 void Print_English_Database(ADRESS_TO_ENG_DB english_db);
 int main(int argc, const char * argv[]) {
-    // insert code here...
     //initialization of Polish and English database
     ADRESS_TO_PL_DB init_pl=(ADRESS_TO_PL_DB)malloc(sizeof(POLISH_DATABASE));
     ADRESS_TO_ENG_DB init_eng=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
@@ -52,9 +51,10 @@ void Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB engli
             i++;
         }
         i=0;
+
         while ((c = fgetc(database)) != EOF)
         {
-            if(c==' ')
+            if(c==',')
             {
                 i=0;
                 english_db->foreign_key=j;
@@ -67,27 +67,37 @@ void Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB engli
             if(c=='\n')
             {
                 i=0;
-                english_db->foreign_key=j;
-                english_db->primary_key=k;
-                k++;
-                english_db->nast=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
-                english_db=english_db->nast;
                 break;
             }
             english_db->word[i]=c;
             i++;
         }
         polish_db->primary_key=j;
+        english_db->foreign_key=j;
+        english_db->primary_key=k;
+        k++;
         j++;
+        if(c==EOF&&l<P)//handling exception when there are less words in dictionary than P
+        {
+            break;
+        }
+        english_db->nast=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
+        english_db=english_db->nast;
+        if(c==EOF) //handling exception to not create another element of polish_db at the end of a file
+        {
+            break;
+        }
         polish_db->nast=(ADRESS_TO_PL_DB)malloc(sizeof(POLISH_DATABASE));
         polish_db=polish_db->nast;
-    }
+        
+        
+}
 }
 void Print_Polish_Database(ADRESS_TO_PL_DB polish_db)
 {
     while(polish_db)
     {
-        printf("%s ",polish_db->word);
+        printf("%s %d\n",polish_db->word,polish_db->primary_key);
         polish_db=polish_db->nast;
     }
 }
@@ -95,7 +105,7 @@ void Print_English_Database(ADRESS_TO_ENG_DB english_db)
 {
     while(english_db)
     {
-        printf("%s ",english_db->word);
+        printf("%s %d %d\n",english_db->word,english_db->foreign_key,english_db->primary_key);
         english_db=english_db->nast;
     }
 }
