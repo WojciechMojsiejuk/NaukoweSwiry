@@ -166,7 +166,8 @@ bool choice_1(ADRESS first)
         fprintf(file, "%s: ", first -> polish );
         for (int i=0;i<first -> quantity;i++)
         {
-            fprintf(file, "%s ", first -> english[i]);
+            if(strcmp(first -> english[i],"\0")!=0)
+                fprintf(file, "%s ", first -> english[i]);
         }
         fprintf(file, "\n");
         first = first -> next;
@@ -221,22 +222,52 @@ bool choice_4(ADRESS first)
 	return true;
 };
 
-//Not done
 bool choice_6(ADRESS &first, char mystring[])
 {
+    //If mystring was found and removed
+    bool removed = false;
     FILE* file=open_file();
     if (first == NULL)
         return false;
     //if first element
     if( strcmp(mystring, first -> polish) == 0)
     {
-        delete first;
+        ADRESS temp = first;
         first = first -> next;
+        delete temp;
+        removed = true;
     }
-    /*while(first != NULL)
+    //auxiliary variable
+    ADRESS temp2 = first;
+
+    ADRESS temp3;
+
+    while(temp2)
     {
-        first = first -> next;
-    }*/
+        if (temp2 -> next != NULL)
+        {
+            temp3 = temp2 -> next;
+        }
+        if (strcmp( temp3-> polish, mystring) == 0)
+        {
+            temp2 -> next = temp3 -> next;
+            delete temp3;
+            removed = true;
+        }
+
+        fprintf(file, "%s: ", temp2 -> polish );
+        for (int i=0;i<temp2 -> quantity;i++)
+        {
+            fprintf(file, "%s ", temp2 -> english[i]);
+        }
+        fprintf(file, "\n");
+        temp2 = temp2 -> next;
+    }
+    if (removed ==  false)
+    {
+        std::cout << "Nie znaleziono slowa w bazie danych\n";
+        return true;
+    }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
 };
@@ -254,6 +285,7 @@ bool choice_7(ADRESS first, char mystring[])
             if ( strcmp(mystring, first -> english[i]) == 0)
             {
                 strcpy(first -> english[i], "\0");
+                first -> quantity--;
             }
             else
             {
@@ -323,6 +355,10 @@ int main()
 			case 6:
 			    char mystring[X];
 			    read_string(mystring);
+			    if (choice_6(first, mystring) == false)
+                {
+                    return 6;
+                }
 				break;
 			case 7:
 			    char mystring2[X];
