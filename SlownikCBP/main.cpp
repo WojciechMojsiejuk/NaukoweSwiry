@@ -5,7 +5,14 @@
 #include <stdio.h>
 #include <string.h>
 
+//Max amout of english words attached to polish word
 #define T 5
+//Max amout of english words total and max english word occurrence number to polish words
+#define Z 100
+//Max size of one word and file name
+#define X 50
+//Max size of one line
+#define K 200
 
 void show_menu()
 {
@@ -21,118 +28,102 @@ void show_menu()
 
 struct slowo_polskie
 {
-	char polish[50];
-	char english[T][50];
+	char polish[X];
+	char english[T][X];
 	int quantity;
 	slowo_polskie* next;
 };
 
 typedef struct slowo_polskie* ADRESS;
 
-bool read_data()
+///Read database and get ADRESS first
+bool read_data(ADRESS &first)
 {
-    //Max size of line
-    char pom[2000];
-    ADRESS first = NULL;
-    ADRESS temp = NULL;
-	const char* name = "../SlownikCBP/data/database.txt";
+    //Max size of one line
+    char pom[K];
+
+    //Auxiliary variable
+    ADRESS temp2;
+
+	const char* name = "../Slownik/data/database.txt";
 	FILE*file = fopen(name, "r");
 	if (!file)
 	{
 		perror(name);
 		return false;
 	}
-	//Czy polskie zostalo wczytane
-	bool f1=false;
+	//Check if polish word was read
+	bool f1 = false;
 	//Lines counter
-	int lines=0;
-    //Words counter
-	//int amount= 0;
+	int lines = 0;
 	//Strlen of polish word
-	int strlen_polish=0;
+	int strlen_polish = 0;
 	//Strlen of english word
-	int strlen_english=0;
+	int strlen_english = 0;
     //Strlen of line
-	int strlen_line=0;
+	int strlen_line = 0;
 
-    first = new slowo_polskie;
-
-	while ( fgets(pom, sizeof pom, file)!= 0 )
+	while ( fgets(pom, sizeof(pom), file)!= 0 )
 	{
-	    temp = new slowo_polskie;
-        temp -> next = NULL;
+	    ADRESS temp = new slowo_polskie;
+
         temp -> quantity = 0;
 	    strlen_line=strlen(pom);
-	    //printf("%d\n", pom2);
+	    strlen_polish = 0;
+	    strlen_english = 0;
 
 	    for(int i=0;i<strlen_line;i++)
         {
-            if(pom[i]=='\0')
+            if(pom[i]==' ')
             {
                 f1 = true;
-                strlen_polish = 0;
+                //End of polish word!
+                temp -> polish[strlen_polish]='\0';
+
                 strlen_english = 0;
+
                 temp -> quantity++;
             }
+
             if(pom[i]=='\n')
             {
-                temp -> next = temp;
-                //temp = new slowo_polskie;
-                strlen_polish = 0;
-                strlen_english = 0;
                 f1 = false;
             }
 
-            if( pom[i]!='\0' && pom[i]!='\n' && f1 == false)
+            if( pom[i]!=' ' && pom[i]!='\n' && f1 == true)
+            {
+                temp -> english[temp -> quantity - 1][strlen_english] = pom[i];
+                strlen_english++;
+            }
+
+            if( pom[i]!=' ' && pom[i]!='\n' && f1 == false)
             {
                 temp -> polish[strlen_polish] = pom[i];
                 strlen_polish++;
             }
-
-            if( pom[i]!='\0' && pom[i]!='\n' && f1 == true)
-            {
-                temp -> english[first -> quantity - 1][strlen_english] = pom[i];
-                strlen_english++;
-            }
         }
-
-        if (first == NULL)
+	    if (first == NULL)
         {
             first = temp;
         }
-
-        printf("%s\t", temp -> polish);
-        for (int i=0;i<temp -> quantity;i++)
+        else
         {
-            printf("%s ", temp -> english[i]);
+            temp2 = first;
+            while(temp2 -> next)
+            {
+                temp2 = temp2 -> next;
+            }
+            temp2 -> next = temp;
+            temp -> next = NULL;
         }
-        printf("\n");
         ++lines;
-	    /*while( pom!='\n' )
-        {
-            pom=getc(file);
-            if (pom != '\0')
-            {
-                first -> english[i][k]=pom;
-                k++;
-            }
-            if (pom == '\0')
-            {
-                printf("%s", first -> english[i]);
-                k=0;
-                i++;
-            }
-        }
-        first = first -> next;
-        first = new slowo_polskie;
-        //printf("\n");*/
-    }
+	}
 	return true;
 };
 
-bool open_file()
+FILE* open_file()
 {
-	char name[30];
+	char name[X];
 	std::cout << "Podaj nazwe pliku: ";
 	std::cin >> name;
 	while (std::cin.fail())
@@ -146,23 +137,147 @@ bool open_file()
 	if (!file)
 	{
 		perror(name);
-		return false;
+		return NULL;
 	}
+	return file;
+};
+
+char* read_string(char mystring[])
+{
+    std:: cout << "Podaj napis: ";
+    std::cin >> mystring;
+    while ( std::cin.fail() )
+    {
+        std::cout << "Podany napis jest niepoprawny!\n";
+        std::cin.clear();
+        std::cin.ignore(500, '\n');
+        std::cin >> mystring;
+    }
+    return mystring;
+};
+
+bool choice_1(ADRESS first)
+{
+    FILE* file=open_file();
+    if (first == NULL)
+        return false;
+    while(first != NULL)
+    {
+        fprintf(file, "%s: ", first -> polish );
+        for (int i=0;i<first -> quantity;i++)
+        {
+            fprintf(file, "%s ", first -> english[i]);
+        }
+        fprintf(file, "\n");
+        first = first -> next;
+    }
+    std::cout << "Operacja zakonczona!\n\n";
 	return true;
 };
 
-bool choice_1()
+//Not done
+bool choice_2(ADRESS first, char** tab)
 {
+    FILE* file=open_file();
+    if (first == NULL)
+        return false;
+    while(first != NULL)
+    {
+        for (int i=0;i<first -> quantity;i++)
+        {
+            char* eng = first -> english[i];
+            //Check if eng was found in tab
+            bool f1 = false;
+            //Z - Max amout of english words total
+            for(int k=0; k<Z; k++)
+            {
+                //If contest of both strings are equal
+                if(strcmp(tab[k], eng) == 0)
+                {
+                    f1 = true;
+                }
+            }
+        }
+    }
+    std::cout << "Operacja zakonczona!\n\n";
+	return true;
+}
+
+bool choice_4(ADRESS first)
+{
+    FILE* file=open_file();
+    if (first == NULL)
+        return false;
+    while(first != NULL)
+    {
+        //T - given
+        if( first -> quantity == T)
+        {
+            fprintf(file, "%s\n", first -> polish);
+        }
+        first = first -> next;
+    }
+    std::cout << "Operacja zakonczona!\n\n";
+	return true;
+};
+
+//Not done
+bool choice_6(ADRESS &first, char mystring[])
+{
+    FILE* file=open_file();
+    if (first == NULL)
+        return false;
+    //if first element
+    if( strcmp(mystring, first -> polish) == 0)
+    {
+        delete first;
+        first = first -> next;
+    }
+    /*while(first != NULL)
+    {
+        first = first -> next;
+    }*/
+    std::cout << "Operacja zakonczona!\n\n";
+	return true;
+};
+
+bool choice_7(ADRESS first, char mystring[])
+{
+    FILE* file=open_file();
+    if (first == NULL)
+        return false;
+    while(first != NULL)
+    {
+        fprintf(file, "%s ", first -> polish);
+        for (int i=0;i<first -> quantity;i++)
+        {
+            if ( strcmp(mystring, first -> english[i]) == 0)
+            {
+                strcpy(first -> english[i], "\0");
+            }
+            else
+            {
+                fprintf(file, "%s ", first -> english[i]);
+            }
+        }
+        first = first -> next;
+        fprintf(file, "\n");
+    }
+    std::cout << "Operacja zakonczona!\n\n";
 	return true;
 };
 
 int main()
 {
-	//ADRESS first = NULL;
+    //Unique english words
+    char tab[Z][50]={0};
 
-	if(read_data() == false)
+	ADRESS first = NULL;
+
+	//Read database and get ADRESS first
+	if(read_data(first) == false)
     {
-        return 1;
+        return -1;
     }
 
 	int choice = -1;
@@ -188,25 +303,34 @@ int main()
 				quit = true;
 				break;
 			case 1:
-				if (open_file() == false)
-				{
-					return 1;
-				}
-
-				std::cout << "Operacja zakonczona\n\n";
-
+                if (choice_1(first) == false)
+                {
+                    return 1;
+                }
 				break;
 			case 2:
 				break;
 			case 3:
 				break;
 			case 4:
+			    if (choice_4(first) == false)
+                {
+                    return 4;
+                }
 				break;
 			case 5:
 				break;
 			case 6:
+			    char mystring[X];
+			    read_string(mystring);
 				break;
 			case 7:
+			    char mystring2[X];
+			    read_string(mystring2);
+			    if (choice_7(first, mystring2) == false)
+                {
+                    return 7;
+                }
 				break;
 			default:
 				std::cout << "Niepoprawny wybor!\n";
@@ -215,4 +339,3 @@ int main()
 	}while ( !quit );
     return 0;
 }
-
