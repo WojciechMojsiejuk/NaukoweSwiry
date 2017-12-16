@@ -265,7 +265,7 @@ bool choice_6(ADRESS &first, char mystring[])
     }
     if (removed ==  false)
     {
-        std::cout << "Nie znaleziono slowa w bazie danych\n";
+        std::cout << "Nie znaleziono slowa w bazie danych\n\n";
         return true;
     }
     std::cout << "Operacja zakonczona!\n\n";
@@ -274,6 +274,7 @@ bool choice_6(ADRESS &first, char mystring[])
 
 bool choice_7(ADRESS first, char mystring[])
 {
+    bool removed = false;
     FILE* file=open_file();
     if (first == NULL)
         return false;
@@ -285,6 +286,7 @@ bool choice_7(ADRESS first, char mystring[])
             if ( strcmp(mystring, first -> english[i]) == 0)
             {
                 strcpy(first -> english[i], "\0");
+                removed = true;
                 first -> quantity--;
             }
             else
@@ -295,6 +297,10 @@ bool choice_7(ADRESS first, char mystring[])
         first = first -> next;
         fprintf(file, "\n");
     }
+    if ( removed == false)
+    {
+        std::cout << "Nie znaleziono słowa w bazie danych\n\n"
+;    }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
 };
