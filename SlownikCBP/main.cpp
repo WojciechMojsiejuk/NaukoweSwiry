@@ -123,16 +123,19 @@ bool read_data(ADRESS &first)
 
 FILE* open_file()
 {
-	char name[X];
+	char _name[X];
 	std::cout << "Podaj nazwe pliku: ";
-	std::cin >> name;
+	std::cin >> _name;
 	while (std::cin.fail())
 	{
 		std::cout << "Niepoprawna nazwa, podaj ponownie\n";
 		std::cin.clear();
 		std::cin.ignore(500, '\n');
-		std::cin >> name;
+		std::cin >> _name;
 	}
+	char name[X+20];
+	strcpy(name,"../Slownik/output/");
+	strcat(name,_name);
 	FILE* file = fopen(name, "w");
 	if (!file)
 	{
@@ -299,7 +302,7 @@ bool choice_7(ADRESS first, char mystring[])
     }
     if ( removed == false)
     {
-        std::cout << "Nie znaleziono słowa w bazie danych\n\n"
+        std::cout << "Nie znaleziono s³owa w bazie danych\n\n"
 ;    }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
