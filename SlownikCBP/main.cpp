@@ -45,7 +45,7 @@ bool read_data(ADRESS &first)
     //Auxiliary variable
     ADRESS temp2;
 
-	const char* name = "../Slownik/data/database.txt";
+	const char* name = "../Slownik/data/database2.txt";
 	FILE*file = fopen(name, "r");
 	if (!file)
 	{
@@ -180,7 +180,7 @@ bool choice_1(ADRESS first)
 };
 
 //Not done
-bool choice_2(ADRESS first, char** tab)
+bool choice_2(ADRESS first, char tab[][X], int* amount)
 {
     FILE* file=open_file();
     if (first == NULL)
@@ -198,10 +198,26 @@ bool choice_2(ADRESS first, char** tab)
                 //If contest of both strings are equal
                 if(strcmp(tab[k], eng) == 0)
                 {
+                    printf("Rowne ");
+                    amount[k]++;
+                    printf("ilosc= %d\n", amount[k]);
                     f1 = true;
                 }
             }
+            if (f1 == false)
+            {
+                printf("Nie rowne\n");
+                for (int k=0;k<Z;k++)
+                {
+                    //If tab[k] is empty
+                    if (strcmp(tab[k], "\0")==0)
+                    {
+                        strcpy(tab[k], eng);
+                    }
+                }
+            }
         }
+        first = first -> next;
     }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
@@ -302,7 +318,7 @@ bool choice_7(ADRESS first, char mystring[])
     }
     if ( removed == false)
     {
-        std::cout << "Nie znaleziono s³owa w bazie danych\n\n"
+        std::cout << "Nie znaleziono slowa w bazie danych\n\n"
 ;    }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
@@ -311,7 +327,14 @@ bool choice_7(ADRESS first, char mystring[])
 int main()
 {
     //Unique english words
-    char tab[Z][50]={0};
+    char tab[Z][X]={0};
+    //Number of occurence for each english word
+    int amount[Z]={0};
+
+    for (int i=0;i<Z;i++)
+    {
+        printf("%s", tab[i]);
+    }
 
 	ADRESS first = NULL;
 
@@ -350,6 +373,15 @@ int main()
                 }
 				break;
 			case 2:
+			    if (choice_2(first, tab, amount) == false)
+                {
+                    return 2;
+                }
+                for (int i=0;i<Z;i++)
+                {
+                    printf("%s ", tab[i]);
+                }
+                printf("\n");
 				break;
 			case 3:
 				break;
