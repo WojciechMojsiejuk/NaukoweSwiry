@@ -5,14 +5,14 @@
 #include <stdio.h>
 #include <string.h>
 
-//Max amout of english words attached to polish word
+//Max amount of english words attached to polish word
 #define T 5
-//Max amout of english words total and max english word occurrence number to polish words
+//Max english word occurrence number to polish words
 #define Z 100
 //Max size of one word and file name
 #define X 50
-//Max size of one line
-#define K 200
+//Max amount of english words total
+#define A 100
 
 void show_menu()
 {
@@ -40,7 +40,7 @@ typedef struct slowo_polskie* ADRESS;
 bool read_data(ADRESS &first)
 {
     //Max size of one line
-    char pom[K];
+    char pom[(T+2)*X];
 
     //Auxiliary variable
     ADRESS temp2;
@@ -192,8 +192,8 @@ bool choice_2(ADRESS first, char tab[][X], int* amount)
             char* eng = first -> english[i];
             //Check if eng was found in tab
             bool f1 = false;
-            //Z - Max amout of english words total
-            for(int k=0; k<Z; k++)
+            //A - Max amout of english words total
+            for(int k=0; k<A; k++)
             {
                 //If contest of both strings are equal
                 if(strcmp(tab[k], eng) == 0)
@@ -207,7 +207,7 @@ bool choice_2(ADRESS first, char tab[][X], int* amount)
             if (f1 == false)
             {
                 printf("Nie rowne\n");
-                for (int k=0;k<Z;k++)
+                for (int k=0;k<A;k++)
                 {
                     //If tab[k] is empty
                     if (strcmp(tab[k], "\0")==0)
@@ -327,11 +327,11 @@ bool choice_7(ADRESS first, char mystring[])
 int main()
 {
     //Unique english words
-    char tab[Z][X]={0};
+    char tab[A][X]={0};
     //Number of occurence for each english word
-    int amount[Z]={0};
+    int amount[A]={0};
 
-    for (int i=0;i<Z;i++)
+    for (int i=0;i<A;i++)
     {
         printf("%s", tab[i]);
     }
@@ -377,7 +377,7 @@ int main()
                 {
                     return 2;
                 }
-                for (int i=0;i<Z;i++)
+                for (int i=0;i<A;i++)
                 {
                     printf("%s ", tab[i]);
                 }
