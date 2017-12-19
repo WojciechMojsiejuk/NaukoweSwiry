@@ -45,7 +45,7 @@ bool read_data(ADRESS &first)
     //Auxiliary variable
     ADRESS temp2;
 
-	const char* name = "../Slownik/data/database2.txt";
+	const char* name = "./data/database.txt";
 	FILE*file = fopen(name, "r");
 	if (!file)
 	{
@@ -134,7 +134,7 @@ FILE* open_file()
 		std::cin >> _name;
 	}
 	char name[X+20];
-	strcpy(name,"../Slownik/output/");
+	strcpy(name,"./output/");
 	strcat(name,_name);
 	FILE* file = fopen(name, "w");
 	if (!file)
