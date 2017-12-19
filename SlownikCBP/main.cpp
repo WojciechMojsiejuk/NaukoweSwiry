@@ -3,12 +3,14 @@
 
 #include <iostream>
 #include <stdio.h>
+//qsort
+#include <stdlib.h>
 #include <string.h>
 
 //Max amount of english words attached to polish word
 #define T 5
 //Max english word occurrence number to polish words
-#define Z 100
+#define Z 10
 //Max size of one word and file name
 #define X 50
 //Max amount of english words total
@@ -159,9 +161,18 @@ char* read_string(char mystring[])
     return mystring;
 };
 
+int compare_strings (const void* element, const void* element2)
+{
+    char* temp = (char*)element;
+    const char* temp2 = (char*)element2;
+    return strcmp(temp, temp2);
+}
+
 bool choice_1(ADRESS first)
 {
     FILE* file=open_file();
+    if (file == NULL)
+        return false;
     if (first == NULL)
         return false;
     while(first != NULL)
@@ -183,6 +194,8 @@ bool choice_1(ADRESS first)
 bool choice_2(ADRESS first, char tab[][X], int* amount)
 {
     FILE* file=open_file();
+    if (file == NULL)
+        return false;
     if (first == NULL)
         return false;
     while(first != NULL)
@@ -221,11 +234,51 @@ bool choice_2(ADRESS first, char tab[][X], int* amount)
     }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
-}
+};
+
+//Not done
+bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
+{
+    FILE* file=open_file();
+    if (file == NULL)
+        return false;
+    if (first == NULL)
+        return false;
+    ADRESS temp = first;
+    while( temp != NULL && temp -> next != NULL)
+    {
+        if(strcmp(temp -> polish, temp -> next -> polish)<0)
+        {
+
+        }
+        //If first element
+        if (temp == first){
+
+        }
+        temp = temp -> next;
+    }
+    //Sort english tab and printf to file
+    temp = first;
+    while (temp !=NULL)
+    {
+        qsort(temp -> english, T, X*sizeof(char), compare_strings);
+        fprintf(file, "%s ", temp -> polish);
+        for(int i=0;i<T;i++)
+        {
+            if(strcmp(temp -> english[i], "\0")!=0)
+                fprintf(file,"%s ", temp -> english[i]);
+        }
+        fprintf(file, "\n");
+        temp = temp -> next;
+    }
+    return true;
+};
 
 bool choice_4(ADRESS first)
 {
     FILE* file=open_file();
+    if (file == NULL)
+        return false;
     if (first == NULL)
         return false;
     while(first != NULL)
@@ -246,6 +299,8 @@ bool choice_6(ADRESS &first, char mystring[])
     //If mystring was found and removed
     bool removed = false;
     FILE* file=open_file();
+    if (file == NULL)
+        return false;
     if (first == NULL)
         return false;
     //if first element
@@ -295,6 +350,8 @@ bool choice_7(ADRESS first, char mystring[])
 {
     bool removed = false;
     FILE* file=open_file();
+    if (file == NULL)
+        return false;
     if (first == NULL)
         return false;
     while(first != NULL)
@@ -384,6 +441,10 @@ int main()
                 printf("\n");
 				break;
 			case 3:
+			    if (choice_3(first, compare_strings) == false)
+                {
+                    return 3;
+                }
 				break;
 			case 4:
 			    if (choice_4(first) == false)
