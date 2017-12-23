@@ -1,13 +1,16 @@
 #include "database.h"
 
 ///Read database and get ADRESS first
-bool read_data(ADRESS &first, int &lines)
+bool read_data(ADRESS &first)
 {
     //Max size of one line
     char pom[(T+2)*X];
 
     //Auxiliary variable
     ADRESS temp2;
+
+    //Amount of lines in database <not needed>
+    int lines = 0;
 
 	const char* name = "./data/database.txt";
 	FILE*file = fopen(name, "r");
