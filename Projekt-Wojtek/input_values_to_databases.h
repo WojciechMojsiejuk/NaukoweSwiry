@@ -20,16 +20,7 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
     /*Code was originally written on MacOS, unix based system.
      Therefore there might be some problems with UTF-8 coding
      which is different in Windows OS */
-    printf("Your OS might have problems coping with UTF-8 files.\nIf you load data successfully, but there are some strange artefact,\nyou may want to create file manually to make sure the data won't be corrupted.\nDo you want to do this now? Y or N?\n");
-    char choice_to_handle_UTF_8_problem;
-    scanf(" %c",&choice_to_handle_UTF_8_problem);
-    if(toupper(choice_to_handle_UTF_8_problem)=='Y')
-        printf("calkiem nieżle");
-    if(toupper(choice_to_handle_UTF_8_problem)!='N'&&toupper(choice_to_handle_UTF_8_problem)!='Y')
-    {
-        fprintf(stderr,"Invalid input\n");
-        return 1;
-    }
+    printf("Your OS might have problems coping with UTF-8 files.\nIf you load data successfully, but there are some strange artefact,\nyou may want to abandon letters from polish alphabet in your database\n");
 #endif
     printf("Give filename of database you want to migrate: ");
     //FILENAME_MAX stdio.h library macro
@@ -71,7 +62,7 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                     ;
                 break;
             }
-            
+
         }
         i=0;
         polish_db->primary_key=j;
@@ -119,10 +110,10 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                 char temp_word[MAX_WORD];
                 while ((c = fgetc(database)) != ',')
                 {
-                    
+
                     if(c=='\n')
                     {
-                        
+
                         english_db->foreign_key=j;
                         english_db->primary_key=k;
                         strcpy(english_db->word,temp_word);
@@ -138,14 +129,14 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                 }
                 i=0;
             }
-            
+
         }
         english_db->foreign_key=j;
         english_db->primary_key=k;
         k++;
         j++;
         english_db->nast=NULL; //for a safety of data by default pointer should point to NULL
-        
+
         if(c==EOF) //handling exception to not create new elements at the end of a file
         {
             break;
