@@ -14,7 +14,7 @@
 #include "english_database.h"
 #include "input_values_to_databases.h"
 
-#define P 4//maximum of polish words held in database
+#define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
 
 int Input_Values_to_databases(ADRESS_TO_PL_DB, ADRESS_TO_ENG_DB);
@@ -48,19 +48,31 @@ int main(int argc, const char * argv[]) {
 }
 void Print_Database(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
 {
-    
+    printf("Save output as: ");
+    //FILENAME_MAX stdio.h library macro
+    char output_name[FILENAME_MAX];
+    scanf("%s",output_name);
+    FILE *output = fopen(output_name, "w");
     while(polish_db)
     {
         printf("%s %d\n",polish_db->word,polish_db->primary_key);
+        fprintf(output,"%s:",polish_db->word);
         ADRESS_TO_ENG_DB temp_to_iteration = english_db;
         while(temp_to_iteration)
         {
             if(temp_to_iteration->foreign_key==polish_db->primary_key)
+                {
                 printf("%s %d %d\n",temp_to_iteration->word,temp_to_iteration->foreign_key,temp_to_iteration->primary_key);
+                if((temp_to_iteration->nast->foreign_key)!=(polish_db->primary_key))
+                    fprintf(output,"%s\n",temp_to_iteration->word);
+                else
+                    fprintf(output,"%s,",temp_to_iteration->word);
+                }
             temp_to_iteration=temp_to_iteration->nast;
         }
         polish_db=polish_db->nast;
     }
+    fclose(output);
 }
 void Sort_Elements(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB english_db)
 {
@@ -90,7 +102,7 @@ void Sort_Elements(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB english_db)
 }
 void Make_Values_Unique(ADRESS_TO_ENG_DB english_db)
 {
-    
+
     //zmiana wskaznika w liscie w zaleznosci od elementu. Elementy sprawdzic strcmp
 }
 ADRESS_TO_PL_DB Previous_Elemenet(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element)
