@@ -8,7 +8,7 @@
 
 #ifndef input_values_to_databases_h
 #define input_values_to_databases_h
-#define P 4//maximum of polish words held in database
+#define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
 int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB english_db)
 {
