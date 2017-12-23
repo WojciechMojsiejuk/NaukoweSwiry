@@ -1,7 +1,9 @@
 #ifndef DATABASE_H_INCLUDED
 #define DATABASE_H_INCLUDED
 
+//cin cout
 #include <iostream>
+//fprintf
 #include <stdio.h>
 //qsort
 #include <stdlib.h>

@@ -42,7 +42,7 @@ bool read_data(ADRESS &first)
             if(pom[i]==' ')
             {
                 f1 = true;
-                //End of polish word!
+                //End of polish word
                 temp -> polish[strlen_polish]='\0';
 
                 strlen_english = 0;

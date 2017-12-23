@@ -10,13 +10,9 @@ void show_menu()
 		"4- Wypisz slowa polskie z maksymalna liczba znaczen\n"
 		"5- Wypisz wszystkie slowa angielskie najczesciej wystepujace oraz przyporzadkowane im slowa polskie\n"
 		"6- Usun slowo polskie i jego angielskie odpowiedniki\n"
-		"7- Usun slowo angielskie (jego wystapienia przy slowach polskich)\n";
+		"7- Usun slowo angielskie (jego wystapienia przy slowach polskich)\n"
+		"8- Wczytaj od nowa baze danych\n";
 };
-
-/*void check_choice()
-{
-
-};*/
 
 FILE* open_file()
 {
