@@ -1,7 +1,7 @@
 #include "database.h"
 
 ///Read database and get ADRESS first
-bool read_data(ADRESS &first)
+bool read_data(ADRESS &first, int &lines)
 {
     //Max size of one line
     char pom[(T+2)*X];
@@ -18,8 +18,6 @@ bool read_data(ADRESS &first)
 	}
 	//Check if polish word was read
 	bool f1 = false;
-	//Lines counter
-	int lines = 0;
 	//Strlen of polish word
 	int strlen_polish = 0;
 	//Strlen of english word

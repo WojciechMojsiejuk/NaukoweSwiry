@@ -4,6 +4,8 @@
 
 int main_loop()
 {
+    //number of lines
+    int lines = 0;
     //Unique english words
     char tab[A][X]={0};
     //Number of occurence for each english word
@@ -12,7 +14,7 @@ int main_loop()
 	ADRESS first = NULL;
 
 	//Read database and get ADRESS first
-	if(read_data(first) == false)
+	if(read_data(first, lines) == false)
     {
         std::cout << "Nie mozna wczytac bazy danych!\n\n";
         return -1;

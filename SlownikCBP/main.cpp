@@ -5,6 +5,6 @@
 
 int main()
 {
-    int main=main_loop();
+    int main = main_loop();
     return main;
 }

@@ -12,6 +12,7 @@ bool choice_1(ADRESS first)
     while(first != NULL)
     {
         fprintf(file, "%s: ", first -> polish );
+        // i < T ??
         for (int i=0;i<first -> quantity;i++)
         {
             if(strcmp(first -> english[i],"\0")!=0)
@@ -70,7 +71,6 @@ bool choice_2(ADRESS first, char tab[][X], int* amount)
 	return true;
 };
 
-//Not done
 bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
 {
     FILE* file=open_file();
@@ -79,48 +79,89 @@ bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
     if (first == NULL)
         return false;
     ADRESS temp = first;
-    while( temp != NULL && temp -> next != NULL)
-    {
-        if(strcmp(temp -> polish, temp -> next -> polish)<0)
-        {
-            //get previous element
-            ADRESS prev = previous(first, temp);
-            //get next element
-            ADRESS next1 = next(first, temp -> next);
-            //
-            if (prev == NULL)
-            {
-                ADRESS temp2 = temp;
-                temp = temp -> next;
-                temp -> next = temp2;
-            }
-            else
-            {
-                ADRESS temp3 = temp;
-                prev = temp -> next;
-                temp -> next = temp;
-                temp = temp -> next;
-            }
-            /*prev -> next = temp -> next;
-            temp -> next = temp;
-            temp -> next = temp -> next -> next;*/
-        }
-        //If first element
-        if (temp == first)
-        {
 
+    //check if swap was made
+    bool change;
+
+    do
+    {
+        change = false;
+        for (temp = first; temp -> next !=NULL; temp = temp -> next)
+        {
+            if(strcmp(temp -> polish, temp -> next -> polish)>0)
+            {
+                //Set flag
+                change = true;
+                //std::cout << temp -> polish << ' ' << temp -> next -> polish << '\n';
+                char pom[X];
+                strcpy(pom, temp -> polish);
+                strcpy(temp -> polish, temp -> next -> polish);
+                strcpy(temp -> next -> polish, pom);
+                for (int i=0;i<T;i++)
+                {
+                    char pom2[X];
+                    strcpy(pom2, temp -> english[i]);
+                    strcpy(temp -> english[i], temp -> next -> english[i]);
+                    strcpy(temp -> next ->english[i], pom2);
+                }
+                int pom3 = temp -> quantity;
+                temp -> quantity = temp -> next -> quantity;
+                temp -> next -> quantity = pom3;
+            }
         }
-        temp = temp -> next;
-    }
+    }while( change == true);
+
+//    while( temp != NULL && temp -> next != NULL)
+//    {
+//        if(strcmp(temp -> polish, temp -> next -> polish)>0)
+//        {
+//            std::cout << temp -> polish << ' ' << temp -> next -> polish << '\n';
+//            char pom[X];
+//            strcpy(pom, temp -> polish);
+//            strcpy(temp -> polish, temp -> next -> polish);
+//            strcpy(temp -> next -> polish, pom);
+//            for (int i=0;i<T;i++)
+//            {
+//                char pom2[X];
+//                strcpy(pom2, temp -> english[i]);
+//                strcpy(temp -> english[i], temp -> next -> english[i]);
+//                strcpy(temp -> next ->english[i], pom2);
+//            }
+//            int pom3 = temp -> quantity;
+//            temp -> quantity = temp -> next -> quantity;
+//            temp -> next -> quantity = pom3;
+////            //get previous temp element
+////            ADRESS prev = previous(first, temp);
+////            //element after temp -> next
+////            ADRESS next1 = next(first, temp -> next);
+////            //If first element
+////            if (prev == NULL)
+////            {
+////                //ADRESS pom = temp;
+////                first = temp -> next -> next;
+////                temp -> next = first;
+////            }
+////
+////            else
+////            {
+////                ADRESS temp3 = temp;
+////                prev = temp -> next;
+////                temp -> next = temp;
+////            }
+////        }
+//        temp = temp -> next;
+//    }
+
     //Sort english tab and printf to file
     temp = first;
-    while (temp !=NULL)
+    qsort(temp -> english, T, X*sizeof(char), compare_strings);
+
+    while (temp != NULL)
     {
-        qsort(temp -> english, T, X*sizeof(char), compare_strings);
-        fprintf(file, "%s ", temp -> polish);
-        for(int i=0;i<T;i++)
+        fprintf(file, "%s: ", temp -> polish);
+        for(int i=0;i<temp -> quantity;i++)
         {
-            if(strcmp(temp -> english[i], "\0")!=0)
+            if(temp -> english[i][0] != '\0')
                 fprintf(file,"%s ", temp -> english[i]);
         }
         fprintf(file, "\n");

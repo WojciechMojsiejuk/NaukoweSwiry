@@ -26,6 +26,6 @@ struct slowo_polskie
 
 typedef struct slowo_polskie* ADRESS;
 
-bool read_data(ADRESS &);
+bool read_data(ADRESS &, int &);
 
 #endif // DATABASE_H_INCLUDED
