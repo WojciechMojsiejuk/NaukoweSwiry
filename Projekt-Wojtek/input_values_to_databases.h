@@ -45,6 +45,10 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
         {
             if(i<MAX_WORD)
             {
+                #ifdef _WIN32
+                if(!isascii(c)) //in Win OS at the begining of a file are meta which need to be skipped
+                    continue;
+                #endif // _WIN32
                 if(c==':')
                 {
                     polish_db->word[i]='\0';
@@ -71,6 +75,10 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
         {
             if(i<MAX_WORD)
             {
+                #ifdef _WIN32
+                if(!isascii(c)) //in Win OS to omit polish characters
+                    continue;
+                #endif // _WIN32
                 if(c==',') //do this when a word ends
                 {
                     english_db->word[i]='\0';
@@ -110,7 +118,10 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                 char temp_word[MAX_WORD];
                 while ((c = fgetc(database)) != ',')
                 {
-
+                    #ifdef _WIN32
+                        if(!isascii(c)) //in Win OS to omit polish characters
+                        continue;
+                    #endif // _WIN32
                     if(c=='\n')
                     {
 
