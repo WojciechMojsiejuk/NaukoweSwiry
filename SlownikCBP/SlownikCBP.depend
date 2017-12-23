@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1513372550 source:c:\users\zmroc_000\desktop\slownikcbp\main.cpp
+	<iostream>
+	<stdio.h>
+	<string.h>
+
