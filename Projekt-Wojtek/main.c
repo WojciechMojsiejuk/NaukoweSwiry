@@ -13,24 +13,36 @@
 #include "polish_database.h"
 #include "english_database.h"
 #include "input_values_to_databases.h"
+#include "sort_elements.h"
+#include "print_databases.h"
 
 #define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
 
 int Input_Values_to_databases(ADRESS_TO_PL_DB, ADRESS_TO_ENG_DB);
-void Make_Values_Unique(ADRESS_TO_ENG_DB);
-void Print_Database(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db);
-ADRESS_TO_PL_DB Sort_Elements(ADRESS_TO_PL_DB polish_db); //sortowanie alfabetycznie
+void Make_ENG_Values_Unique(ADRESS_TO_ENG_DB);
+void Make_PL_Values_Unique(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
+void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db);
+void Print_Database_ENG(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db);
+void Show_Menu(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
+void Most_Meanings(ADRESS_TO_PL_DB polish_db);
+void Translate_Most(ADRESS_TO_ENG_DB english_db);
+ADRESS_TO_PL_DB Searched_Word_PL(ADRESS_TO_PL_DB);
+ADRESS_TO_ENG_DB Searched_Word_ENG(ADRESS_TO_ENG_DB);
+ADRESS_TO_PL_DB Matching_Key_PL(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
+ADRESS_TO_ENG_DB Matching_Key_ENG(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
+ADRESS_TO_PL_DB Sort_Elements_PL(ADRESS_TO_PL_DB polish_db);
+ADRESS_TO_ENG_DB Sort_Elements_ENG(ADRESS_TO_ENG_DB english_db);
+ADRESS_TO_PL_DB Delete_Element_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_PL_DB to_delete);
+ADRESS_TO_ENG_DB Delete_Element_ENG(ADRESS_TO_ENG_DB english_db, ADRESS_TO_ENG_DB to_delete);
+ADRESS_TO_ENG_DB Last_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search,ADRESS_TO_ENG_DB new);
+ADRESS_TO_ENG_DB First_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search);
+
 /* Additional functions to find previous and next element of lists*/
-ADRESS_TO_PL_DB Previous_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element );
-ADRESS_TO_PL_DB Next_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element);
-ADRESS_TO_ENG_DB Previous_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element);
-ADRESS_TO_ENG_DB Next_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element);
 
 int main(int argc, const char * argv[]) {
     //initialization of Polish and English database
     ADRESS_TO_PL_DB init_pl=(ADRESS_TO_PL_DB)malloc(sizeof(POLISH_DATABASE));
-    ADRESS_TO_PL_DB sort_pl=(ADRESS_TO_PL_DB)malloc(sizeof(POLISH_DATABASE));
     ADRESS_TO_ENG_DB init_eng=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
     int problems_with_loading_a_file=Input_Values_to_databases(init_pl,init_eng);
     if(problems_with_loading_a_file==1)
@@ -42,171 +54,322 @@ int main(int argc, const char * argv[]) {
     {
         printf("File was loaded successfully.\n\n");
     }
-    //Print_Database(init_pl,init_eng);
-    //Make_Values_Unique(init_eng);
-    printf("\n\nPO POSORTOWANIU\n\n");
-    sort_pl=Sort_Elements(init_pl);
-    Print_Database(sort_pl,init_eng);
+    Show_Menu(init_pl,init_eng);
+    //
+    //printf("\n\nPO POSORTOWANIU\n\n");
+    //sort_pl=Sort_Elements_PL(init_pl);
+    //Print_Database_PL(sort_pl,init_eng);
+    //sort_eng=Sort_Elements_ENG(init_eng);
+    //Print_Database_PL(sort_pl,sort_eng);
+    //printf("\n\nPO ZUNIFIKOWANIU\n\n");
+    //Make_ENG_Values_Unique(sort_eng);
+    //Make_PL_Values_Unique(sort_pl, sort_eng);
+    //printf("\n\nFINALE\n\n");
+    //Print_Database_PL(sort_pl,sort_eng);
     return 0;
 }
-void Print_Database(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
+
+
+void Make_ENG_Values_Unique(ADRESS_TO_ENG_DB english_db)
 {
+    ADRESS_TO_ENG_DB iterator=english_db;//general iterator
+    ADRESS_TO_ENG_DB unique; //used to find unique values
+    ADRESS_TO_ENG_DB temp1; //auxilary variable
+    while(iterator->nast!=NULL)
+    {
+        unique=iterator;
+        temp1=iterator->nast;
+        while(temp1)
+        {
+            if(strcmp(temp1->word,unique->word)==0)
+            {
+                temp1->primary_key=unique->primary_key;
+                unique->words_count=(unique->words_count)+(temp1->words_count);
+                temp1->words_count=0;
+                /*if there are two words which are the same, previous one gets whole words_count
+                 to make sure it won't double during the search for the biggest. Next one primary key is changed
+                 so it would make searching easier
+                 */
+            }
+            //printf("%s f_k: %d p_k: %d w_c: %d\n",temp1->word, temp1->foreign_key, temp1->primary_key, temp1->words_count);
+            temp1=temp1->nast;
+        }
+        iterator=iterator->nast;
+    }
+}
+void Make_PL_Values_Unique(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB english_db)
+{
+    ADRESS_TO_PL_DB iterator=polish_db;//general iterator
+    ADRESS_TO_PL_DB unique; //used to find unique values
+    ADRESS_TO_PL_DB temp1; //auxilary variable
+    ADRESS_TO_ENG_DB temp2;
+    ADRESS_TO_ENG_DB temp3;
+    ADRESS_TO_ENG_DB temp4;
+    ADRESS_TO_ENG_DB temp5;
+    ADRESS_TO_ENG_DB temp6;
+    ADRESS_TO_ENG_DB temp7;
+    while(iterator->nast!=NULL)
+    {
+        unique=iterator;
+        temp1=iterator->nast;
+        while(temp1)
+        {
+            if(strcmp(temp1->word,unique->word)==0)
+            {
+                temp3=First_Translation(english_db, temp1);
+                temp2=Last_Translation(english_db, unique,NULL);
+                temp4=Next_Element_ENG(english_db, temp2);
+                temp5=Previous_Element_ENG(english_db, temp3);
+                temp6=Last_Translation(english_db, temp1,temp2);
+                temp7=Next_Element_ENG(english_db, temp6);
+                temp2->nast=temp3;
+                if(temp4==temp3)
+                    {
+                        ;
+                    }
+                else
+                    {
+                        temp6->nast=temp4;
+                        temp5->nast=temp7;
+                    }
+                unique->words_count=(unique->words_count)+(temp1->words_count);
+                Delete_Element_PL(polish_db, temp1);
+                continue;
+                /*if there are two words which are the same, previous one gets whole words_count
+                 to make sure it won't double during the search for the biggest. Next one primary key is changed
+                 so it would make searching easier
+                 */
+            }
+            //printf("%s f_k: %d p_k: %d w_c: %d\n",temp1->word, temp1->foreign_key, temp1->primary_key, temp1->words_count);
+            temp1=temp1->nast;
+        }
+        iterator=iterator->nast;
+    }
+}
+ADRESS_TO_PL_DB Delete_Element_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_PL_DB to_delete)
+{
+    ADRESS_TO_PL_DB temp1=Previous_Element_PL(polish_db, to_delete);
+    ADRESS_TO_PL_DB temp2=Next_Element_PL(polish_db, to_delete);
+    if(temp1==NULL)
+    {
+        polish_db=temp2;
+    }
+    if(temp2==NULL)
+    {
+        temp1->nast=NULL;
+    }
+    if(temp1!=NULL&temp2!=NULL)
+    {
+        temp1->nast=temp2;
+    }
+    free(to_delete);
+    to_delete=NULL;
+    return polish_db;
+}
+ADRESS_TO_ENG_DB Delete_Element_ENG(ADRESS_TO_ENG_DB english_db, ADRESS_TO_ENG_DB to_delete)
+{
+    ADRESS_TO_ENG_DB temp1=Previous_Element_ENG(english_db, to_delete);
+    ADRESS_TO_ENG_DB temp2=Next_Element_ENG(english_db, to_delete);
+    if(temp1==NULL)
+    {
+        english_db=temp2;
+    }
+    if(temp2==NULL)
+    {
+        temp1->nast=NULL;
+    }
+    if(temp1!=NULL&temp2!=NULL)
+    {
+        temp1->nast=temp2;
+    }
+    free(to_delete);
+    to_delete=NULL;
+    return english_db;
+}
+ADRESS_TO_ENG_DB First_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search)
+{
+    while(english_db)
+    {
+        if(english_db->foreign_key==to_search->primary_key)
+            return english_db;
+        english_db=english_db->nast;
+    }
+    fprintf(stderr, "Element not found");
+    return NULL;
+}
+ADRESS_TO_ENG_DB Last_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search,ADRESS_TO_ENG_DB new)
+{
+    ADRESS_TO_ENG_DB last=NULL;
+    while(english_db)
+    {
+        if(english_db->foreign_key==to_search->primary_key)
+        {
+            last=english_db;
+            if(new!=NULL)
+                last->foreign_key=new->foreign_key;
+        }
+        english_db=english_db->nast;
+    }
+    if(last==NULL)
+    {
+        fprintf(stderr, "Element not found");
+        return NULL;
+    }
+    return last;
+}
+void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
+{
+    ADRESS_TO_PL_DB temp_pl=(ADRESS_TO_PL_DB)malloc(sizeof(POLISH_DATABASE));
+    ADRESS_TO_ENG_DB temp_eng=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
+    int choice;
+    do
+    {
+    printf("1.Print database polish order\n");
+    printf("2.Print database  english order\n");
+    printf("3.Sort database\n");
+    printf("4. Print polish words which has the most meanings\n");
+    printf("5. Print english words which translate the biggest number of polish words\n");
+    printf("6. Delete polish word\n");
+    printf("7. Delete english word\n");
+    printf("0.Exit\n");
+    printf("What do you want to do?\n");
+    scanf("%d",&choice);
+        switch (choice) {
+            case 1:
+                Make_PL_Values_Unique(polish_db, english_db);
+                 Print_Database_PL(polish_db, english_db);
+                break;
+            case 2:
+                Make_ENG_Values_Unique(english_db);
+                Print_Database_ENG(polish_db, english_db);
+                break;
+            case 3:
+                polish_db=Sort_Elements_PL(polish_db);
+                english_db=Sort_Elements_ENG(english_db);
+                Print_Database_PL(polish_db, english_db);
+                break;
+            case 4:
+                Make_PL_Values_Unique(polish_db, english_db);
+                Most_Meanings(polish_db);
+                break;
+            case 5:
+                Make_ENG_Values_Unique(english_db);
+                Translate_Most(english_db);
+                break;
+            case 6:
+                temp_pl=Searched_Word_PL(polish_db);
+                polish_db=Delete_Element_PL(polish_db, temp_pl);
+                Print_Database_PL(polish_db, english_db);
+                break;
+            case 7:
+                temp_eng=Searched_Word_ENG(english_db);
+                english_db=Delete_Element_ENG(english_db, temp_eng);
+                Print_Database_PL(polish_db, english_db);
+                break;
+            case 0:
+                break;
+            default:
+                printf("Invalid input\n");
+                break;
+        }
+    }while(choice);
+    
+}
+void Most_Meanings(ADRESS_TO_PL_DB polish_db)
+{
+    ADRESS_TO_PL_DB maximum_translations=polish_db;
+    ADRESS_TO_PL_DB temp1;
+    temp1=polish_db;
     printf("Save output as: ");
     //FILENAME_MAX stdio.h library macro
     char output_name[FILENAME_MAX];
     scanf("%s",output_name);
     FILE *output = fopen(output_name, "w");
+    while(temp1)
+    {
+        if(temp1->words_count>maximum_translations->words_count)
+            maximum_translations=temp1;
+        temp1=temp1->nast;
+    }
     while(polish_db)
     {
-        printf("%s p_k: %d w_c: %d\n",polish_db->word,polish_db->primary_key, polish_db->words_count);
-        fprintf(output,"%s:",polish_db->word);
-        ADRESS_TO_ENG_DB temp_to_iteration = english_db;
-        while(temp_to_iteration)
+        if(polish_db->words_count==maximum_translations->words_count)
         {
-            if(temp_to_iteration->foreign_key==polish_db->primary_key)
-            {
-                printf(">%s f_k: %d p_k: %d w_c: %d\n",temp_to_iteration->word,temp_to_iteration->foreign_key,temp_to_iteration->primary_key, temp_to_iteration->words_count);
-                if(temp_to_iteration->nast!=NULL)
-                {
-                    if((temp_to_iteration->nast->foreign_key)!=(polish_db->primary_key))
-                        fprintf(output,"%s\n",temp_to_iteration->word);
-                    else
-                        fprintf(output,"%s,",temp_to_iteration->word);
-                }
-                else
-                {
-                    fprintf(output,"%s;",temp_to_iteration->word);
-                }
-                
-            }
-            temp_to_iteration=temp_to_iteration->nast;
+            fprintf(output,"%s:", polish_db->word);
         }
         polish_db=polish_db->nast;
     }
     fclose(output);
+    output=NULL;
 }
-ADRESS_TO_PL_DB Sort_Elements(ADRESS_TO_PL_DB polish_db)
+void Translate_Most(ADRESS_TO_ENG_DB english_db)
 {
-    ADRESS_TO_PL_DB iterator=polish_db;//general iterator
-    ADRESS_TO_PL_DB sort; //used to swap pointers if changed
-    ADRESS_TO_PL_DB temp1; //auxilary variable
-    ADRESS_TO_PL_DB temp2; //auxilary variable
-    ADRESS_TO_PL_DB temp3; //auxilary variable
-    ADRESS_TO_PL_DB temp4; //auxilary variable
-    ADRESS_TO_PL_DB temp5; //auxilary variable
-    while(iterator->nast!=NULL)
-    {
-        sort=iterator;
-        temp2=iterator->nast;
-        while(temp2)
+        ADRESS_TO_ENG_DB maximum_meanings=english_db;
+        ADRESS_TO_ENG_DB temp1;
+        temp1=english_db;
+        printf("Save output as: ");
+        //FILENAME_MAX stdio.h library macro
+        char output_name[FILENAME_MAX];
+        scanf("%s",output_name);
+        FILE *output = fopen(output_name, "w");
+        while(temp1)
         {
-            if(strcmp(temp2->word,sort->word)<0) //change sort everytime there is word which should be at the begginig of alphabetic order
-                sort=temp2;
-            temp2=temp2->nast;
+            if(temp1->words_count>maximum_meanings->words_count)
+                maximum_meanings=temp1;
+            temp1=temp1->nast;
         }
-        if(sort!=iterator) //if sort is different than iterator it means there is need for changing an order of words
+        while(english_db)
         {
-            temp1=Previous_Element_PL(polish_db, iterator);
-            temp2=Previous_Element_PL(polish_db, sort);
-            temp3=Next_Element_PL(polish_db, iterator);
-            temp4=Next_Element_PL(polish_db, sort);
-            temp5=iterator;
-            if(iterator->nast==sort&&temp4!=NULL)
+            if(english_db->words_count==maximum_meanings->words_count)
             {
-                temp1->nast=sort;
-                sort->nast=temp5;
-                temp5->nast=temp4;
-                iterator=temp3;
-                continue;
+                fprintf(output,"%s:", english_db->word);
             }
-            if(iterator->nast==sort&&temp4==NULL)
-            {
-                temp1->nast=sort;
-                sort->nast=temp5;
-                temp5->nast=NULL;
-                iterator=temp3;
-                continue;
-            }
-            if(temp1==NULL&&temp4!=NULL)
-            {
-                polish_db=sort;
-                sort->nast=temp3;
-                temp2->nast=temp5;
-                temp5->nast=temp4;
-            }
-            if(temp1==NULL&&temp4==NULL)
-            {
-                polish_db=sort;
-                sort->nast=temp3;
-                temp2->nast=temp5;
-                temp5->nast=NULL;
-            }
-            if(temp1!=NULL&&temp4!=NULL)
-            {
-                temp1->nast=sort;
-                sort->nast=temp3;
-                temp2->nast=temp5;
-                temp5->nast=temp4;
-            }
-            if(temp1!=NULL&&temp4==NULL)
-            {
-                temp1->nast=sort;
-                sort->nast=temp3;
-                temp2->nast=temp5;
-                temp5->nast=NULL;
-            }
-            iterator=temp3;
-            continue;
+            english_db=english_db->nast;
         }
-        iterator=iterator->nast;
-    }
-    return polish_db;
+        fclose(output);
+        output=NULL;
 }
-void Make_Values_Unique(ADRESS_TO_ENG_DB english_db)
+ADRESS_TO_PL_DB Searched_Word_PL(ADRESS_TO_PL_DB polish_db)
 {
-    //zmiana wskaznika w liscie w zaleznosci od elementu. Elementy sprawdzic strcmp
-}
-ADRESS_TO_PL_DB Previous_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element)
-{
-    //rozpatrzyć przypadek gdy początek listy
-    
-    if(first_element==search_element)
-        return NULL;
-    while((first_element->nast)!=search_element)
+    printf("Insert searched word: ");
+    char word_name[FILENAME_MAX];
+    scanf("%s",word_name);
+    ADRESS_TO_PL_DB search = NULL;
+    while(polish_db)
     {
-        if(!first_element)
-            return NULL;
-        first_element=first_element->nast;
+        if(strcmp(polish_db->word, word_name)==0)
+        {
+            search=polish_db;
+        }
+        polish_db=polish_db->nast;
     }
-    return first_element;
+    if(search==NULL)
+        fprintf(stderr, "Couldn't find a word");
+    return search;
 }
-ADRESS_TO_ENG_DB Previous_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element)
+ADRESS_TO_ENG_DB Searched_Word_ENG(ADRESS_TO_ENG_DB english_db)
 {
-    while((first_element->nast)!=search_element)
+    printf("Insert searched word: ");
+    char word_name[FILENAME_MAX];
+    scanf("%s",word_name);
+    ADRESS_TO_ENG_DB search = NULL;
+    while(english_db)
     {
-        if(!first_element)
-            return NULL;
-        first_element=first_element->nast;
+        if(strcmp(english_db->word, word_name)==0)
+        {
+            search=english_db;
+        }
+        english_db=english_db->nast;
     }
-    return first_element;
+    if(search==NULL)
+        fprintf(stderr, "Couldn't find a word");
+    return search;
 }
-ADRESS_TO_PL_DB Next_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element)
-{
-    while(first_element!=search_element)
-    {
-        if(!first_element)
-            return NULL;
-        first_element=first_element->nast;
-    }
-    return first_element->nast;
-}
-ADRESS_TO_ENG_DB Next_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element)
-{
-    while(first_element!=search_element)
-    {
-        if(!first_element)
-            return NULL;
-        first_element=first_element->nast;
-    }
-    return first_element->nast;
-}
+//sortowanie angielskich done
+//unikatowosc angielskich done
+//unikatowosc polskich
+//ile slow max done
+//usuwanie elementów
+//menu done
+//sprawozdanie
+//testy
