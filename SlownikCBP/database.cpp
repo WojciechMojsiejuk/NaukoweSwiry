@@ -45,9 +45,12 @@ bool read_data(ADRESS &first)
                 //End of polish word
                 temp -> polish[strlen_polish]='\0';
 
-                strlen_english = 0;
+                //strlen_english = 0;
 
                 temp -> quantity++;
+                //End of english word
+                temp -> english[temp -> quantity-1][strlen_english]='\0';
+                strlen_english = 0;
             }
 
             if(pom[i]=='\n')
@@ -97,6 +100,7 @@ bool delete_data(ADRESS &first)
         delete first;
         first = temp;
     }
+    first = NULL;
     std::cout << first << '\n';
     return true;
 }
