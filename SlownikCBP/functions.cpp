@@ -74,7 +74,7 @@ bool choice_2(ADRESS first, char tab[][X])
             temp = temp2;
             if (tab[i][0] != '\0')
             {
-                fprintf(file, "%s ", tab[i]);
+                fprintf(file, "%s: ", tab[i]);
                 while (temp != NULL)
                 {
                     for (int k=0;k<temp -> quantity;k++)
@@ -89,6 +89,91 @@ bool choice_2(ADRESS first, char tab[][X])
                 fprintf(file, "\n");
             }
         }
+    std::cout << "Operacja zakonczona!\n\n";
+	return true;
+};
+
+bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
+{
+    FILE* file=open_file();
+    if (file == NULL)
+        return false;
+    if (first == NULL)
+        return false;
+    ADRESS temp = first;
+
+    //check if swap was made
+    bool change;
+
+    do
+    {
+        change = false;
+        for (temp = first; temp -> next !=NULL; temp = temp -> next)
+        {
+            if(strcmp(temp -> polish, temp -> next -> polish)>0)
+            {
+                //Set flag
+                change = true;
+                //std::cout << temp -> polish << ' ' << temp -> next -> polish << '\n';
+                char pom[X];
+                strcpy(pom, temp -> polish);
+                strcpy(temp -> polish, temp -> next -> polish);
+                strcpy(temp -> next -> polish, pom);
+                for (int i=0;i<T;i++)
+                {
+                    char pom2[X];
+                    strcpy(pom2, temp -> english[i]);
+                    strcpy(temp -> english[i], temp -> next -> english[i]);
+                    strcpy(temp -> next ->english[i], pom2);
+                }
+                int pom3 = temp -> quantity;
+                temp -> quantity = temp -> next -> quantity;
+                temp -> next -> quantity = pom3;
+            }
+        }
+    }while( change == true);
+
+    //Sort english tab and printf to file
+    temp = first;
+
+    while (temp != NULL)
+    {
+        qsort(temp -> english, temp -> quantity, X*sizeof(char), compare_strings);
+        fprintf(file, "%s: ", temp -> polish);
+        for(int i=0;i<temp -> quantity;i++)
+        {
+            if(temp -> english[i][0] != '\0')
+                fprintf(file,"%s ", temp -> english[i]);
+        }
+        fprintf(file, "\n");
+        temp = temp -> next;
+    }
+    return true;
+};
+
+bool choice_4(ADRESS first)
+{
+    //If there is any word with max occurrence
+    bool f1 = false;
+    FILE* file=open_file();
+    if (file == NULL)
+        return false;
+    if (first == NULL)
+        return false;
+    while(first != NULL)
+    {
+        //T - given
+        if( first -> quantity == T)
+        {
+            f1 = true;
+            fprintf(file, "%s\n", first -> polish);
+        }
+        first = first -> next;
+    }
+    if (f1 == false)
+    {
+        std::cout << "Nie ma slowa z maksymalna liczba znaczen\n";
+    }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
 };
@@ -153,7 +238,7 @@ bool choice_5(ADRESS first, char tab[][X], int* amount)
         temp = temp2;
         if (tab[i][0] != '\0' && amount[i] == maximum)
         {
-            fprintf(file, "%s ", tab[i]);
+            fprintf(file, "%s: ", tab[i]);
             while (temp != NULL)
             {
                 for (int k=0;k<temp -> quantity;k++)
@@ -167,125 +252,6 @@ bool choice_5(ADRESS first, char tab[][X], int* amount)
             }
             fprintf(file, "\n");
         }
-    }
-    std::cout << "Operacja zakonczona!\n\n";
-	return true;
-};
-
-bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
-{
-    FILE* file=open_file();
-    if (file == NULL)
-        return false;
-    if (first == NULL)
-        return false;
-    ADRESS temp = first;
-
-    //check if swap was made
-    bool change;
-
-    do
-    {
-        change = false;
-        for (temp = first; temp -> next !=NULL; temp = temp -> next)
-        {
-            if(strcmp(temp -> polish, temp -> next -> polish)>0)
-            {
-                //Set flag
-                change = true;
-                //std::cout << temp -> polish << ' ' << temp -> next -> polish << '\n';
-                char pom[X];
-                strcpy(pom, temp -> polish);
-                strcpy(temp -> polish, temp -> next -> polish);
-                strcpy(temp -> next -> polish, pom);
-                for (int i=0;i<T;i++)
-                {
-                    char pom2[X];
-                    strcpy(pom2, temp -> english[i]);
-                    strcpy(temp -> english[i], temp -> next -> english[i]);
-                    strcpy(temp -> next ->english[i], pom2);
-                }
-                int pom3 = temp -> quantity;
-                temp -> quantity = temp -> next -> quantity;
-                temp -> next -> quantity = pom3;
-            }
-        }
-    }while( change == true);
-
-//    while( temp != NULL && temp -> next != NULL)
-//    {
-//        if(strcmp(temp -> polish, temp -> next -> polish)>0)
-//        {
-//            std::cout << temp -> polish << ' ' << temp -> next -> polish << '\n';
-//            char pom[X];
-//            strcpy(pom, temp -> polish);
-//            strcpy(temp -> polish, temp -> next -> polish);
-//            strcpy(temp -> next -> polish, pom);
-//            for (int i=0;i<T;i++)
-//            {
-//                char pom2[X];
-//                strcpy(pom2, temp -> english[i]);
-//                strcpy(temp -> english[i], temp -> next -> english[i]);
-//                strcpy(temp -> next ->english[i], pom2);
-//            }
-//            int pom3 = temp -> quantity;
-//            temp -> quantity = temp -> next -> quantity;
-//            temp -> next -> quantity = pom3;
-////            //get previous temp element
-////            ADRESS prev = previous(first, temp);
-////            //element after temp -> next
-////            ADRESS next1 = next(first, temp -> next);
-////            //If first element
-////            if (prev == NULL)
-////            {
-////                //ADRESS pom = temp;
-////                first = temp -> next -> next;
-////                temp -> next = first;
-////            }
-////
-////            else
-////            {
-////                ADRESS temp3 = temp;
-////                prev = temp -> next;
-////                temp -> next = temp;
-////            }
-////        }
-//        temp = temp -> next;
-//    }
-
-    //Sort english tab and printf to file
-    temp = first;
-    qsort(temp -> english, T, X*sizeof(char), compare_strings);
-
-    while (temp != NULL)
-    {
-        fprintf(file, "%s: ", temp -> polish);
-        for(int i=0;i<temp -> quantity;i++)
-        {
-            if(temp -> english[i][0] != '\0')
-                fprintf(file,"%s ", temp -> english[i]);
-        }
-        fprintf(file, "\n");
-        temp = temp -> next;
-    }
-    return true;
-};
-
-bool choice_4(ADRESS first)
-{
-    FILE* file=open_file();
-    if (file == NULL)
-        return false;
-    if (first == NULL)
-        return false;
-    while(first != NULL)
-    {
-        //T - given
-        if( first -> quantity == T)
-        {
-            fprintf(file, "%s\n", first -> polish);
-        }
-        first = first -> next;
     }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
@@ -348,6 +314,9 @@ bool choice_6(ADRESS &first, char mystring[])
 
 bool choice_7(ADRESS first, char mystring[])
 {
+    //If any word was removed
+    bool removedGlobal = false;
+    //If actual word was removed
     bool removed = false;
     FILE* file=open_file();
     if (file == NULL)
@@ -356,14 +325,14 @@ bool choice_7(ADRESS first, char mystring[])
         return false;
     while(first != NULL)
     {
-        fprintf(file, "%s ", first -> polish);
+        fprintf(file, "%s: ", first -> polish);
         for (int i=0;i<first -> quantity;i++)
         {
             if ( strcmp(mystring, first -> english[i]) == 0)
             {
                 strcpy(first -> english[i], "\0");
+                removedGlobal = true;
                 removed = true;
-                first -> quantity--;
             }
             else
             {
@@ -373,13 +342,20 @@ bool choice_7(ADRESS first, char mystring[])
                 }
             }
         }
+        //If word was found and removed
+        if (removed == true)
+        {
+            first -> quantity--;
+            removed = false;
+        }
         first = first -> next;
         fprintf(file, "\n");
     }
-    if ( removed == false)
+
+    if ( removedGlobal == false)
     {
-        std::cout << "Nie znaleziono slowa w bazie danych\n\n"
-;    }
+        std::cout << "Nie znaleziono slowa w bazie danych\n\n";
+    }
     std::cout << "Operacja zakonczona!\n\n";
 	return true;
 };

@@ -4,7 +4,7 @@
 bool read_data(ADRESS &first)
 {
     //Max size of one line
-    char pom[(T+2)*X];
+    char pom[((T+1)*X)+T];
 
     //Auxiliary variable
     ADRESS temp2;
@@ -74,7 +74,7 @@ bool read_data(ADRESS &first)
         else
         {
             temp2 = first;
-            while(temp2 -> next)
+            while(temp2 -> next != NULL)
             {
                 temp2 = temp2 -> next;
             }
@@ -83,5 +83,20 @@ bool read_data(ADRESS &first)
         }
         ++lines;
 	}
+	//std::cout << first << '\n';
 	return true;
 };
+
+bool delete_data(ADRESS &first)
+{
+    if (first == NULL)
+        return false;
+    while( first != NULL)
+    {
+        ADRESS temp = first -> next;
+        delete first;
+        first = temp;
+    }
+    std::cout << first << '\n';
+    return true;
+}

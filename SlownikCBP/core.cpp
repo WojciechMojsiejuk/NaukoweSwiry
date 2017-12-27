@@ -93,14 +93,19 @@ int main_loop()
                     return 7;
                 }
 				break;
-            case 8:
+            /*case 8:
+                if (delete_data(first) == false)
+                {
+                    std::cout << "Nie mozna usunac bazy danych!\n\n";
+                    return -2;
+                }
                 if (read_data(first) == false)
                 {
                     std::cout << "Nie mozna wczytac bazy danych! Upewnij sie ze baza nie jest pusta.\n\n";
                     return -1;
                 }
                 std::cout << "Baza danych zostala ponownie wczytana\n\n";
-                break;
+                break;*/
 			default:
 				std::cout << "Niepoprawny wybor!\n\n";
 				break;
