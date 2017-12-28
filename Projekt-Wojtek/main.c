@@ -100,6 +100,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 Translate_Most(polish_db,english_db);
                 break;
             case 6:
+                Make_PL_Values_Unique(polish_db, english_db);
                 temp_pl=Searched_Word_PL(polish_db);
                 if(!temp_pl)
                 {
@@ -117,10 +118,17 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 
                 break;
             case 7:
-                printf("Insert searched word: ");
+                Make_ENG_Values_Unique(english_db);
+                printf("If element you want to delete has more than one word, seperate each of them with _\nInsert searched word: ");
                 char eng_word_name[FILENAME_MAX];
-                fgets(eng_word_name, FILENAME_MAX, stdin); /* TU JEST PROBLEM" */
-                printf("%s",eng_word_name);
+                int i=0;
+                scanf(" %s",eng_word_name);
+                while(eng_word_name[i]!='\0')
+                {
+                    if(eng_word_name[i]=='_')
+                        eng_word_name[i]=' ';
+                    i++;
+                }
                 temp_eng=Searched_Word_ENG(english_db,eng_word_name);
                 if(!temp_eng)
                 {
@@ -130,7 +138,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 int temp_counter=temp_eng->words_count;
                 for(counter=1;counter<=temp_counter;counter++)
                 {
-                    temp_eng=Searched_Word_ENG(temp_eng,eng_word_name);
+                    temp_eng=Searched_Word_ENG(english_db,eng_word_name);
                     temp_pl=Matching_Key_PL(polish_db, temp_eng);
                     temp_pl->words_count=temp_pl->words_count-1;
                     english_db=Delete_Element_ENG(english_db, temp_eng);
@@ -226,7 +234,7 @@ ADRESS_TO_PL_DB Searched_Word_PL(ADRESS_TO_PL_DB polish_db)
 {
     printf("Insert searched word: ");
     char word_name[FILENAME_MAX];
-    fgets(word_name, FILENAME_MAX, stdin);
+    scanf(" %s",word_name);
     ADRESS_TO_PL_DB search = NULL;
     while(polish_db)
     {
@@ -267,7 +275,3 @@ ADRESS_TO_PL_DB Matching_Key_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB engli
     fprintf(stderr,"Couldn't find a matching key");
     return NULL;
 }
-
-
-//sprawozdanie
-//testy
