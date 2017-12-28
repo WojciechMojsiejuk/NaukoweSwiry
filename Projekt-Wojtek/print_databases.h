@@ -14,7 +14,6 @@ void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
     printf("Save output as: ");
     //FILENAME_MAX stdio.h library macro
     char output_name[FILENAME_MAX];
-    fflush(stdin);
     scanf("%s",output_name);
     FILE *output = fopen(output_name, "w");
     ADRESS_TO_ENG_DB temp_to_iteration;

@@ -119,7 +119,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
             case 7:
                 printf("Insert searched word: ");
                 char eng_word_name[FILENAME_MAX];
-                fgets(eng_word_name, sizeof eng_word_name, stdin); /* TU JEST PROBLEM" */
+                fgets(eng_word_name, FILENAME_MAX, stdin); /* TU JEST PROBLEM" */
                 printf("%s",eng_word_name);
                 temp_eng=Searched_Word_ENG(english_db,eng_word_name);
                 if(!temp_eng)
