@@ -33,11 +33,13 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
         fprintf(stderr,"Database file should be placed in the same folder as this executable file,\nif it's not, when asked for filename please give a fullpath to the file.\n");
         return 1;
     }
-    int i=0,j=0,k=0,l=0;
+    int i=0,j=0,k=0,l=0,m=0;
     /*i is used in iteration for creating words
      j for primary key in polish_db and foreign key in english_db
      k is for primary key in english db
-     l is used in for loop to execute it P times*/
+     l is used in for loop to execute it P times
+     m is used for polish_db->words_count
+     */
     int c=0;
     for(l=0;l<P;l++)
     {
@@ -45,10 +47,6 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
         {
             if(i<MAX_WORD)
             {
-                #ifdef _WIN32
-                if(!isascii(c)) //in Win OS at the begining of a file are meta which need to be skipped
-                    continue;
-                #endif // _WIN32
                 if(c==':')
                 {
                     polish_db->word[i]='\0';
@@ -66,7 +64,7 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                     ;
                 break;
             }
-
+            
         }
         i=0;
         polish_db->primary_key=j;
@@ -75,16 +73,14 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
         {
             if(i<MAX_WORD)
             {
-                #ifdef _WIN32
-                if(!isascii(c)) //in Win OS to omit polish characters
-                    continue;
-                #endif // _WIN32
                 if(c==',') //do this when a word ends
                 {
                     english_db->word[i]='\0';
                     i=0;
                     english_db->foreign_key=j;
                     english_db->primary_key=k;
+                    english_db->words_count=1;
+                    m++;
                     k++;
                     english_db->nast=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
                     english_db=english_db->nast;
@@ -93,12 +89,14 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                 if(c=='\n') //do this when a line ends
                 {
                     english_db->word[i]='\0';
+                    m++;
                     i=0;
                     break;
                 }
                 if(c==';')//do this when a file ends
                 {
                     english_db->word[i]='\0';
+                    m++;
                     while ((c = fgetc(database))!=EOF)
                         ;
                     break;
@@ -112,21 +110,21 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                 i=0;
                 english_db->foreign_key=j;
                 english_db->primary_key=k;
+                english_db->words_count=1;
                 k++;
                 english_db->nast=(ADRESS_TO_ENG_DB)malloc(sizeof(ENGLISH_DATABASE));
                 english_db=english_db->nast;
                 char temp_word[MAX_WORD];
                 while ((c = fgetc(database)) != ',')
                 {
-                    #ifdef _WIN32
-                        if(!isascii(c)) //in Win OS to omit polish characters
-                        continue;
-                    #endif // _WIN32
+                    
                     if(c=='\n')
                     {
-
+                        
                         english_db->foreign_key=j;
                         english_db->primary_key=k;
+                        english_db->words_count=1;
+                        m++;
                         strcpy(english_db->word,temp_word);
                         break;
                     }
@@ -140,14 +138,17 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                 }
                 i=0;
             }
-
+            
         }
         english_db->foreign_key=j;
         english_db->primary_key=k;
+        english_db->words_count=1; //by default every english word has translate one polish word until values are made unique
+        polish_db->words_count=m;
+        m=0;
         k++;
         j++;
         english_db->nast=NULL; //for a safety of data by default pointer should point to NULL
-
+        
         if(c==EOF) //handling exception to not create new elements at the end of a file
         {
             break;

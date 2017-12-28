@@ -13,6 +13,7 @@ typedef struct polish_database
 {
     char word[MAX_WORD];
     int primary_key;
+    int words_count;
     struct polish_database *nast;
 }POLISH_DATABASE;
 typedef POLISH_DATABASE *ADRESS_TO_PL_DB;

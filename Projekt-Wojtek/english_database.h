@@ -14,6 +14,7 @@ typedef struct english_database
     char word[MAX_WORD];
     int primary_key;
     int foreign_key;
+    int words_count;
     struct english_database *nast;
 }ENGLISH_DATABASE;
 typedef ENGLISH_DATABASE *ADRESS_TO_ENG_DB;
