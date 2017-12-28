@@ -275,3 +275,7 @@ ADRESS_TO_PL_DB Matching_Key_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB engli
     fprintf(stderr,"Couldn't find a matching key");
     return NULL;
 }
+
+
+//sprawozdanie
+//testy
