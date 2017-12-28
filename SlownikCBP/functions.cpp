@@ -8,7 +8,10 @@ bool choice_1(ADRESS first)
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
     while(first != NULL)
     {
         fprintf(file, "%s: ", first -> polish );
@@ -22,6 +25,7 @@ bool choice_1(ADRESS first)
         first = first -> next;
     }
     std::cout << "Operacja zakonczona!\n\n";
+    fclose(file);
 	return true;
 };
 
@@ -31,7 +35,10 @@ bool choice_2(ADRESS first, char tab[][X])
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
 
     ADRESS temp = first, temp2 = first;
 
@@ -90,6 +97,7 @@ bool choice_2(ADRESS first, char tab[][X])
             }
         }
     std::cout << "Operacja zakonczona!\n\n";
+    fclose(file);
 	return true;
 };
 
@@ -99,7 +107,10 @@ bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
     ADRESS temp = first;
 
     //check if swap was made
@@ -148,6 +159,7 @@ bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
         fprintf(file, "\n");
         temp = temp -> next;
     }
+    fclose(file);
     return true;
 };
 
@@ -159,7 +171,10 @@ bool choice_4(ADRESS first)
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
     while(first != NULL)
     {
         //T - given
@@ -175,6 +190,7 @@ bool choice_4(ADRESS first)
         std::cout << "Nie ma slowa z maksymalna liczba znaczen\n";
     }
     std::cout << "Operacja zakonczona!\n\n";
+    fclose(file);
 	return true;
 };
 
@@ -184,7 +200,10 @@ bool choice_5(ADRESS first, char tab[][X], int* amount)
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
 
     ADRESS temp = first, temp2 = first;
 
@@ -254,6 +273,7 @@ bool choice_5(ADRESS first, char tab[][X], int* amount)
         }
     }
     std::cout << "Operacja zakonczona!\n\n";
+    fclose(file);
 	return true;
 };
 
@@ -265,7 +285,10 @@ bool choice_6(ADRESS &first, char mystring[])
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
     //if first element
     if( strcmp(mystring, first -> polish) == 0)
     {
@@ -306,9 +329,11 @@ bool choice_6(ADRESS &first, char mystring[])
     if (removed ==  false)
     {
         std::cout << "Nie znaleziono slowa w bazie danych\n\n";
+        fclose(file);
         return true;
     }
     std::cout << "Operacja zakonczona!\n\n";
+    fclose(file);
 	return true;
 };
 
@@ -322,7 +347,10 @@ bool choice_7(ADRESS first, char mystring[])
     if (file == NULL)
         return false;
     if (first == NULL)
+    {
+        fclose(file);
         return false;
+    }
     while(first != NULL)
     {
         fprintf(file, "%s: ", first -> polish);
@@ -357,5 +385,6 @@ bool choice_7(ADRESS first, char mystring[])
         std::cout << "Nie znaleziono slowa w bazie danych\n\n";
     }
     std::cout << "Operacja zakonczona!\n\n";
+    fclose(file);
 	return true;
 };
