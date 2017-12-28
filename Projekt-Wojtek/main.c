@@ -53,17 +53,6 @@ int main(int argc, const char * argv[]) {
         printf("File was loaded successfully.\n\n");
     }
     Show_Menu(init_pl,init_eng);
-    //
-    //printf("\n\nPO POSORTOWANIU\n\n");
-    //sort_pl=Sort_Elements_PL(init_pl);
-    //Print_Database_PL(sort_pl,init_eng);
-    //sort_eng=Sort_Elements_ENG(init_eng);
-    //Print_Database_PL(sort_pl,sort_eng);
-    //printf("\n\nPO ZUNIFIKOWANIU\n\n");
-    //Make_ENG_Values_Unique(sort_eng);
-    //Make_PL_Values_Unique(sort_pl, sort_eng);
-    //printf("\n\nFINALE\n\n");
-    //Print_Database_PL(sort_pl,sort_eng);
     return 0;
 }
 
@@ -129,8 +118,9 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 break;
             case 7:
                 printf("Insert searched word: ");
-                char eng_word_name[FILENAME_MAX]="szalom";
-                
+                char eng_word_name[FILENAME_MAX];
+                fgets(eng_word_name, sizeof eng_word_name, stdin); /* TU JEST PROBLEM" */
+                printf("%s",eng_word_name);
                 temp_eng=Searched_Word_ENG(english_db,eng_word_name);
                 if(!temp_eng)
                 {
