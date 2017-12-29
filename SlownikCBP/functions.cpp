@@ -354,7 +354,8 @@ bool choice_7(ADRESS first, char mystring[])
     while(first != NULL)
     {
         fprintf(file, "%s: ", first -> polish);
-        for (int i=0;i<first -> quantity;i++)
+        //Need to be i<T cause quantity change value
+        for (int i=0;i<T;i++)
         {
             if ( strcmp(mystring, first -> english[i]) == 0)
             {
