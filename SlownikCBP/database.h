@@ -1,10 +1,13 @@
 #ifndef DATABASE_H_INCLUDED
 #define DATABASE_H_INCLUDED
 
+//cin cout
 #include <iostream>
+//fprintf
 #include <stdio.h>
 //qsort
 #include <stdlib.h>
+//strcpy, atrcmp
 #include <string.h>
 
 //Max amount of english words attached to polish word
@@ -27,5 +30,7 @@ struct slowo_polskie
 typedef struct slowo_polskie* ADRESS;
 
 bool read_data(ADRESS &);
+
+bool delete_data(ADRESS &);
 
 #endif // DATABASE_H_INCLUDED

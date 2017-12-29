@@ -14,7 +14,7 @@ int main_loop()
 	//Read database and get ADRESS first
 	if(read_data(first) == false)
     {
-        std::cout << "Nie mozna wczytac bazy danych!\n\n";
+        std::cout << "Nie mozna wczytac bazy danych! Upewnij sie ze baza nie jest pusta.\n\n";
         return -1;
     }
 
@@ -48,16 +48,11 @@ int main_loop()
                 }
 				break;
 			case 2:
-			    if (choice_2(first, tab, amount) == false)
+			    if (choice_2(first, tab) == false)
                 {
                     std::cout<<"Blad\n";
                     return 2;
                 }
-                for (int i=0;i<A;i++)
-                {
-                    printf("%s ", tab[i]);
-                }
-                printf("\n");
 				break;
 			case 3:
 			    if (choice_3(first, compare_strings) == false)
@@ -74,7 +69,11 @@ int main_loop()
                 }
 				break;
 			case 5:
-			    std::cout<<"Blad\n";
+			    if (choice_5(first, tab, amount) == false)
+                {
+                    std::cout<<"Blad\n";
+                    return 5;
+                }
 				break;
 			case 6:
 			    char mystring[X];
@@ -94,6 +93,19 @@ int main_loop()
                     return 7;
                 }
 				break;
+            /*case 8:
+                if (delete_data(first) == false)
+                {
+                    std::cout << "Nie mozna usunac bazy danych!\n\n";
+                    return -2;
+                }
+                if (read_data(first) == false)
+                {
+                    std::cout << "Nie mozna wczytac bazy danych! Upewnij sie ze baza nie jest pusta.\n\n";
+                    return -1;
+                }
+                std::cout << "Baza danych zostala ponownie wczytana\n\n";
+                break;*/
 			default:
 				std::cout << "Niepoprawny wybor!\n\n";
 				break;

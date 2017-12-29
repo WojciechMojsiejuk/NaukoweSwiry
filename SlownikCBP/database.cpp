@@ -4,7 +4,7 @@
 bool read_data(ADRESS &first)
 {
     //Max size of one line
-    char pom[(T+2)*X];
+    char pom[((T+1)*X)+T];
 
     //Auxiliary variable
     ADRESS temp2;
@@ -12,7 +12,7 @@ bool read_data(ADRESS &first)
     //Amount of lines in database <not needed>
     int lines = 0;
 
-	const char* name = "./data/database.txt";
+	char name[] = "./data/database.txt";
 	FILE*file = fopen(name, "r");
 	if (!file)
 	{
@@ -30,7 +30,13 @@ bool read_data(ADRESS &first)
 
 	while ( fgets(pom, sizeof(pom), file)!= 0 )
 	{
-	    ADRESS temp = new slowo_polskie;
+	    ADRESS temp = new(std::nothrow) slowo_polskie;
+
+	    if (temp == NULL)
+        {
+            std::cout << "Could not allocate memory!\n";
+            return false;
+        }
 
         temp -> quantity = 0;
 	    strlen_line=strlen(pom);
@@ -42,12 +48,15 @@ bool read_data(ADRESS &first)
             if(pom[i]==' ')
             {
                 f1 = true;
-                //End of polish word!
+                //End of polish word
                 temp -> polish[strlen_polish]='\0';
 
-                strlen_english = 0;
+                //strlen_english = 0;
 
                 temp -> quantity++;
+                //End of english word
+                temp -> english[temp -> quantity-1][strlen_english]='\0';
+                strlen_english = 0;
             }
 
             if(pom[i]=='\n')
@@ -74,7 +83,7 @@ bool read_data(ADRESS &first)
         else
         {
             temp2 = first;
-            while(temp2 -> next)
+            while(temp2 -> next != NULL)
             {
                 temp2 = temp2 -> next;
             }
@@ -83,5 +92,21 @@ bool read_data(ADRESS &first)
         }
         ++lines;
 	}
+	//std::cout << first << '\n';
 	return true;
 };
+
+bool delete_data(ADRESS &first)
+{
+    if (first == NULL)
+        return false;
+    while( first != NULL)
+    {
+        ADRESS temp = first -> next;
+        delete first;
+        first = temp;
+    }
+    first = NULL;
+    std::cout << first << '\n';
+    return true;
+}

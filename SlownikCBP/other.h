@@ -2,7 +2,6 @@
 #define OTHER_H_INCLUDED
 
     void show_menu();
-    //void check_choice();
     FILE* open_file();
     char* read_string(char []);
     int compare_strings (const void*, const void*);
