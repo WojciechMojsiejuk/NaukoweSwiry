@@ -15,8 +15,8 @@ bool choice_1(ADRESS first)
     while(first != NULL)
     {
         fprintf(file, "%s: ", first -> polish );
-        // i < T ??
-        for (int i=0;i<first -> quantity;i++)
+        //Need to be i<T
+        for (int i=0;i<T;i++)
         {
             if(strcmp(first -> english[i],"\0")!=0)
                 fprintf(file, "%s ", first -> english[i]);
@@ -45,7 +45,8 @@ bool choice_2(ADRESS first, char tab[][X])
     //Get pom tab
     while(first != NULL)
     {
-        for (int i=0;i<first -> quantity;i++)
+        //i < T
+        for (int i=0;i<T;i++)
         {
             char eng[X];
             strcpy(eng, first -> english[i]);
@@ -84,7 +85,8 @@ bool choice_2(ADRESS first, char tab[][X])
                 fprintf(file, "%s: ", tab[i]);
                 while (temp != NULL)
                 {
-                    for (int k=0;k<temp -> quantity;k++)
+                    //k < T
+                    for (int k=0;k<T;k++)
                     {
                     if (temp -> english[k][0] != '\0' && strcmp(tab[i], temp -> english[k]) == 0)
                     {
@@ -151,7 +153,8 @@ bool choice_3(ADRESS &first, int (*compare_strings)(const void*, const void*))
     {
         qsort(temp -> english, temp -> quantity, X*sizeof(char), compare_strings);
         fprintf(file, "%s: ", temp -> polish);
-        for(int i=0;i<temp -> quantity;i++)
+        // i < T
+        for(int i=0;i < T;i++)
         {
             if(temp -> english[i][0] != '\0')
                 fprintf(file,"%s ", temp -> english[i]);
@@ -210,7 +213,8 @@ bool choice_5(ADRESS first, char tab[][X], int* amount)
     //Get pom tab
     while(first != NULL)
     {
-        for (int i=0;i<first -> quantity;i++)
+        //i < T
+        for (int i=0;i<T;i++)
         {
             char eng[X];
             strcpy(eng, first -> english[i]);
@@ -260,7 +264,8 @@ bool choice_5(ADRESS first, char tab[][X], int* amount)
             fprintf(file, "%s: ", tab[i]);
             while (temp != NULL)
             {
-                for (int k=0;k<temp -> quantity;k++)
+                //k < T
+                for (int k=0;k<T;k++)
                 {
                 if (temp -> english[k][0] != '\0' && strcmp(tab[i], temp -> english[k]) == 0)
                 {
@@ -308,7 +313,7 @@ bool choice_6(ADRESS &first, char mystring[])
         {
             temp3 = temp2 -> next;
         }
-        if (strcmp( temp3-> polish, mystring) == 0)
+        if (strcmp( temp3 -> polish, mystring) == 0)
         {
             temp2 -> next = temp3 -> next;
             delete temp3;
@@ -316,7 +321,8 @@ bool choice_6(ADRESS &first, char mystring[])
         }
 
         fprintf(file, "%s: ", temp2 -> polish );
-        for (int i=0;i<temp2 -> quantity;i++)
+        //i < T
+        for (int i=0;i < T;i++)
         {
             if (temp2 -> english[i][0] != '\0')
             {
