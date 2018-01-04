@@ -29,7 +29,6 @@ struct lista_przedmioty
     void usun_przedmiot();
     void edytuj_przedmiot();
     void wyswietl_przedmiot();
-    void wyswietl_liste(int id);
     lista_przedmioty();
 
 };
@@ -55,7 +54,7 @@ struct lista_wlasciciel
     void dodaj_wlasciciela();
     void usun_wlasciciela();
     void edytuj_wlasciciela();
-  int wyswietl_wlasciciela();
+  void wyswietl_wlasciciela(przedmioty **head);
     lista_wlasciciel();
 };
 lista_wlasciciel::lista_wlasciciel()
@@ -83,7 +82,7 @@ void lista_przedmioty::edytuj_przedmiot()
     cout<<"1.Nazwa."<<endl;
     cout<<"2.Stan."<<endl;
     cout<<"3.Status."<<endl;
-    cout<<"4.Kara w przypadku nie spłacenia dlugu."<<endl;
+    cout<<"4.Kara w przypadku nie sp³acenia dlugu."<<endl;
     cout<<"5.Data wystawienia."<<endl;
     cout<<"6.Nr ID wlasciciela."<<endl;
     cout<<"7.Nr ID przedmiotu."<<endl;
@@ -186,7 +185,7 @@ void lista_przedmioty::dodaj_przedmiot()
     nowy->nastepny = 0;
         }
 }
-void lista_przedmioty::wyswietl_przedmiot()//przetestowac
+void lista_przedmioty::wyswietl_przedmiot()
 {int wybor;
     string stat,data;
     float przedzial,przedzial_;
@@ -326,18 +325,7 @@ void lista_wlasciciel::dodaj_wlasciciela()
 
         }
 }
- void lista_przedmioty::wyswietl_liste(int id)
-{
-     przedmioty *tmp = pierwszy;
-    while(tmp)
-    {   if(tmp->id_klienta == id )
-    {
-        cout<<tmp->nazwa<<endl<<"Wartosc: "<<tmp->kwota<<endl<<"Stan: "<<tmp->stan<<endl<<"Status: "<<tmp->status<<endl<<"Data wystawienia: "<<tmp->data<<endl<<"ID wlasciciela: "<<tmp->id_klienta<<endl<<"ID Przedmiotu: "<<tmp->id_przedmiotu<< endl<<endl;
-    }
-        tmp = tmp->nastepny;
-    }
-}
- int lista_wlasciciel::wyswietl_wlasciciela()
+void lista_wlasciciel::wyswietl_wlasciciela(przedmioty **head) //SAVE
 {
     string kogo;
     cin>>kogo;
@@ -352,7 +340,15 @@ void lista_wlasciciel::dodaj_wlasciciela()
            }
        } if(licz==kogo.size())
        {
-           cout<<"ZNALEZIONO: "<<temp->nazwisko<<" "<<temp->imie<<" ID: "<<temp->id_klienta<<endl<<"Lista przedmiotow: "<<endl;  return temp->id_klienta;
+           cout<<"ZNALEZIONO: "<<temp->nazwisko<<" "<<temp->imie<<" ID: "<<temp->id_klienta<<endl<<"Lista przedmiotow: "<<endl;
+             przedmioty *tmp = *head;
+    while(tmp)
+    {   if(tmp->id_klienta == temp->id_klienta )
+    {
+        cout<<tmp->nazwa<<endl<<"Wartosc: "<<tmp->kwota<<endl<<"Stan: "<<tmp->stan<<endl<<"Status: "<<tmp->status<<endl<<"Data wystawienia: "<<tmp->data<<endl<<"ID wlasciciela: "<<tmp->id_klienta<<endl<<"ID Przedmiotu: "<<tmp->id_przedmiotu<< endl<<endl;
+    }
+        tmp = tmp->nastepny;
+    }
        }
         temp=temp->nastepny;
     }
@@ -515,7 +511,7 @@ int main()
             break;
         case 8:
             cout<<"Podaj nazwisko klienta lub jego poczatek"<<endl;
-            baza_przedmioty->wyswietl_liste(baza_wlasciciela->wyswietl_wlasciciela());
+            baza_wlasciciela->wyswietl_wlasciciela(&baza_przedmioty->pierwszy);
             system("pause");
             break;
         case 9:
