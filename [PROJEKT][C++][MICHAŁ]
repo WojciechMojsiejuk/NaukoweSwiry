@@ -13,6 +13,7 @@ struct przedmioty
     float kara;
     string data;
     int id_klienta;
+    int id_przedmiotu;
     przedmioty *nastepny;
     przedmioty();
 };
@@ -28,6 +29,7 @@ struct lista_przedmioty
     void usun_przedmiot();
     void edytuj_przedmiot();
     void wyswietl_przedmiot();
+    void wyswietl_liste(int id);
     lista_przedmioty();
 
 };
@@ -53,17 +55,95 @@ struct lista_wlasciciel
     void dodaj_wlasciciela();
     void usun_wlasciciela();
     void edytuj_wlasciciela();
-    void wyswietl_wlasciciela();
+  int wyswietl_wlasciciela();
     lista_wlasciciel();
 };
 lista_wlasciciel::lista_wlasciciel()
 {
     pierwszy=0;
 }
+void lista_przedmioty::edytuj_przedmiot()
+{
+  string nazwa_,stan_,status_,data_ ;
+  float kara_;
+  int id_,id_p;
+    int id,wybor;
+    cout<<"Podaj ID przedmiotu ktory chcesz edytowac: ";
+    cin>>id;
+    przedmioty *temp = pierwszy;
+    while(temp)
+    {   if(temp->id_przedmiotu == id )
+    {
+        break;
+    }
+        temp = temp->nastepny;
+    }
+    system("cls");
+    cout<<"Co chcesz edytowac ? "<<endl;
+    cout<<"1.Nazwa."<<endl;
+    cout<<"2.Stan."<<endl;
+    cout<<"3.Status."<<endl;
+    cout<<"4.Kara w przypadku nie spłacenia dlugu."<<endl;
+    cout<<"5.Data wystawienia."<<endl;
+    cout<<"6.Nr ID wlasciciela."<<endl;
+    cout<<"7.Nr ID przedmiotu."<<endl;
+    cin>>wybor;
+    switch (wybor)
+    {
+        case 1:
+            cout<<"Podaj nowa nazwe: ";
+            cin>>nazwa_;
+            temp->nazwa = nazwa_;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 2:
+            cout<<"Podaj nowy stan ";
+            cin>>stan_;
+            temp->stan= stan_;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 3:
+            cout<<"Podaj nowy status: ";
+            cin>>status_;
+            temp->status = status_;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 4:
+            cout<<"Podaj nowa kare: ";
+            cin>>kara_;
+            temp->kara = kara_;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 5:
+            cout<<"Podaj nowa date: ";
+            cin>>data_;
+            temp->data = data_;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 6:
+            cout<<"Podaj nowy nr ID wlasciciela: ";
+            cin>>id_;
+            temp->id_klienta = id_;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 7:
+            cout<<"Podaj nowe ID przedmiotu: ";
+            cin>>id_p;
+            temp->id_przedmiotu= id_p;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        default:
+            cout<<" NIE MA TAKIEJ OPCJI !"<<endl;
+            cout<<"  POWROT DO MENU...";
+            Sleep(3000);
+            break;
+    }
+
+}
 void lista_przedmioty::dodaj_przedmiot()
 { string stan, status, data, nazwa;
     float kara, kwota;
-    int id_klienta;
+    int id_klienta, id_przedmiotu;
 
     cout<<"PODAJ NAZWE PRZEDMIOTU: "<<endl;
     cin>>nazwa;
@@ -79,6 +159,8 @@ void lista_przedmioty::dodaj_przedmiot()
     cin>>data;
     cout<<"PODAJ NR. ID WLASCICIELA: "<<endl;
     cin>>id_klienta;
+    cout<<"PODAJ NR. ID PRZEDMIOTU: "<<endl;
+    cin>>id_przedmiotu;
     cout<<"DODANO: "<<nazwa<<endl;
     przedmioty *nowy=new przedmioty;
     nowy->nazwa = nazwa;
@@ -88,6 +170,7 @@ void lista_przedmioty::dodaj_przedmiot()
     nowy->kara = kara;
     nowy->data = data;
     nowy->id_klienta = id_klienta;
+    nowy->id_przedmiotu = id_przedmiotu;
     if(pierwszy==0)
     {
         pierwszy=nowy;
@@ -126,7 +209,7 @@ void lista_przedmioty::wyswietl_przedmiot()//przetestowac
     {
         if(temp->status == stat)
        {
-           cout<<"ZNALEZIONO: "<<temp->nazwa<<"\n O wartosci: "<<temp->kwota<<"\n Stanie: "<<temp->stan<<" \n Statusie: "<<temp->status<<"\n Dacie wystawienia: "<<temp->data<<"\n ID wlasciciela: "<<temp->id_klienta<< endl;
+           cout<<"ZNALEZIONO: "<<temp->nazwa<<" O wartosci: "<<temp->kwota<<"\n Stanie: "<<temp->stan<<" \n Statusie: "<<temp->status<<"\n Dacie wystawienia: "<<temp->data<<"\n ID wlasciciela: "<<temp->id_klienta<<"\n ID Przedmiotu: "<<temp->id_przedmiotu<< endl;
        }
         temp=temp->nastepny;
     }
@@ -170,6 +253,47 @@ void lista_przedmioty::wyswietl_przedmiot()//przetestowac
 
 
 }
+void lista_przedmioty::usun_przedmiot()
+{
+     int id,nr=1;
+    cout<<"Podaj ID przedmiotu ktory chcesz usunac: ";
+    cin>>id;
+    przedmioty *temp = pierwszy;
+    while(temp)
+    {   if(temp->id_przedmiotu == id )
+    {
+        break;
+    }
+        nr++;
+        temp = temp->nastepny;
+    }
+     if (nr==1)
+    {
+       przedmioty *temp = pierwszy;
+       if(temp==0) return;
+        pierwszy = temp->nastepny;
+    }
+    if (nr>=2)
+    {
+        int j = 1;
+        przedmioty *temp = pierwszy;
+         if(temp==0) return;
+
+        while (temp)
+        {
+
+            if ((j+1)==nr) break;
+            temp = temp->nastepny;
+            j++;
+        } cout<<"Usunieto."<<endl;
+        if (temp->nastepny->nastepny==0)
+            temp->nastepny = 0;
+
+        else
+            temp->nastepny = temp->nastepny->nastepny;
+
+    }
+}
 /***************************************************************/
 void lista_wlasciciel::dodaj_wlasciciela()
 {   int id;
@@ -202,8 +326,18 @@ void lista_wlasciciel::dodaj_wlasciciela()
 
         }
 }
-
-void lista_wlasciciel::wyswietl_wlasciciela()
+ void lista_przedmioty::wyswietl_liste(int id)
+{
+     przedmioty *tmp = pierwszy;
+    while(tmp)
+    {   if(tmp->id_klienta == id )
+    {
+        cout<<tmp->nazwa<<endl<<"Wartosc: "<<tmp->kwota<<endl<<"Stan: "<<tmp->stan<<endl<<"Status: "<<tmp->status<<endl<<"Data wystawienia: "<<tmp->data<<endl<<"ID wlasciciela: "<<tmp->id_klienta<<endl<<"ID Przedmiotu: "<<tmp->id_przedmiotu<< endl<<endl;
+    }
+        tmp = tmp->nastepny;
+    }
+}
+ int lista_wlasciciel::wyswietl_wlasciciela()
 {
     string kogo;
     cin>>kogo;
@@ -218,7 +352,7 @@ void lista_wlasciciel::wyswietl_wlasciciela()
            }
        } if(licz==kogo.size())
        {
-           cout<<"ZNALEZIONO: "<<temp->nazwisko<<" "<<temp->imie<<" ID: "<<temp->id_klienta<<endl;
+           cout<<"ZNALEZIONO: "<<temp->nazwisko<<" "<<temp->imie<<" ID: "<<temp->id_klienta<<endl<<"Lista przedmiotow: "<<endl;  return temp->id_klienta;
        }
         temp=temp->nastepny;
     }
@@ -267,7 +401,55 @@ void lista_wlasciciel::usun_wlasciciela()
     }
 }
 
+void lista_wlasciciel::edytuj_wlasciciela()
+{
+    string nowe;
+    int id_nowe;
+    int id,wybor;
+    cout<<"Podaj ID klienta ktorego chcesz edytowac: ";
+    cin>>id;
+    wlasciciel *temp = pierwszy;
+    while(temp)
+    {   if(temp->id_klienta == id )
+    {
+        break;
+    }
+        temp = temp->nastepny;
+    }
+    system("cls");
+    cout<<"Co chcesz edytowac ? "<<endl;
+    cout<<"1.Imie."<<endl;
+    cout<<"2.Nazwisko."<<endl;
+    cout<<"3.Numer ID."<<endl;
+    cin>>wybor;
+    switch (wybor)
+    {
+        case 1:
+            cout<<"Podaj nowe imie: ";
+            cin>>nowe;
+            temp->imie = nowe;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 2:
+            cout<<"Podaj nowe nazwisko: ";
+            cin>>nowe;
+            temp->nazwisko = nowe;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        case 3:
+            cout<<"Podaj nowe id: ";
+            cin>>id_nowe;
+            temp->id_klienta = id_nowe;
+            cout<<endl<<"Zmieniono"<<endl;
+            break;
+        default:
+            cout<<" NIE MA TAKIEJ OPCJI !"<<endl;
+            cout<<"  POWROT DO MENU...";
+            Sleep(3000);
+            break;
+    }
 
+}
 
 void Wyswietl_Menu()
 {
@@ -279,10 +461,10 @@ void Wyswietl_Menu()
     cout<<"  2.Edytuj przedmiot."<<endl;
     cout<<"  3.Usun przedmiot."<<endl;
     cout<<"  4.Wyswietl przedmiot"<<endl;
-    cout<<"  5.Dodaj klienta"<<endl;
-    cout<<"  6.Usun klienta"<<endl;
-    cout<<"  7.Edytuj dane o kliencie"<<endl;
-    cout<<"  8.Wyswietl dane o kliencie"<<endl;
+    cout<<"  5.Dodaj klienta."<<endl;
+    cout<<"  6.Usun klienta."<<endl;
+    cout<<"  7.Edytuj dane o kliencie."<<endl;
+    cout<<"  8.Wyswietl dane o kliencie."<<endl;
     cout<<"  9.Zakoncz program"<<endl<<endl;
 }
 int main()
@@ -307,11 +489,11 @@ int main()
             system("pause");
             break;
         case 2:
-            cout<<"Edytuje przedmiot"<<endl;
+            baza_przedmioty->edytuj_przedmiot();
             system("pause");
             break;
         case 3:
-            cout<<"Usuwam przedmiot"<<endl;
+            baza_przedmioty->usun_przedmiot();
             system("pause");
             break;
         case 4:
@@ -319,7 +501,6 @@ int main()
             system("pause");
             break;
         case 5:
-
             baza_wlasciciela->dodaj_wlasciciela();
             cout<<endl;
             system("pause");
@@ -329,12 +510,12 @@ int main()
             system("pause");
             break;
         case 7:
-            cout<<"edytuje dane o kliencie"<<endl;
+            baza_wlasciciela->edytuj_wlasciciela();
             system("pause");
             break;
         case 8:
             cout<<"Podaj nazwisko klienta lub jego poczatek"<<endl;
-            baza_wlasciciela->wyswietl_wlasciciela();
+            baza_przedmioty->wyswietl_liste(baza_wlasciciela->wyswietl_wlasciciela());
             system("pause");
             break;
         case 9:
