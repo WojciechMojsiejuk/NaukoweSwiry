@@ -1,13 +1,24 @@
+#include "projekt.h"
 void odczyt(ADRES *pierwszy,const char *nazwa)
 {
-    FILE*plik=fopen(nazwa,"r");
+    FILE*plik=fopen(nazwa,"r+");
     if(plik==NULL) printf("blad wczytania pliku");
-    int i;
+    int i,j,k;
     char znak;
-    znak=getc(plik);
+    while(getc(plik)!=EOF)
+    {
+     znak=getc(plik);
+    }
     for(i=0;znak!=':';i++)
     {
-        pl[i]=znak;
+        (*pierwszy)->pl[i]=znak;
+    }
+    for(j=0;znak!=EOF;j++)
+    {
+        for(k=0;znak!=",";k++)
+        {
+            (*pierwszy)->ang[j][k]=znak;
+        }
     }
 }
 void menu()
