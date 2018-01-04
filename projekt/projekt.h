@@ -1,5 +1,7 @@
 #ifndef PROJEKT_H_INCLUDED
 #define PROJEKT_H_INCLUDED
+#include <stdio.h>
+#include <stdlib.h>
 #define T 10
 #define X 50
 struct slowopl
