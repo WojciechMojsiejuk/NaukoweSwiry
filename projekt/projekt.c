@@ -1,25 +1,38 @@
 #include "projekt.h"
 void odczyt(ADRES *pierwszy,const char *nazwa)
 {
-    FILE*plik=fopen(nazwa,"r+");
-    if(plik==NULL) printf("blad wczytania pliku");
-    int i,j,k;
+    FILE *plik=fopen(nazwa,"r");
+    if(plik==NULL)
+    {
+      printf("blad wczytania pliku");
+      return;
+    }
+    char slowo[T+1];
+    ADRES tmp=NULL;
     char znak;
-    while(getc(plik)!=EOF)
+    while(!feof(plik))
     {
-     znak=getc(plik);
-    }
-    for(i=0;znak!=':';i++)
-    {
-        (*pierwszy)->pl[i]=znak;
-    }
-    for(j=0;znak!=EOF;j++)
-    {
-        for(k=0;znak!=",";k++)
+        fscanf(plik, "%s %c", &slowo, &znak);
+		printf("%s%c\n", slowo, znak);
+
+      /* if(znak==':')
         {
-            (*pierwszy)->ang[j][k]=znak;
+             tmp=(ADRES)malloc(sizeof(SlowoPL));
+             strcpy(tmp->pl,slowo);
         }
+        else
+        {
+            strcpy(tmp->ang,slowo);
+        }
+        if(tmp==NULL)
+        {
+            tmp->nast=*pierwszy;
+        }
+        else tmp->nast=*pierwszy;
+
+    tmp=*pierwszy;*/
     }
+    fclose(plik);
 }
 void menu()
 {
