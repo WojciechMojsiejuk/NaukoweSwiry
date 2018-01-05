@@ -58,10 +58,16 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
     printf("7. Delete english word\n");
     printf("0.Exit\n");
     printf("What do you want to do?\n");
+    #ifdef _WIN32
+    /*In Windows OS to handle char issue*/
+    fflush(stdin);
+	#endif
+
     scanf("%d",&choice);
         switch (choice) {
             case 1:
                 Make_PL_Values_Unique(polish_db, english_db);
+                Make_ENG_Values_Unique(polish_db,english_db);
                  Print_Database_PL(polish_db, english_db);
                 break;
             case 2:
@@ -97,7 +103,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 polish_db=Delete_Element_PL(polish_db, temp_pl);
                 counter=1;
                 Print_Database_PL(polish_db, english_db);
-                
+
                 break;
             case 7:
                 Make_ENG_Values_Unique(polish_db,english_db);
@@ -134,7 +140,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 break;
         }
     }while(choice);
-    
+
 }
 void Most_Meanings(ADRESS_TO_PL_DB polish_db)
 {
@@ -198,9 +204,9 @@ void Translate_Most(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
         if(english_db->words_count==maximum_meanings->words_count)
         {
             fprintf(output,"%s:", english_db->word);
+            temp1=english_db;
             for(counter=1;counter<=english_db->words_count;counter++)
             {
-                temp1=english_db;
                 temp2=polish_db;
                 if(counter!=1)
                 {
