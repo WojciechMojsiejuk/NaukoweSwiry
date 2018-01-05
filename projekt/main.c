@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "projekt.h"
+#include "project.h"
 
 int main()
 {
@@ -8,7 +8,7 @@ int main()
     char nazwa[50];
     printf("podaj nazwe pliku z rozszerzeniem .txt\n");
     gets(nazwa);
-    odczyt(pierwszy,nazwa);
+    odczyt(&pierwszy,nazwa);
     menu();
     return 0;
 }
