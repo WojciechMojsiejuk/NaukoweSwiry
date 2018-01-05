@@ -1,4 +1,5 @@
 #include "projekt.h"
+#include "projekt.h"
 void odczyt(ADRES *pierwszy,const char *nazwa)
 {
     FILE *plik=fopen(nazwa,"r");
@@ -8,29 +9,44 @@ void odczyt(ADRES *pierwszy,const char *nazwa)
       return;
     }
     char slowo[T+1];
-    ADRES tmp=NULL;
-    char znak;
+    ADRES tmp;
+    ADRES pom;
+    char znak,znak1;
     while(!feof(plik))
     {
-        fscanf(plik, "%s %c", &slowo, &znak);
-		printf("%s%c\n", slowo, znak);
 
-      /* if(znak==':')
+        fscanf(plik, "%s %c", &slowo, &znak);
+        if(znak=='.')
+            break;
+       if(znak==':')
         {
              tmp=(ADRES)malloc(sizeof(SlowoPL));
              strcpy(tmp->pl,slowo);
         }
-        else
+        if(znak==',')
         {
             strcpy(tmp->ang,slowo);
         }
-        if(tmp==NULL)
+        if(znak=='\n')
         {
-            tmp->nast=*pierwszy;
+            strcpy(tmp->ang,slowo);
+            
         }
-        else tmp->nast=*pierwszy;
+        if(pierwszy==NULL)
+        {
+            pierwszy=tmp;
+        }
+        else
+            {
+				pom=pierwszy;
+            while(pom->nast != NULL)
+            {
+                pom=pom->nast;
+            }
+            pom->nast=tmp;
+            tmp->nast=NULL;
+            }
 
-    tmp=*pierwszy;*/
     }
     fclose(plik);
 }
