@@ -28,7 +28,7 @@ void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
         return;
     }
     ADRESS_TO_ENG_DB temp_to_iteration;
-
+    
     while(polish_db)
     {
         printf("%s p_k: %d w_c: %d\n",polish_db->word,polish_db->primary_key, polish_db->words_count);
@@ -37,7 +37,7 @@ void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
         {
             fprintf(output, "\n");
             polish_db=polish_db->nast;
-
+            
         }
         temp_to_iteration = english_db;
         int counter = 1;
@@ -86,9 +86,9 @@ void Print_Database_ENG(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
     }
     ADRESS_TO_ENG_DB temp_to_unique;
     ADRESS_TO_PL_DB temp_to_unique2;
-    ADRESS_TO_PL_DB temp_to_unique3=polish_db;
+    ADRESS_TO_ENG_DB temp_to_unique3=english_db;
     int counter;
-
+    
     while(english_db)
     {
         if(english_db->words_count!=0)
@@ -99,8 +99,7 @@ void Print_Database_ENG(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
             temp_to_unique2=polish_db;
             if(counter>1)
             {
-                temp_to_unique=temp_to_unique->nast;
-                temp_to_unique2=temp_to_unique3->nast;
+                temp_to_unique=temp_to_unique3->nast;
                 while(temp_to_unique!=NULL)
                 {
                     if(temp_to_unique->primary_key==english_db->primary_key)
@@ -112,10 +111,9 @@ void Print_Database_ENG(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
             {
                 if(temp_to_unique2->primary_key==temp_to_unique->foreign_key)
                 {
-                    temp_to_unique3=temp_to_unique2;
+                    temp_to_unique3=temp_to_unique;
                     break;
                 }
-
                 temp_to_unique2=temp_to_unique2->nast;
             }
             if(english_db->nast==NULL)
