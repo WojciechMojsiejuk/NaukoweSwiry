@@ -8,6 +8,7 @@
 
 #ifndef sort_elements_h
 #define sort_elements_h
+#include "functions_prototype.h"
 ADRESS_TO_PL_DB Previous_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element );
 ADRESS_TO_PL_DB Next_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element);
 ADRESS_TO_ENG_DB Previous_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element);

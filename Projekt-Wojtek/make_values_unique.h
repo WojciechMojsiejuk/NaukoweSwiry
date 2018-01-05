@@ -8,10 +8,11 @@
 
 #ifndef make_values_unique_h
 #define make_values_unique_h
+#include "functions_prototype.h"
 ADRESS_TO_ENG_DB Last_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search,ADRESS_TO_ENG_DB new);
 ADRESS_TO_ENG_DB First_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search);
-
-void Make_ENG_Values_Unique(ADRESS_TO_ENG_DB english_db)
+/*Additional functions used to modify list*/
+void Make_ENG_Values_Unique(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
 {
     ADRESS_TO_ENG_DB iterator=english_db;//general iterator
     ADRESS_TO_ENG_DB unique; //used to find unique values
@@ -27,7 +28,10 @@ void Make_ENG_Values_Unique(ADRESS_TO_ENG_DB english_db)
                 //to handle exception
                 if(temp1->foreign_key==unique->foreign_key)
                 {
-                    
+                    ADRESS_TO_PL_DB temp2=Matching_Key_PL(polish_db, temp1);
+                    temp2->words_count=temp2->words_count-1;
+                    temp1=Delete_Element_ENG(english_db, temp1);
+                    break;
                 }
                 temp1->primary_key=unique->primary_key;
                 unique->words_count=(unique->words_count)+(temp1->words_count);
@@ -37,7 +41,6 @@ void Make_ENG_Values_Unique(ADRESS_TO_ENG_DB english_db)
                  so it would make searching easier
                  */
             }
-            //printf("%s f_k: %d p_k: %d w_c: %d\n",temp1->word, temp1->foreign_key, temp1->primary_key, temp1->words_count);
             temp1=temp1->nast;
         }
         iterator=iterator->nast;
@@ -47,13 +50,19 @@ void Make_PL_Values_Unique(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB english_d
 {
     ADRESS_TO_PL_DB iterator=polish_db;//general iterator
     ADRESS_TO_PL_DB unique; //used to find unique values
-    ADRESS_TO_PL_DB temp1; //auxilary variable
+    //auxilary variables
+    ADRESS_TO_PL_DB temp1;
     ADRESS_TO_ENG_DB temp2;
     ADRESS_TO_ENG_DB temp3;
     ADRESS_TO_ENG_DB temp4;
     ADRESS_TO_ENG_DB temp5;
     ADRESS_TO_ENG_DB temp6;
     ADRESS_TO_ENG_DB temp7;
+    if(!iterator)
+    {
+        fprintf(stderr,"Fatal error. Abort program.\n");
+        return;
+    }
     while(iterator->nast!=NULL)
     {
         unique=iterator;
@@ -99,7 +108,7 @@ ADRESS_TO_ENG_DB First_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB t
             return english_db;
         english_db=english_db->nast;
     }
-    fprintf(stderr, "Element not found");
+    fprintf(stderr, "Element not found\n");
     return NULL;
 }
 ADRESS_TO_ENG_DB Last_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to_search,ADRESS_TO_ENG_DB new)
@@ -117,10 +126,9 @@ ADRESS_TO_ENG_DB Last_Translation(ADRESS_TO_ENG_DB english_db,ADRESS_TO_PL_DB to
     }
     if(last==NULL)
     {
-        fprintf(stderr, "Element not found");
+        fprintf(stderr, "Element not found\n");
         return NULL;
     }
     return last;
 }
-
 #endif /* make_values_unique_h */

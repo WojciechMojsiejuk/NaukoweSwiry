@@ -8,15 +8,27 @@
 
 #ifndef print_databases_h
 #define print_databases_h
-
+#include "functions_prototype.h"
 void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
 {
+    if(polish_db==NULL||english_db==NULL||strcmp(polish_db->word,"")==0||strcmp(english_db->word,"")==0)
+    {
+        fprintf(stderr, "Database is empty\n");
+        return;
+    }
     printf("Save output as: ");
     //FILENAME_MAX stdio.h library macro
     char output_name[FILENAME_MAX];
     scanf("%s",output_name);
     FILE *output = fopen(output_name, "w");
+    if(!output)
+    {
+        perror(output_name);
+        fprintf(stderr,"Fatal error.Couldn't create a file\n");
+        return;
+    }
     ADRESS_TO_ENG_DB temp_to_iteration;
+    
     while(polish_db)
     {
         printf("%s p_k: %d w_c: %d\n",polish_db->word,polish_db->primary_key, polish_db->words_count);
@@ -56,14 +68,26 @@ void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
 }
 void Print_Database_ENG(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
 {
+    if(polish_db==NULL||english_db==NULL||strcmp(polish_db->word,"")==0||strcmp(english_db->word,"")==0)
+    {
+        fprintf(stderr, "Database is empty\n");
+        return;
+    }
     printf("Save output as: ");
     //FILENAME_MAX stdio.h library macro
     char output_name[FILENAME_MAX];
     scanf("%s",output_name);
     FILE *output = fopen(output_name, "w");
+    if(!output)
+    {
+        perror(output_name);
+        fprintf(stderr,"Couldn't create a file\n");
+        return;
+    }
     ADRESS_TO_ENG_DB temp_to_unique;
     ADRESS_TO_PL_DB temp_to_unique2;
     int counter;
+    
     while(english_db)
     {
         if(english_db->words_count!=0)

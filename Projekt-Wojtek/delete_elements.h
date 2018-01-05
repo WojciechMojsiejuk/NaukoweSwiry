@@ -8,6 +8,7 @@
 
 #ifndef delete_elements_h
 #define delete_elements_h
+#include "functions_prototype.h"
 ADRESS_TO_PL_DB Delete_Element_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_PL_DB to_delete)
 {
     ADRESS_TO_PL_DB temp1=Previous_Element_PL(polish_db, to_delete);

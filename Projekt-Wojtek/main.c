@@ -17,26 +17,12 @@
 #include "print_databases.h"
 #include "delete_elements.h"
 #include "make_values_unique.h"
+#include "functions_prototype.h"
 #define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
 
-int Input_Values_to_databases(ADRESS_TO_PL_DB, ADRESS_TO_ENG_DB);
-void Make_ENG_Values_Unique(ADRESS_TO_ENG_DB);
-void Make_PL_Values_Unique(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
-void Print_Database_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db);
-void Print_Database_ENG(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db);
-void Show_Menu(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
-void Most_Meanings(ADRESS_TO_PL_DB polish_db);
-void Translate_Most(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db);
-ADRESS_TO_PL_DB Searched_Word_PL(ADRESS_TO_PL_DB);
-ADRESS_TO_ENG_DB Searched_Word_ENG(ADRESS_TO_ENG_DB,char word_name[]);
-ADRESS_TO_PL_DB Matching_Key_PL(ADRESS_TO_PL_DB,ADRESS_TO_ENG_DB);
-ADRESS_TO_PL_DB Sort_Elements_PL(ADRESS_TO_PL_DB polish_db);
-ADRESS_TO_ENG_DB Sort_Elements_ENG(ADRESS_TO_ENG_DB english_db);
-ADRESS_TO_PL_DB Delete_Element_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_PL_DB to_delete);
-ADRESS_TO_ENG_DB Delete_Element_ENG(ADRESS_TO_ENG_DB english_db, ADRESS_TO_ENG_DB to_delete);
 
-/* Additional functions to find previous and next element of lists*/
+
 
 int main(int argc, const char * argv[]) {
     //initialization of Polish and English database
@@ -55,10 +41,6 @@ int main(int argc, const char * argv[]) {
     Show_Menu(init_pl,init_eng);
     return 0;
 }
-
-
-
-
 void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
 {
     ADRESS_TO_PL_DB temp_pl=polish_db;
@@ -83,7 +65,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                  Print_Database_PL(polish_db, english_db);
                 break;
             case 2:
-                Make_ENG_Values_Unique(english_db);
+                Make_ENG_Values_Unique(polish_db,english_db);
                 Print_Database_ENG(polish_db, english_db);
                 break;
             case 3:
@@ -96,7 +78,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 Most_Meanings(polish_db);
                 break;
             case 5:
-                Make_ENG_Values_Unique(english_db);
+                Make_ENG_Values_Unique(polish_db,english_db);
                 Translate_Most(polish_db,english_db);
                 break;
             case 6:
@@ -105,7 +87,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 if(!temp_pl)
                 {
                     fprintf(stderr, "Fatal error. Abort program.\n");
-                    return;
+                    break;
                 }
                 for(counter=1;counter<=temp_pl->words_count;counter++)
                 {
@@ -118,7 +100,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 
                 break;
             case 7:
-                Make_ENG_Values_Unique(english_db);
+                Make_ENG_Values_Unique(polish_db,english_db);
                 printf("If element you want to delete has more than one word, seperate each of them with _\nInsert searched word: ");
                 char eng_word_name[FILENAME_MAX];
                 int i=0;
@@ -133,7 +115,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 if(!temp_eng)
                 {
                     fprintf(stderr, "Fatal error. Abort program.\n");
-                    return;
+                    break;
                 }
                 int temp_counter=temp_eng->words_count;
                 for(counter=1;counter<=temp_counter;counter++)
@@ -164,6 +146,12 @@ void Most_Meanings(ADRESS_TO_PL_DB polish_db)
     char output_name[FILENAME_MAX];
     scanf("%s",output_name);
     FILE *output = fopen(output_name, "w");
+    if(!output)
+    {
+        perror(output_name);
+        fprintf(stderr,"Fatal error.Couldn't create a file\n");
+        return;
+    }
     while(temp1)
     {
         if(temp1->words_count>maximum_translations->words_count)
@@ -193,6 +181,12 @@ void Translate_Most(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
     scanf("%s",output_name);
     int counter;
     FILE *output = fopen(output_name, "w");
+    if(!output)
+    {
+        perror(output_name);
+        fprintf(stderr,"Fatal error.Couldn't create a file\n");
+        return;
+    }
     while(temp1)
     {
         if(temp1->words_count>maximum_meanings->words_count)
@@ -204,10 +198,10 @@ void Translate_Most(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
         if(english_db->words_count==maximum_meanings->words_count)
         {
             fprintf(output,"%s:", english_db->word);
-            temp1=english_db;
-            temp2=polish_db;
             for(counter=1;counter<=english_db->words_count;counter++)
             {
+                temp1=english_db;
+                temp2=polish_db;
                 if(counter!=1)
                 {
                     temp1=temp1->nast;
@@ -275,7 +269,3 @@ ADRESS_TO_PL_DB Matching_Key_PL(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB engli
     fprintf(stderr,"Couldn't find a matching key");
     return NULL;
 }
-
-
-//sprawozdanie
-//testy

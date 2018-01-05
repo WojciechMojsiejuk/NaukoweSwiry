@@ -10,6 +10,7 @@
 #define input_values_to_databases_h
 #define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
+#include "functions_prototype.h"
 int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB english_db)
 {
 #ifdef __Linux__
@@ -52,7 +53,7 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                     polish_db->word[i]='\0';
                     break;
                 }
-                polish_db->word[i]=c;
+                polish_db->word[i]=tolower(c);
                 i++;
             }
             else
@@ -101,7 +102,7 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                         ;
                     break;
                 }
-                english_db->word[i]=c;
+                english_db->word[i]=tolower(c);
                 i++;
             }
             else
@@ -133,7 +134,7 @@ int Input_Values_to_databases(ADRESS_TO_PL_DB polish_db, ADRESS_TO_ENG_DB englis
                         fprintf(stderr, "Fatal error, word too large at the end of a file. Can't handle this exception.\n");
                         return 1;
                     }
-                    temp_word[i]=c;
+                    temp_word[i]=tolower(c);
                     i++;
                 }
                 i=0;
