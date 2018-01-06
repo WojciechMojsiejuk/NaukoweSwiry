@@ -1,0 +1,2 @@
+placek : pancake , pan ,
+kosz : bin , trash , hue , ble .
