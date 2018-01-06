@@ -3,7 +3,7 @@
 //  Projekt
 //
 //  Created by Wojciech Mojsiejuk on 12.12.2017.
-//  Copyright © 2017 Wojciech Mojsiejuk. All rights reserved.
+//  Copyright Â© 2017 Wojciech Mojsiejuk. All rights reserved.
 //
 
 #include <stdio.h>
@@ -62,7 +62,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
         /*In Windows OS to handle char issue*/
         fflush(stdin);
 #endif
-        
+
         scanf("%d",&choice);
         switch (choice) {
             case 1:
@@ -75,6 +75,8 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 Print_Database_ENG(polish_db, english_db);
                 break;
             case 3:
+                Make_PL_Values_Unique(polish_db, english_db);
+                Make_ENG_Values_Unique(polish_db,english_db);
                 polish_db=Sort_Elements_PL(polish_db);
                 english_db=Sort_Elements_ENG(english_db);
                 Print_Database_PL(polish_db, english_db);
@@ -103,10 +105,9 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 polish_db=Delete_Element_PL(polish_db, temp_pl);
                 counter=1;
                 Print_Database_PL(polish_db, english_db);
-                
+
                 break;
             case 7:
-                Make_ENG_Values_Unique(polish_db,english_db);
                 printf("If element you want to delete has more than one word, seperate each of them with _\nInsert searched word: ");
                 char eng_word_name[FILENAME_MAX];
                 int i=0;
@@ -140,7 +141,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 break;
         }
     }while(choice);
-    
+
 }
 void Most_Meanings(ADRESS_TO_PL_DB polish_db)
 {
@@ -212,7 +213,7 @@ void Translate_Most(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 {
                     temp1=temp1->nast;
                     temp1=Searched_Word_ENG(temp1, english_db->word);
-                    
+
                 }
                 temp2=Matching_Key_PL(temp2, temp1);
                 if(counter==english_db->words_count)
