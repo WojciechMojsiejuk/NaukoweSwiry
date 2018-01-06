@@ -83,9 +83,9 @@ void menu()
     char nazwa1[50];
     char nazwa[50];
     ADRES pierwszy=odczyt(nazwa);
-    int wybor;
+    int wybor = -1;
     do{
-            printf("Menu:\n");
+            printf("\nMenu:\n");
             printf("1.wypisz wszystkie slowa polskie z przyporzadkowanymi angielskimi\n");
             printf("2.wypisz wszystkie angielskie oraz polskie do ktorych zostaly one przyporzadkowane \n");
             printf("3. posortuj slowa polskie a dla nich posortuj slowa angielskie\n");
@@ -99,8 +99,10 @@ void menu()
             {
             case 1:
                printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+               fflush(stdin);
                 gets(nazwa1);
-                wypisz(pierwszy,nazwa1);
+                fflush(stdin);
+                //wypisz(pierwszy,nazwa1);
                 break;
             case 2:
                 break;
