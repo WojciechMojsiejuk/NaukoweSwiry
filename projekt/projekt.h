@@ -7,13 +7,15 @@
 struct slowopl
 {
     char pl[X];
-    char ang[T][X];
-    struct slowopl *nast;
+    char ang[X][T];
+    int ilosc;
+    struct slowopl* nast;
 
 };
-typedef struct slowopl *ADRES;
+typedef struct slowopl* ADRES;
 typedef struct slowopl SlowoPL;
 void menu();
-void odczyt();
+ADRES odczyt();
+void wypisz();
 
 #endif // PROJEKT_H_INCLUDED
