@@ -1,6 +1,8 @@
 #include "projekt.h"
-void odczyt(ADRES *pierwszy,const char *nazwa)
+ADRES odczyt(const char *nazwa)
 {
+    ADRES poczatekListy = NULL;
+
     FILE *plik=fopen(nazwa,"r");
     if(plik==NULL)
     {
@@ -10,47 +12,77 @@ void odczyt(ADRES *pierwszy,const char *nazwa)
     char slowo[T+1];
     ADRES tmp;
     ADRES pom;
-    char znak,znak1;
+    char znak;
     while(!feof(plik))
     {
- 
-        fscanf(plik, "%s %c", &slowo, &znak);
+       fscanf(plik, "%s %c", slowo, &znak);
+       //printf("%s %c\n",slowo,znak);
         if(znak=='.')
+        {
+            strcpy(tmp->ang[tmp->ilosc],slowo);
+            printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
+            tmp->ilosc++;
             break;
-       if(znak==':')
-        {
-             tmp=(ADRES)malloc(sizeof(SlowoPL));
-             strcpy(tmp->pl,slowo);
         }
-        if(znak==',')
+        if(znak==':')
         {
-            strcpy(tmp->ang,slowo);
+            tmp=(ADRES)malloc(sizeof(SlowoPL));
+            tmp->ilosc=0;
+            strcpy(tmp->pl,slowo);
+            printf("slowo polskie: %s%c\n", tmp -> pl, znak);
         }
-        if(znak=='\n')
+        else
         {
-            strcpy(tmp->ang,slowo);
-           
+            strcpy(tmp->ang[tmp->ilosc],slowo);
+            printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
+            tmp->ilosc++;
         }
-        if((*pierwszy)==NULL)
+        if(poczatekListy==NULL)
         {
-            (*pierwszy)=tmp;
+            poczatekListy=tmp;
         }
 
         else
         {
-            pom=(*pierwszy);
-            while(pom -> nast != NULL)
-            {
-                pom=pom->nast;
-            }
+            pom=poczatekListy;
+
             pom->nast=tmp;
-            tmp->nast=NULL;
+
+            pom=pom->nast;
+
+            pom->nast=NULL;
         }
+    }
+    fclose(plik);
+
+    return poczatekListy;
+}
+void wypisz(ADRES poczatek,const char *nazwa)
+{
+    int i;
+    FILE *plik=fopen(nazwa,"w");
+    if(plik==NULL)
+    {
+      printf("blad otwarcia pliku");
+      return;
+    }
+    while(poczatek!=NULL)
+    {
+        fprintf(plik,"%s:",poczatek->pl);
+        for(i=0;i<(poczatek->ilosc);i++)
+        {
+            fprintf(plik,"%s,",poczatek->ang[i]);
+        }
+        poczatek=poczatek->nast;
+        fprintf(plik,"\n");
     }
     fclose(plik);
 }
 void menu()
 {
+    char nazwa1[50];
+    char nazwa[50];
+    ADRES pierwszy=odczyt(nazwa);
     int wybor;
     do{
             printf("Menu:\n");
@@ -66,6 +98,9 @@ void menu()
             switch (wybor)
             {
             case 1:
+               printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+                gets(nazwa1);
+                wypisz(pierwszy,nazwa1);
                 break;
             case 2:
                 break;
@@ -81,6 +116,9 @@ void menu()
                 break;
             case 8:
                 return;
+            default:
+                printf("wybierz numer 1-8!\n");
+                break;
             }
     } while (wybor!=8);
 }
