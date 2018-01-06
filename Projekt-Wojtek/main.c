@@ -49,26 +49,26 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
     int counter=1;
     do
     {
-    printf("1.Print database polish order\n");
-    printf("2.Print database  english order\n");
-    printf("3.Sort database\n");
-    printf("4. Print polish words which has the most meanings\n");
-    printf("5. Print english words which translate the biggest number of polish words\n");
-    printf("6. Delete polish word\n");
-    printf("7. Delete english word\n");
-    printf("0.Exit\n");
-    printf("What do you want to do?\n");
-    #ifdef _WIN32
-    /*In Windows OS to handle char issue*/
-    fflush(stdin);
-	#endif
-
-    scanf("%d",&choice);
+        printf("1.Print database polish order\n");
+        printf("2.Print database  english order\n");
+        printf("3.Sort database\n");
+        printf("4. Print polish words which has the most meanings\n");
+        printf("5. Print english words which translate the biggest number of polish words\n");
+        printf("6. Delete polish word\n");
+        printf("7. Delete english word\n");
+        printf("0.Exit\n");
+        printf("What do you want to do?\n");
+#ifdef _WIN32
+        /*In Windows OS to handle char issue*/
+        fflush(stdin);
+#endif
+        
+        scanf("%d",&choice);
         switch (choice) {
             case 1:
                 Make_PL_Values_Unique(polish_db, english_db);
                 Make_ENG_Values_Unique(polish_db,english_db);
-                 Print_Database_PL(polish_db, english_db);
+                Print_Database_PL(polish_db, english_db);
                 break;
             case 2:
                 Make_ENG_Values_Unique(polish_db,english_db);
@@ -103,7 +103,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 polish_db=Delete_Element_PL(polish_db, temp_pl);
                 counter=1;
                 Print_Database_PL(polish_db, english_db);
-
+                
                 break;
             case 7:
                 Make_ENG_Values_Unique(polish_db,english_db);
@@ -140,7 +140,7 @@ void Show_Menu(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 break;
         }
     }while(choice);
-
+    
 }
 void Most_Meanings(ADRESS_TO_PL_DB polish_db)
 {
@@ -212,7 +212,7 @@ void Translate_Most(ADRESS_TO_PL_DB polish_db,ADRESS_TO_ENG_DB english_db)
                 {
                     temp1=temp1->nast;
                     temp1=Searched_Word_ENG(temp1, english_db->word);
-
+                    
                 }
                 temp2=Matching_Key_PL(temp2, temp1);
                 if(counter==english_db->words_count)
