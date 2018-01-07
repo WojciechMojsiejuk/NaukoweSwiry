@@ -6,8 +6,8 @@ ADRES odczyt(const char *nazwa)
     FILE *plik=fopen(nazwa,"r");
     if(plik==NULL)
     {
-      printf("blad wczytania pliku");
-      return;
+        printf("blad wczytania pliku");
+        return NULL;
     }
     char slowo[T+1];
     ADRES tmp;
@@ -19,7 +19,7 @@ ADRES odczyt(const char *nazwa)
         if(znak=='.')
         {
             strcpy(tmp->ang[tmp->ilosc],slowo);
-            printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
+            //printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
             tmp->ilosc++;
             break;
         }
@@ -28,12 +28,12 @@ ADRES odczyt(const char *nazwa)
             tmp=(ADRES)malloc(sizeof(SlowoPL));
             tmp->ilosc=0;
             strcpy(tmp->pl,slowo);
-            printf("slowo polskie: %s%c\n", tmp -> pl, znak);
+           // printf("slowo polskie: %s%c\n", tmp -> pl, znak);
         }
         else
         {
             strcpy(tmp->ang[tmp->ilosc],slowo);
-            printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
+          //  printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
             tmp->ilosc++;
         }
         if(poczatekListy==NULL)
@@ -77,15 +77,58 @@ void wypisz(ADRES poczatek,const char *nazwa)
     }
     fclose(plik);
 }
+void maxznaczen(ADRES poczatek,const char *nazwa)
+{
+    int a=0;
+    FILE *plik=fopen(nazwa,"w");
+    if(plik==NULL)
+    {
+      printf("blad otwarcia pliku");
+      return NULL;
+    }
+    while(poczatek!=NULL)
+    {
+        if(poczatek->ilosc==T)
+            fprintf(plik,"%s,",poczatek->pl);
+        poczatek=poczatek->nast;
+    }
+}
+void kasuj_element(ADRES pierwszy, const char *nazwa, char *slowodousuniecia)
+{
+    ADRES tmp,pom,pom2;
+    if(strcmp(slowodousuniecia, pierwszy->pl)==0)
+    {
+        tmp = pierwszy;
+        pierwszy = pierwszy -> nast;
+        free(tmp);
+    }
+    pom=pierwszy;
+    while(pom)
+    {
+        if(pom->nast!=NULL)
+        {
+            pom2=pom->nast;
+        }
+        if(strcmp(pom->pl,slowodousuniecia)==0)
+        {
+            pom->nast=pom2->nast;
+            free(pom2);
+        }
+        wypisz(pierwszy,nazwa);
+    }
+    printf("nie znalezniono w bazie");
+}
 void menu()
 {
-    char nazwa1[50];
+    char nazwa1[X];
     int w;
-    char nazwa[50];
+    char nazwa[X];
+    char slowodousuniecia[X];
     printf("podaj nazwe pliku z rozszerzeniem .txt\n");
     gets(nazwa);
     fflush(stdin);
     ADRES pierwszy=odczyt(nazwa);
+    if (pierwszy == NULL) return;
     int wybor= -1;
     do{
             printf("Menu:\n");
@@ -97,7 +140,6 @@ void menu()
             printf("6. usun slowo polskie wraz z tlumaczeniami\n");
             printf("7.usun slowo angielskie ze wszystkich tlumaczen\n");
             printf("8.wyjdz z programu\n");
-            scanf("%d",&wybor);
             w = scanf("%d", &wybor);
             fflush(stdin);
             if(w==0)
@@ -119,10 +161,24 @@ void menu()
             case 3:
                 break;
             case 4:
+                 printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+                fflush(stdin);
+                gets(nazwa1);
+                fflush(stdin);
+                maxznaczen(pierwszy,nazwa1);
                 break;
             case 5:
                 break;
             case 6:
+                printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+                fflush(stdin);
+                gets(nazwa1);
+                fflush(stdin);
+                printf("podaj slowo ktore chcesz usunac\n");
+                fflush(stdin);
+                gets(slowodousuniecia);
+                fflush(stdin);
+                kasuj_element(pierwszy,nazwa1,slowodousuniecia);
                 break;
             case 7:
                 break;
