@@ -7,7 +7,7 @@ ADRES odczyt(const char *nazwa)
     if(plik==NULL)
     {
       printf("blad wczytania pliku");
-      return NULL;
+      return;
     }
     char slowo[T+1];
     ADRES tmp;
@@ -16,7 +16,6 @@ ADRES odczyt(const char *nazwa)
     while(!feof(plik))
     {
        fscanf(plik, "%s %c", slowo, &znak);
-       //printf("%s %c\n",slowo,znak);
         if(znak=='.')
         {
             strcpy(tmp->ang[tmp->ilosc],slowo);
@@ -64,7 +63,7 @@ void wypisz(ADRES poczatek,const char *nazwa)
     if(plik==NULL)
     {
       printf("blad otwarcia pliku");
-      return;
+      return NULL;
     }
     while(poczatek!=NULL)
     {
@@ -81,11 +80,15 @@ void wypisz(ADRES poczatek,const char *nazwa)
 void menu()
 {
     char nazwa1[50];
+    int w;
     char nazwa[50];
+    printf("podaj nazwe pliku z rozszerzeniem .txt\n");
+    gets(nazwa);
+    fflush(stdin);
     ADRES pierwszy=odczyt(nazwa);
-    int wybor = -1;
+    int wybor= -1;
     do{
-            printf("\nMenu:\n");
+            printf("Menu:\n");
             printf("1.wypisz wszystkie slowa polskie z przyporzadkowanymi angielskimi\n");
             printf("2.wypisz wszystkie angielskie oraz polskie do ktorych zostaly one przyporzadkowane \n");
             printf("3. posortuj slowa polskie a dla nich posortuj slowa angielskie\n");
@@ -95,11 +98,18 @@ void menu()
             printf("7.usun slowo angielskie ze wszystkich tlumaczen\n");
             printf("8.wyjdz z programu\n");
             scanf("%d",&wybor);
+            w = scanf("%d", &wybor);
+            fflush(stdin);
+            if(w==0)
+            {
+                printf("podaj liczbe 1-8!\n");
+                continue;
+            }
             switch (wybor)
             {
             case 1:
-               printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
-               fflush(stdin);
+                printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+                fflush(stdin);
                 gets(nazwa1);
                 fflush(stdin);
                 wypisz(pierwszy,nazwa1);
