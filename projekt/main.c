@@ -13,6 +13,7 @@ void test(ADRES lista)
         int i=0;
         for(i=0;i<lista->ilosc;i++)
         {
+
             printf("slowo angielskie: %s\n", lista -> ang[i]);
         }
 
@@ -21,8 +22,11 @@ void test(ADRES lista)
 }
 int main()
 {
-    char nazwa[50];
-   // test(pierwszy);
+    char nazwa[X];
+    printf("podaj nazwe pliku z rozszerzeniem .txt\n");
+    gets(nazwa);
+   ADRES pierwszy=odczyt(nazwa);
+    test(pierwszy);
     menu();
     //ADRES pierwszy=odczyt(nazwa);
     return 0;
