@@ -28,13 +28,17 @@ ADRES odczyt(const char *nazwa)
             tmp=(ADRES)malloc(sizeof(SlowoPL));
             tmp->ilosc=0;
             strcpy(tmp->pl,slowo);
-           // printf("slowo polskie: %s%c\n", tmp -> pl, znak);
+            puts(slowo);
+            //printf("slowo polskie: %s%c\n", tmp -> pl, znak);
+            puts(tmp->pl);
         }
         else
         {
             strcpy(tmp->ang[tmp->ilosc],slowo);
-          //  printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
+
+           // printf("slowo angielskie: %s%c\n", tmp -> ang[tmp->ilosc], znak);
             tmp->ilosc++;
+
         }
         if(poczatekListy==NULL)
         {
@@ -68,7 +72,8 @@ void wypisz(ADRES poczatek,const char *nazwa)
     while(poczatek!=NULL)
     {
         fprintf(plik,"%s:",poczatek->pl);
-        for(i=0;i<(poczatek->ilosc);i++)
+         puts(poczatek->pl);
+        for(i=0;i<T;i++)
         {
             fprintf(plik,"%s,",poczatek->ang[i]);
         }
@@ -79,8 +84,8 @@ void wypisz(ADRES poczatek,const char *nazwa)
 }
 void maxznaczen(ADRES poczatek,const char *nazwa)
 {
-    int a=0;
-    FILE *plik=fopen(nazwa,"w");
+    FILE *plik;
+    plik = fopen(nazwa,"w");
     if(plik==NULL)
     {
       printf("blad otwarcia pliku");
@@ -89,35 +94,43 @@ void maxznaczen(ADRES poczatek,const char *nazwa)
     while(poczatek!=NULL)
     {
         if(poczatek->ilosc==T)
-            fprintf(plik,"%s,",poczatek->pl);
+        {
+            puts(poczatek->pl);
+            fputs(poczatek->pl,plik);
+        }
+          //  fprintf(plik,"%s ,",poczatek->pl);
         poczatek=poczatek->nast;
     }
+    fclose(plik);
 }
-void kasuj_element(ADRES pierwszy, const char *nazwa, char *slowodousuniecia)
+void kasuj_element(ADRES *pierwszy, const char *nazwa, char *slowodousuniecia)
 {
     ADRES tmp,pom,pom2;
-    if(strcmp(slowodousuniecia, pierwszy->pl)==0)
+    if(strcmp(slowodousuniecia, (*pierwszy)->pl)== 0)
     {
-        tmp = pierwszy;
-        pierwszy = pierwszy -> nast;
+        tmp = *pierwszy;
+        *pierwszy = (*pierwszy) -> nast;
         free(tmp);
     }
-    pom=pierwszy;
+    pom=*pierwszy;
     while(pom)
     {
         if(pom->nast!=NULL)
         {
             pom2=pom->nast;
         }
-        if(strcmp(pom->pl,slowodousuniecia)==0)
+        if(strcmp(pom2->pl,slowodousuniecia)==0)
         {
             pom->nast=pom2->nast;
             free(pom2);
+
         }
-        wypisz(pierwszy,nazwa);
+        wypisz(*pierwszy,nazwa);
+        break;
     }
     printf("nie znalezniono w bazie");
 }
+
 void menu()
 {
     char nazwa1[X];
@@ -178,7 +191,7 @@ void menu()
                 fflush(stdin);
                 gets(slowodousuniecia);
                 fflush(stdin);
-                kasuj_element(pierwszy,nazwa1,slowodousuniecia);
+                kasuj_element(&pierwszy,nazwa1,slowodousuniecia);
                 break;
             case 7:
                 break;
