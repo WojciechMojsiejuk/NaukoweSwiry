@@ -7,7 +7,7 @@ ADRES odczyt(const char *nazwa)
     if(plik==NULL)
     {
       printf("blad wczytania pliku");
-      return;
+      return NULL;
     }
     char slowo[T+1];
     ADRES tmp;
@@ -102,7 +102,7 @@ void menu()
                fflush(stdin);
                 gets(nazwa1);
                 fflush(stdin);
-                //wypisz(pierwszy,nazwa1);
+                wypisz(pierwszy,nazwa1);
                 break;
             case 2:
                 break;
