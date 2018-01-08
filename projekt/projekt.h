@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<string.h>
+#include<stdbool.h>
 #define T 10
 #define X 50
 struct slowopl
@@ -21,4 +22,8 @@ void wypisz();
 void maxznaczen();
 void kasuj_element();
 void usuwanieang();
+void sortowanie();
+int comparestrings();
+void zamiana();
+
 #endif // PROJEKT_H_INCLUDED
