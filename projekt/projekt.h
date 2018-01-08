@@ -20,5 +20,5 @@ ADRES odczyt();
 void wypisz();
 void maxznaczen();
 void kasuj_element();
-
+void usuwanieang();
 #endif // PROJEKT_H_INCLUDED
