@@ -23,11 +23,10 @@ void test(ADRES lista)
 int main()
 {
     char nazwa[X];
-    printf("podaj nazwe pliku z rozszerzeniem .txt\n");
+  /*printf("podaj nazwe pliku z rozszerzeniem .txt\n");
     gets(nazwa);
    ADRES pierwszy=odczyt(nazwa);
-    test(pierwszy);
+    test(pierwszy);*/
     menu();
-    //ADRES pierwszy=odczyt(nazwa);
     return 0;
 }
