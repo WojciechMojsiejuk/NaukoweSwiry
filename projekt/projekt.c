@@ -73,8 +73,9 @@ void wypisz(ADRES poczatek,const char *nazwa)
     {
         fprintf(plik,"%s:",poczatek->pl);
          puts(poczatek->pl);
-        for(i=0;i<T;i++)
+        for(i=0;i<poczatek->ilosc;i++)
         {
+            puts(poczatek->ang[i]);
             fprintf(plik,"%s,",poczatek->ang[i]);
         }
         poczatek=poczatek->nast;
@@ -123,20 +124,39 @@ void kasuj_element(ADRES *pierwszy, const char *nazwa, char *slowodousuniecia)
         {
             pom->nast=pom2->nast;
             free(pom2);
-
         }
         wypisz(*pierwszy,nazwa);
         break;
     }
     printf("nie znalezniono w bazie");
 }
-
+void usuwanieang(ADRES pierwszy,const char *nazwa, char *slowoang)
+{
+    int i;
+    bool a=false;
+    while(pierwszy!=NULL)
+    {
+        for(i=0;i<T;i++)
+        {
+            if(strcmp(pierwszy->ang[i],slowoang)==0)
+            {
+              /*  strcpy(pierwszy->ang[i], "\0");
+                a=true;
+                pierwszy->ilosc--;*/
+            }
+        }
+        pierwszy=pierwszy->nast;
+        wypisz(pierwszy,nazwa);
+        break;
+    }
+    if(!a) printf("nie znalezniono takiego tlumaczenia\n");
+}
 void menu()
 {
     char nazwa1[X];
     int w;
     char nazwa[X];
-    char slowodousuniecia[X];
+    char slowodousuniecia[X],usang[X];
     printf("podaj nazwe pliku z rozszerzeniem .txt\n");
     gets(nazwa);
     fflush(stdin);
@@ -187,13 +207,22 @@ void menu()
                 fflush(stdin);
                 gets(nazwa1);
                 fflush(stdin);
-                printf("podaj slowo ktore chcesz usunac\n");
+                printf("podaj slowo polskie ktore chcesz usunac (wraz z tlumaczeniami)\n");
                 fflush(stdin);
                 gets(slowodousuniecia);
                 fflush(stdin);
                 kasuj_element(&pierwszy,nazwa1,slowodousuniecia);
                 break;
             case 7:
+                 printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+                fflush(stdin);
+                gets(nazwa1);
+                fflush(stdin);
+                printf("podaj slowo angielskie ktore chcesz usunac\n");
+                fflush(stdin);
+                gets(usang);
+                fflush(stdin);
+                usuwanieang(pierwszy,nazwa1,usang);
                 break;
             case 8:
                 return;
