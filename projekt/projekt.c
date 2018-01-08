@@ -62,7 +62,7 @@ ADRES odczyt(const char *nazwa)
 }
 void wypisz(ADRES poczatek,const char *nazwa)
 {
-    int i;
+    int i,j;
     FILE *plik=fopen(nazwa,"w");
     if(plik==NULL)
     {
@@ -71,12 +71,23 @@ void wypisz(ADRES poczatek,const char *nazwa)
     }
     while(poczatek!=NULL)
     {
-        fprintf(plik,"%s:",poczatek->pl);
-         puts(poczatek->pl);
+        fprintf(plik, "%s :",poczatek->pl);
+        // puts(poczatek->pl);
+        if(poczatek->nast==NULL)
+            {
+                for(j=0;j<poczatek->ilosc;j++)
+                {
+                if(j+1==poczatek->ilosc)
+                {
+                    fprintf(plik, " %s .",poczatek->ang[j]);
+                }
+                else fprintf(plik, " %s ,",poczatek->ang[j]);
+                }
+                break;
+            }
         for(i=0;i<poczatek->ilosc;i++)
         {
-            puts(poczatek->ang[i]);
-            fprintf(plik,"%s,",poczatek->ang[i]);
+            fprintf(plik, " %s ,",poczatek->ang[i]);
         }
         poczatek=poczatek->nast;
         fprintf(plik,"\n");
@@ -134,22 +145,79 @@ void usuwanieang(ADRES pierwszy,const char *nazwa, char *slowoang)
 {
     int i;
     bool a=false;
-    while(pierwszy!=NULL)
+    ADRES pom=pierwszy;
+    while(pom!=NULL)
     {
         for(i=0;i<T;i++)
         {
-            if(strcmp(pierwszy->ang[i],slowoang)==0)
+            if(strcmp(pom->ang[i],slowoang)==0)
             {
-              /*  strcpy(pierwszy->ang[i], "\0");
+                strcpy(pom->ang[i], "\0");
                 a=true;
-                pierwszy->ilosc--;*/
+                pom->ilosc--;
             }
         }
-        pierwszy=pierwszy->nast;
-        wypisz(pierwszy,nazwa);
-        break;
+        pom=pom->nast;
     }
+    wypisz(pierwszy,nazwa);
     if(!a) printf("nie znalezniono takiego tlumaczenia\n");
+}
+void sortowanie(ADRES *pierwszy, const char *nazwa)
+{
+    ADRES pom1,pom2;
+    int i,j,k;
+    int zmiana=0;
+    for(pom1=*pierwszy;pom1->nast!=NULL;pom1=pom1->nast)
+    {
+        for(pom2=pom1->nast;pom2!=NULL;pom2=pom2->nast)
+        {
+            if(comparestrings(pom1->pl,pom2->pl)>0)
+            {
+                char tmp[X];
+                zmiana=1;
+                strcpy(tmp, pom2 -> pl);
+                strcpy(pom2 -> pl,pom1 -> pl);
+                strcpy(pom1->pl, tmp);
+            }
+            for(i=0;i<T;i++)
+            {
+                for(j=i+1;j<=T;j++)
+                {
+                    if(comparestrings(pom2->ang[i],pom2->ang[j])>0)
+                    {
+                        char tmp[X];
+                        strcpy(tmp, pom2 -> ang[i]);
+                        strcpy(pom2 -> ang[i],pom2 -> ang[j]);
+                        strcpy(pom2->ang[j], tmp);
+                    }
+                }
+
+            }
+            if(zmiana==1)
+            {
+                int tmp2;
+                char tmp1[X];
+                tmp2=pom2->ilosc;
+                pom2->ilosc=pom1->ilosc;
+                pom1->ilosc=tmp2;
+                for(k=0;k<T;k++)
+                {
+                strcpy(tmp2, pom2 -> ang[k]);
+                strcpy(pom2 -> ang[k],pom2 -> ang[k]);
+                strcpy(pom2->ang[k], tmp2);
+                }
+
+            }
+        }
+        zmiana=0;
+    }
+    wypisz(*pierwszy,nazwa);
+}
+int comparestrings(const void *w1,const void *w2)
+{
+    const char *a=(char*)w1;
+    const char *b=(char*)w2;
+    return strcmp(a,b);
 }
 void menu()
 {
@@ -164,6 +232,7 @@ void menu()
     if (pierwszy == NULL) return;
     int wybor= -1;
     do{
+            ADRES pierwszy=odczyt(nazwa);
             printf("Menu:\n");
             printf("1.wypisz wszystkie slowa polskie z przyporzadkowanymi angielskimi\n");
             printf("2.wypisz wszystkie angielskie oraz polskie do ktorych zostaly one przyporzadkowane \n");
@@ -192,6 +261,11 @@ void menu()
             case 2:
                 break;
             case 3:
+                printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
+                fflush(stdin);
+                gets(nazwa1);
+                fflush(stdin);
+                sortowanie(&pierwszy,nazwa1);
                 break;
             case 4:
                  printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
@@ -203,26 +277,18 @@ void menu()
             case 5:
                 break;
             case 6:
-                printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
-                fflush(stdin);
-                gets(nazwa1);
-                fflush(stdin);
                 printf("podaj slowo polskie ktore chcesz usunac (wraz z tlumaczeniami)\n");
                 fflush(stdin);
                 gets(slowodousuniecia);
                 fflush(stdin);
-                kasuj_element(&pierwszy,nazwa1,slowodousuniecia);
+                kasuj_element(&pierwszy,nazwa,slowodousuniecia);
                 break;
             case 7:
-                 printf("podaj nazwe pliku do ktorego chcesz zapisac wynik z rozszerzeniem .txt\n");
-                fflush(stdin);
-                gets(nazwa1);
-                fflush(stdin);
                 printf("podaj slowo angielskie ktore chcesz usunac\n");
                 fflush(stdin);
                 gets(usang);
                 fflush(stdin);
-                usuwanieang(pierwszy,nazwa1,usang);
+                usuwanieang(pierwszy,nazwa,usang);
                 break;
             case 8:
                 return;
