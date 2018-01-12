@@ -3,7 +3,7 @@
 //  Projekt
 //
 //  Created by Wojciech Mojsiejuk on 12.12.2017.
-//  Copyright Â© 2017 Wojciech Mojsiejuk. All rights reserved.
+//  Copyright © 2017 Wojciech Mojsiejuk. All rights reserved.
 //
 
 #include <stdio.h>
@@ -20,9 +20,6 @@
 #include "functions_prototype.h"
 #define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
-
-
-
 
 int main(int argc, const char * argv[]) {
     //initialization of Polish and English database

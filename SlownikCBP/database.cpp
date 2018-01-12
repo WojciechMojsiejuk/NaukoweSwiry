@@ -12,7 +12,7 @@ bool read_data(ADRESS &first)
     //Amount of lines in database <not needed>
     int lines = 0;
 
-	const char* name = "./data/database.txt";
+	char name[] = "./data/database.txt";
 	FILE*file = fopen(name, "r");
 	if (!file)
 	{
@@ -30,7 +30,13 @@ bool read_data(ADRESS &first)
 
 	while ( fgets(pom, sizeof(pom), file)!= 0 )
 	{
-	    ADRESS temp = new slowo_polskie;
+	    ADRESS temp = new(std::nothrow) slowo_polskie;
+
+	    if (temp == NULL)
+        {
+            std::cout << "Could not allocate memory!\n";
+            return false;
+        }
 
         temp -> quantity = 0;
 	    strlen_line=strlen(pom);
