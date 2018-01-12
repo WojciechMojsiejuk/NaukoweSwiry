@@ -13,7 +13,6 @@ ADRESS_TO_PL_DB Previous_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_
 ADRESS_TO_PL_DB Next_Element_PL(ADRESS_TO_PL_DB first_element, ADRESS_TO_PL_DB search_element);
 ADRESS_TO_ENG_DB Previous_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element);
 ADRESS_TO_ENG_DB Next_Element_ENG(ADRESS_TO_ENG_DB first_element, ADRESS_TO_ENG_DB search_element);
-
 ADRESS_TO_PL_DB Sort_Elements_PL(ADRESS_TO_PL_DB polish_db)
 {
     ADRESS_TO_PL_DB iterator=polish_db;//general iterator

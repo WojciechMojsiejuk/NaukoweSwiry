@@ -21,6 +21,9 @@
 #define P 30//maximum of polish words held in database
 #define MAX_WORD 25 //maximum size of one word
 
+
+
+
 int main(int argc, const char * argv[]) {
     //initialization of Polish and English database
     ADRESS_TO_PL_DB init_pl=(ADRESS_TO_PL_DB)malloc(sizeof(POLISH_DATABASE));

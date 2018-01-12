@@ -4,6 +4,8 @@ miecz sword
 teren area country terrain site grounds
 wybrany chosen
 przeciek leak
+dla for to towards
+aktor actor player performer
 zawodnik player participant contestand runner contender
 misa bowl pan dish tureen
 tani cheap

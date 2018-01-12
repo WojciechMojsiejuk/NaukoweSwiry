@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1514332623 source:c:\users\user\desktop\slownik\main.cpp
+	"core.h"
+
+1513971251 c:\users\user\desktop\slownik\core.h
+
+1514333774 source:c:\users\user\desktop\slownik\core.cpp
+	"database.h"
+	"other.h"
+	"functions.h"
+
+1514324598 c:\users\user\desktop\slownik\database.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1514040700 c:\users\user\desktop\slownik\other.h
+
+1514040482 c:\users\user\desktop\slownik\functions.h
+
+1514333848 source:c:\users\user\desktop\slownik\database.cpp
+	"database.h"
+
+1514332965 source:c:\users\user\desktop\slownik\functions.cpp
+	"database.h"
+	"other.h"
+	"functions.h"
+
+1514325608 source:c:\users\user\desktop\slownik\other.cpp
+	"database.h"
+	"other.h"
+

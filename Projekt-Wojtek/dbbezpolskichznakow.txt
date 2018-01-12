@@ -1,0 +1,15 @@
+jablko:apple
+kredka:crayon,lipstick
+telefon:telephone,phone,cellular phone,cell phone,mobile phone
+piornik:pen-case
+mikrofon:microphone,mike
+list:letter
+kubek:mug
+okno:window
+szminka:lipstick
+komorka:storeroom,cubby-hole,cell phone
+ceramika:pottery-making,pottery,ceramics
+kurtka:jacket
+gitara:guitar
+lista:list,register,roll,sheet
+komorka:cell;

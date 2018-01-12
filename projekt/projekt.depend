@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1515102419 source:c:\users\misaki\desktop\projekt\main.c
+	<stdio.h>
+	<stdlib.h>
+	"projekt.h"
+
+1513553689 source:c:\users\misaki\desktop\projekt\projekt.c
+
+1515102760 c:\users\misaki\desktop\projekt\projekt.h
+
