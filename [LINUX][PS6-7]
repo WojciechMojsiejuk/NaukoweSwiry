@@ -1,0 +1,99 @@
+PS 06:
+z1.
+cut -d: -f3,6 --output-delimiter - /etc/passwd >> col36.txt
+wytnij -d to jakim separatorem sa oddzielone dane -f ktore kolumny --output-delimiter  jakimi danymi maja byc oddzielone /etc/passwd jaki plik
+z2.
+parallels@debian-8:~/Desktop$ cut -d: -f1,3- --output-delimiter - /etc/passwd >> mypasswd
+z3.
+parallels@debian-8:~/Desktop$ cut -d: -f4 --output-delimiter - /etc/passwd |sort|uniq|wc -l
+33
+z4.
+parallels@debian-8:~/Desktop$ who |uniq
+z5. 
+parallels@debian-8:~/Desktop$ cut -d: -f3 --output-delimiter - /etc/passwd >> col3.txt
+parallels@debian-8:~/Desktop$ cut -d: -f6 --output-delimiter - /etc/passwd >> col63.txt
+parallels@debian-8:~/Desktop$ paste col63.txt col3.txt
+JAK ZROBIC BY ZAPISAC DO PLIKU?
+DRUGI SPOSOB?
+
+LISTA2:
+?
+
+LISTA 3:
+Skrypty
+# komentarz
+#!sciezkadobasha
+
+$# ilosc argumentow
+$0 sciezka do skryptu
+$1, $2,$3 argumenty podane przez usera
+$? exit status of the last executed command jezeli sie wykonalo zwraca 0 jezeli nie to zwraca 1\
+
+rm a.txt
+rm a.txt
+echo $? //1
+echo $? //0
+test do sprawdzania warunkow
+$# 
+
+Warunki dotyczace plikow
+-d 
+PS07:
+1.
+#!/bin/bash
+# testpliku plik1 plik2 ...
+#
+for nazwa in *
+do
+        test -d "$nazwa" && echo "$nazwa" : katalog
+        test -f "$nazwa" && echo "$nazwa" : plik zwykly
+        test -e "$nazwa" || echo "$nazwa" : nie istnieje
+done
+
+2.
+  GNU nano 2.2.6                              File: s2.sh                                                                    
+
+
+#!/bin/bash
+#sortujpliki plik1 plik2
+#
+for nazwa
+do
+        echo `ls -l "$nazwa" | cut -d " " -f2` : "$nazwa"
+done | sort -n
+Trzeba poszukac ktora kolumna ls -l zwraca informacje o dowiazaniach
+
+Z3.
+  GNU nano 2.2.6                              File: s3.sh                                                                    
+#!/bin/bash
+#kopiujwazne ...
+#
+rm -rf KOPIA
+mkdir KOPIA
+for nazwa in *.txt
+do
+        if head -1 $nazwa | grep -q "^WAZNE"
+        then
+        echo `head -1 $nazwa`>>KOPIA/$nazwa
+        fi
+done
+
+Z4
+LANG=C
+if echo  $1 |  grep -q '^[A-Z]\+$'
+then
+        echo parametr "$1" sklada sie z samych duzych liter
+elif echo $1 | grep -q '^[a-z]\+$'
+then
+        echo  parametr "$1" sklada sie z samych malych liter
+elif ! echo $1 | grep -q '[^0-9]'
+then 
+        echo parametr "$1" jest liczba
+elif ! echo $1 | grep -q '[^A-Za-z0-9]\+$'
+then
+        echo parametr  $1 sklada sie tylko z cyfr i liter
+else
+        echo parametr "$1" jest mieszany
+fi
+
+Z5:
