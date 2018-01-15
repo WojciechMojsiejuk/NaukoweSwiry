@@ -1,0 +1,248 @@
+PS5:
+substytucjz wykonuje sie w powloce
+Regex
+grep ___ a.txt
+bedzie szukac ___ w  a.txt
+np grep abc a.txt
+bedzie szukalo slow zawierajacych ciag abc
+
+LISTA 1:
+Z1
+parallels@debian-8:~/Desktop/LS4$ grep PATH /etc/profile
+  PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+export PATH
+
+Z2
+grep -A1 jedno z gory
+grep -B1 jedno z dolu 
+grep -C1 jedno z gory i jedno z dolu dodatkowo zostaje wyswietlone
+
+parallels@debian-8:~/Desktop/LS4$ grep -C1 if /etc/profile
+
+if [ "`id -u`" -eq 0 ]; then
+  PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+--
+
+if [ "$PS1" ]; then
+  if [ "$BASH" ] && [ "$BASH" != "/bin/sh" ]; then
+    # The file bash.bashrc already sets the default PS1.
+    # PS1='\h:\w\$ '
+    if [ -f /etc/bash.bashrc ]; then
+      . /etc/bash.bashrc
+--
+  else
+    if [ "`id -u`" -eq 0 ]; then
+      PS1='# '
+--
+
+if [ -d /etc/profile.d ]; then
+  for i in /etc/profile.d/*.sh; do
+    if [ -r $i ]; then
+      . $i
+grep etc/passwd
+
+Z3.
+parallels@debian-8:~/Desktop/LS4$ grep bash /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+parallels:x:1000:1000:Parallels,,,:/home/parallels:/bin/bash
+
+Z4.
+grep "a" a.txt
+Ala ma kota
+kot ma Ale
+Adam idzie do szkoly
+
+^___ oznacza szukaj na poczatku linii
+parallels@debian-8:~/Desktop/LS4$ grep "^A" a.txt
+Ala ma kota
+As idzie do szkoly
+AAAAB
+ABA
+Adam idzie do szkoly
+
+. oznacza dowolny znak szuka wiec linii gdzie pierwszy znak to A drugi jest dowolny a trzeci jest a
+parallels@debian-8:~/Desktop/LS4$ grep "^A.a" a.txt
+Ala ma kota
+Adam idzie do szkoly
+
+y$ - linia konczy sie na y
+parallels@debian-8:~/Desktop/LS4$ grep "y$" a.txt
+As idzie do szkoly
+Adam idzie do szkoly
+
+^[^A-Z] szuka wszystkich ktore zaczynaja sie na cos co nie jest wielkimi literami
+parallels@debian-8:~/Desktop/LS4$ grep "^[^A-Z]" a.txt
+kot ma Ale
+ttt
+
+* - zero lub wiecej wystapien znakow bezposrednio poprzedzajacych znak
+. - dowolny jeden
+.*-zero lub wiecej dowolnych znakow
+pierwszy znak spoza A potem dowolne znaki potem A potem jezeli istnieje s to s
+parallels@debian-8:~/Desktop/LS4$ grep "^[^A].*As*" a.txt
+kot ma Ale
+A\{\4} powtarza sie 4 razy 
+parallels@debian-8:~/Desktop/LS4$ grep "^A\{4\}B" a.txt
+AAAAB
+
+Z5.
+parallels@debian-8:~/Desktop/LS4$ grep a.*a.*a /usr/share/dict/words
+
+Z6
+parallels@debian-8:~$ ls -la | grep ^d
+
+Z7:
+parallels@debian-8:~/Desktop/LS5$ sed "s/A/a/" a.txt
+ala ma kota
+kot ma ale
+ttt
+as idzie do szkoły
+aAAAB
+aBA
+adam idzie do szkoły
+
+s/A/a/ zamien pierwsze wystapienie A na a
+
+parallels@debian-8:~/Desktop/LS5$ sed "s/A/a/g" a.txt
+ala ma kota
+kot ma ale
+ttt
+as idzie do szkoły
+aaaaB
+aBa
+adam idzie do szkoły
+
+s/A/a/g zamien wszystkie A na a 
+dzieki /g na koncu !
+
+parallels@debian-8:~/Desktop/LS5$ cat a.txt
+Ala ma kota
+kot ma Ale
+ttt
+As idzie do szkoły
+AAAAB
+ABA
+Adam idzie do szkoły
+parallels@debian-8:~/Desktop/LS5$ sed "/A/d" a.txt
+ttt
+
+sed "/A/d" skasuj linie w ktorej wystepuje A
+
+parallels@debian-8:~/Desktop/LS5$ sed "2d" a.txt
+Ala ma kota
+ttt
+As idzie do szkoły
+AAAAB
+ABA
+Adam idzie do szkoły
+
+sed "2d" skasuj druga linie
+
+parallels@debian-8:~/Desktop/LS5$ sed "1,2d" a.txt
+ttt
+As idzie do szkoły
+AAAAB
+ABA
+Adam idzie do szkoły
+
+sed "1,2d" skasuje linie z przedzialu [1,2) czyli skasuje tylko pierwsza
+
+sed '2,$d' a.txt
+Ala ma kota
+Obstawiam ze kasuje od 2 linii
+
+parallels@debian-8:~/Desktop/LS5$ sed 's/\(A.*\) ma \(k.*\)/\2 ma \1/' a.txt
+kota ma Ala
+kot ma Ale
+ttt
+As idzie do szkoły
+AAAAB
+ABA
+Adam idzie do szkoły
+
+zamienia pozycje pierwszego wyrazenia z drugim
+stad kota ma Ala (wyrazenia sa okreslone w nawiasach)
+
+Z8: Do zadania posluzy mi przerobiony plik z poprzedniego zadania
+
+parallels@debian-8:~/Desktop/LS5$ cat b.txt
+Ala ma kota
+kot ma Ale
+ttt
+
+As idzie do szkoły
+AAAAB
+
+ABA
+Adam idzie do szkoły
+
+parallels@debian-8:~/Desktop/LS5$ sed '/^$/d' b.txt
+Ala ma kota
+kot ma Ale
+ttt
+As idzie do szkoły
+AAAAB
+ABA
+Adam idzie do szkoły
+
+sed '/^$/d' skasuj linie ktore zaczynaja sie od $ czyli od konca czyli sa puste XD
+
+parallels@debian-8:~/Desktop/LS5$ sed "s/A/B/" b.txt
+Bla ma kota
+kot ma Ble
+ttt
+
+Bs idzie do szkoły
+BAAAB
+
+BBA
+Bdam idzie do szkoły
+
+parallels@debian-8:~/Desktop/LS5$ sed 's/\(.*\)\s\(.*\)/\2 \1/' b.txt
+kota Ala ma
+Ale kot ma
+ttt
+
+szkoły As idzie do
+AAAAB
+
+ABA
+szkoły Adam idzie do
+
+sed 's/\(.*\)\s\(.*\)/\2 \1/' 
+Najpierw opisz slowa jako dowolny ciag znakow a potem zapisz tak by 2 byl przed 1
+
+parallels@debian-8:~/Desktop/LS5$ cat b.txt
+Ala   ma kota
+kot ma Ale
+ttt
+
+As idzie do szkoły
+A   A  A	AB
+
+ABA
+Adam idzie do s	z	k		oły
+
+ZMODYFIKOWANY b.txt
+
+parallels@debian-8:~/Desktop/LS5$ sed "s/[[:space:]]\+/ /g" b.txt
+Ala ma kota
+kot ma Ale
+ttt
+
+As idzie do szkoły
+A A A AB
+
+ABA
+Adam idzie do s z k oły
+
+Zamien jakikolwiek rodzaj spacji :space: w POSIX na / / czyli zwykla spacje zastosuj to wszedzie czyli /g
+parallels@debian-8:~/Desktop/LS5$ sed '1,/^$/d' b.txt
+As idzie do szkoły
+A   A  A	AB
+
+ABA
+Adam idzie do s	z	k		oły
+
+skasuj linie od 1 do (czyli przecinek) i paternem jest ^$ pierwsza linia pusta
