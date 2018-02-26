@@ -69,13 +69,24 @@ int main()
 	srand( time( NULL ) );
     int choose;
     Stack *head = NULL;
+    cout<<"Wybierz opcje:"<<endl;
+    cout<<"1.Dodaj wartosc."<<endl;
+    cout<<"2.Usun wartosc."<<endl;
+    cout<<"3.Przygotuj stos"<<endl;
+    cout<<"4.Zniszcz stos."<<endl;
+    cout<<"5.Wyswietl wartosc wierzcholka."<<endl;
+    cout<<"6.Czy stos jest pusty?"<<endl;
+    cout<<"7.Czy stos jest pelny?"<<endl;
+    cout<<"8.Wyswietl caly stos."<<endl;
+    cout<<"9.Zakoncz program."<<endl;
+   
     while(cin>>choose)
     {
         switch (choose)
         {
             case 1: 
                 int v;
-                v=rand();
+                v=rand()%10;
                 push(&head,v);
             break;
             case 2: pop(&head);
@@ -97,3 +108,4 @@ int main()
         }
     }
 }
+
