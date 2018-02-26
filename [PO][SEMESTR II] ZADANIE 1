@@ -1,0 +1,99 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<time.h>
+using namespace std;
+
+struct Stack
+{   
+    int val;
+    Stack* next;
+    
+};
+void push(Stack **head, int v)
+{
+    Stack *n = new Stack;
+    n->val = v;
+    n->next = *head;
+    *head = n;
+}
+void pop ( Stack **head)
+{
+ if(*head)
+{
+	Stack *tmp = *head;
+	*head = (*head)->next;
+	delete tmp;
+}
+}
+void init(Stack **head)
+{
+	*head = NULL;
+}
+void destroy  (Stack **head)
+{
+Stack *n;
+	while (*head)
+	{
+		n = (*head)->next;
+		delete *head;
+		*head = n;
+	}
+}
+void display(Stack *head)
+{
+	 while(head)
+	 {
+		 cout << (head)->val << " ";
+	head = (head)->next;
+	 }
+	 cout << endl;
+}
+void top(Stack **head)
+{
+	cout<<(*head)->val;
+}
+void empt(Stack **head)
+{
+	if(*head==NULL)
+	{
+		cout<<"TRUE"<<endl;
+	}else cout<<"False"<<endl;
+}
+bool full()
+{cout<<"FALSE"<<endl;
+return 0;
+}
+int main()
+{
+	srand( time( NULL ) );
+    int choose;
+    Stack *head = NULL;
+    while(cin>>choose)
+    {
+        switch (choose)
+        {
+            case 1: 
+                int v;
+                v=rand();
+                push(&head,v);
+            break;
+            case 2: pop(&head);
+            break;
+            case 3: init(&head);
+            break;
+            case 4: destroy(&head);
+            break;
+            case 5: top(&head);
+            break;
+            case 6: empt(&head);
+            break;
+            case 7: full();
+            break;
+            case 8: display(head);
+            break;
+            case 9: return 0;
+            break;
+        }
+    }
+}
