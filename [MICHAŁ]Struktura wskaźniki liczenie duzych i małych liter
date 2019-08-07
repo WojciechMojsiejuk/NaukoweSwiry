@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<string.h>
+typedef struct
+{
+    char napis[20];
+    int d;
+}NAP;
+
+void zlicz(NAP *z)
+{int i=0,m=0,M=0;
+    for(i=0;i<(*z).d;i++)
+    {
+        if((*z).napis[i]>='A'&&(*z).napis[i]<='Z')
+        {
+            M++;
+        }else
+        if((*z).napis[i]>='a'&&(*z).napis[i]<='z')
+        {
+            m++;
+        }
+    }printf("%d  %d",M,m);
+
+}
+int main()
+{NAP n1;
+gets(n1.napis);
+puts(n1.napis);
+n1.d=strlen(n1.napis);
+zlicz(&n1);
+ return 0;
+}
