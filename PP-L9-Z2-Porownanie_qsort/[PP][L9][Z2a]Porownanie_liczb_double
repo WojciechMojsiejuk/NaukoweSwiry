@@ -1,0 +1,23 @@
+#include <stdio.h>
+#define N 5
+
+int compared(const void *w1, const void *w2)
+{
+    double a=*((double*)w1);
+    double b=*((double*)w2);
+    if (a==b)
+        return 0;
+    if(a<b)
+        return -1;
+    return 1;
+}
+
+int main()
+{
+    double tab[N]={513, 151, 153416, 615, 531351};
+    qsort(tab, N, sizeof(double), compared);
+    int i;
+    for(i=0;i<N;i++)
+        printf("%lf\t", tab[i]);
+    return 0;
+}

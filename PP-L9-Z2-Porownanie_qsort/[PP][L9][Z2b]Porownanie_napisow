@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+#define W 10
+#define K 15
+
+int comparec(const void *w1, const void *w2)
+{
+    const char *a=(char*)w1;
+    const char *b=(char*)w2;
+    return strcmp(a, b);
+
+}
+
+int main()
+{
+    char tab[W][K]={"zero", "jeden", "dwa", "trzy", "cztery", "piec", "szecs", "siedem", "osiem", "dziewiec"};
+    qsort(tab , W, K*sizeof(char), comparec);
+    int i;
+    for(i=0;i<W;i++)
+        printf("%s\n", tab[i]);
+    return 0;
+}
+

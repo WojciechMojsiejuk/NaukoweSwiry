@@ -1,0 +1,45 @@
+/* Te zadanie jest w pełni zrobione w pliku [PP][L9][Z3]audycja.c Zostawiam ten program na wszelki wypadek. */
+
+
+#include <stdio.h>
+#include <string.h>
+#define N 50
+#define K 250
+
+typedef struct
+{
+    char autor[N];
+    char tytul[N];
+    float czas;
+    char rodzaj;
+}audycja;
+
+int comparea(const void *w1, const void *w2)
+{
+    const audycja *tab_i=(audycja*)w1;
+    const audycja *tab_j=(audycja*)w2;
+    if(strcmp(tab_i->autor, tab_j->autor)!=0)
+        return strcmp(tab_i->autor, tab_j->autor);
+    if(strcmp(&tab_i->rodzaj, &tab_j->rodzaj)!=0)
+        return strcmp(&tab_i->rodzaj, &tab_j->rodzaj);
+    return strcmp(tab_i->tytul, tab_j->tytul);
+}
+
+int main()
+{
+    int licznik=0;
+    audycja tab[K];
+    FILE *plik=fopen("autorzy.dat", "rb");
+    if(plik==NULL)
+        return 1;
+    while(fread(&tab[licznik], sizeof(audycja), 1, plik))
+    {
+        licznik++;
+    }
+    fclose(plik);
+    qsort(tab, licznik, sizeof(audycja), comparea);
+    int i;
+    for(i=0;i<licznik;i++)
+        printf("%s\t%s\t%f\t%c\n", tab[i].autor, tab[i].tytul, tab[i].czas, tab[i].rodzaj);
+    return 0;
+}
